@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sudoku Oyna - Ücretsiz Online Sudoku | MiniOyun</title>
+  <meta name="description" content="Ücretsiz online Sudoku oyna. Kolay, orta ve zor seviye, not alma ve ipucu desteği ile telefonda da rahat. Her oyun yeni bulmaca, üyelik yok.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/sudoku/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .su-bar { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .su-bar .stat { padding: 6px 12px; }
+    .su-bar select { background: var(--surface-2); color: var(--text); border: 1px solid var(--muted); border-radius: 10px; padding: 8px 10px; font-size: .95rem; font-family: inherit; }
+    .su-bar .btn { padding: 8px 14px; font-size: .95rem; }
+    .su-wrap { width: min(100%, 450px); container-type: inline-size; }
+    .su-grid { display: grid; grid-template-columns: repeat(9, 1fr); width: 100%; aspect-ratio: 1; border: 3px solid #4a4580; border-radius: 8px; overflow: hidden; background: #f4f2ff; outline: none; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+    .su-grid:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+    .su-grid .cell { display: flex; align-items: center; justify-content: center; min-width: 0; border-right: 1px solid #c9c5e8; border-bottom: 1px solid #c9c5e8; font-size: calc(100cqw / 9 * .56); font-weight: 600; color: #6d4bdb; cursor: pointer; background: #f4f2ff; transition: background .12s; }
+    .su-grid .cell:nth-child(9n) { border-right: 0; }
+    .su-grid .cell:nth-child(n+73) { border-bottom: 0; }
+    .su-grid .cell.br { border-right: 3px solid #4a4580; }
+    .su-grid .cell.bb { border-bottom: 3px solid #4a4580; }
+    .su-grid .cell.given { color: #14112e; font-weight: 900; }
+    .su-grid .cell.peer { background: #e4e0fb; }
+    .su-grid .cell.same { background: #c9bff7; }
+    .su-grid .cell.sel { background: #ffd66b; }
+    .su-grid .cell.wrong { color: #d20f39; background: #fbd3db; }
+    .su-grid .cell.wrong.sel { background: #f7a9b8; }
+    .su-grid.kb .cell.sel { box-shadow: inset 0 0 0 3px #ff9a3d; }
+    .notes { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; height: 100%; padding: 1px; }
+    .notes span { display: flex; align-items: center; justify-content: center; font-size: calc(100cqw / 27 * .78); font-weight: 700; color: #6b6890; line-height: 1; }
+    .su-grid.wave .cell { animation: su-wave .6s ease both; }
+    @keyframes su-wave { 50% { transform: scale(.82); background: #a7f3d0; } }
+    .su-pad { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; width: min(100%, 450px); margin-top: 12px; }
+    .su-pad .num { position: relative; min-height: 46px; padding: 0; border: 0; border-radius: 10px; background: var(--surface-2); color: var(--text); font-size: 1.35rem; font-weight: 900; font-family: inherit; cursor: pointer; touch-action: manipulation; }
+    .su-pad .num small { position: absolute; right: 4px; top: 2px; font-size: .62rem; font-weight: 700; color: var(--muted); }
+    .su-pad .num.done { opacity: .35; }
+    .su-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: min(100%, 450px); margin-top: 8px; }
+    .su-actions button { min-height: 52px; padding: 4px 2px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--text); font-family: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; touch-action: manipulation; line-height: 1.2; }
+    .su-actions button span { display: block; font-size: 1.2rem; }
+    .su-actions button.on { background: var(--accent); color: #1a1300; }
+    .su-actions button:disabled { opacity: .4; cursor: default; }
+    .su-end { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; justify-content: center; }
+    .su-pad button:focus-visible, .su-actions button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    @media (max-width: 500px) {
+      main.container { padding: 0 8px; }
+      .game-box { padding: 12px 6px; }
+      .su-bar .stat { padding: 4px 8px; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Sudoku","url":"https://unkas53.github.io/minigameweb/games/sudoku/","genre":"Bulmaca","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip active" href="../../kategori/bulmaca/" aria-current="page" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/bulmaca/">Bulmaca Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Sudoku</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Bulmaca Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/bulmaca/"},{"@type":"ListItem","position":3,"name":"Sudoku","item":"https://unkas53.github.io/minigameweb/games/sudoku/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Sudoku</h1>
+        <div class="su-bar">
+          <select id="level" aria-label="Zorluk">
+            <option value="kolay">Kolay</option>
+            <option value="orta">Orta</option>
+            <option value="zor">Zor</option>
+          </select>
+          <div class="stat"><small>Süre</small><span id="time">0:00</span></div>
+          <div class="stat"><small>Hata</small><span id="mistakes">0/3</span></div>
+          <div class="stat"><small>En iyi</small><span id="best">-</span></div>
+          <button class="btn" id="new" type="button">Yeni oyun</button>
+        </div>
+        <div class="su-wrap">
+          <div class="su-grid" id="grid" tabindex="0" role="grid" aria-label="Sudoku ızgarası"></div>
+        </div>
+        <div class="su-pad" id="pad" aria-label="Rakamlar"></div>
+        <div class="su-actions">
+          <button type="button" id="undo" aria-label="Geri al"><span aria-hidden="true">↶</span>Geri al</button>
+          <button type="button" id="erase" aria-label="Sil"><span aria-hidden="true">⌫</span>Sil</button>
+          <button type="button" id="note" aria-pressed="false"><span aria-hidden="true">✏️</span>Not: <b>Kapalı</b></button>
+          <button type="button" id="hint"><span aria-hidden="true">💡</span>İpucu (<b>3</b>)</button>
+        </div>
+        <div class="overlay-msg" id="msg"></div>
+        <div class="su-end" id="end" hidden>
+          <button class="btn" type="button" id="retry">Tekrar dene</button>
+          <button class="btn btn-ghost" type="button" id="new2">Yeni oyun</button>
+        </div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Sudoku nasıl oynanır?</h2>
+      <p>Amacın 9x9 ızgarayı doldurmak: her satırda, her sütunda ve kalın çizgili her 3x3 kutuda 1'den 9'a kadar her rakam yalnızca bir kez bulunmalı. Bir boş kareyi seç, ardından klavyeden ya da alttaki sayı tuşlarından rakamı gir. Emin olmadığın karelere Not modunu açarak küçük aday rakamlar yazabilirsin. Üç hata yaparsan oyun biter; tüm kareleri doğru doldurduğunda kazanırsın.</p>
+      <p>Kalın yazılı rakamlar bulmacanın ipuçlarıdır, değiştirilemez. Senin girdiğin rakamlar renkli görünür; yanlış bir rakam kırmızıya döner ve hata sayacını bir artırır. Seçtiğin karenin satırı, sütunu ve kutusu hafifçe renklenir, aynı rakamlar da ızgarada belirginleşir. Sayı tuşlarının köşesindeki küçük sayı, o rakamdan kaç tane daha yerleştirmen gerektiğini gösterir. Oyun her hamlede kaydedilir; sayfayı kapatsan bile döndüğünde kaldığın yerden devam edersin.</p>
+      <p><strong>Klavye:</strong> ok tuşlarıyla kare seç, 1-9 ile rakam gir, Backspace, Delete veya 0 ile sil, N ile not modunu aç ve kapat, Z veya Ctrl+Z ile geri al, H ile ipucu kullan, P ile duraklat.</p>
+      <h2>İpuçları</h2>
+      <p>Önce ızgarada en çok bulunan rakamdan başla; eksik kaldığı kutuları tek tek kontrol etmek kolay yerleştirmeler bulur. Bir satır, sütun veya kutuda yalnızca bir boş kare kaldıysa eksik rakam hemen bellidir. Zor seviyede her boş kareye olası adayları not al, sonra yalnızca bir adayı kalan kareleri doldur. Tahminle rakam girmek yerine notlarla ilerlemek hata hakkını korur.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Bulmacaların tek çözümü var mı?</strong> Evet. Her bulmaca oyun açılırken yeniden üretilir ve yalnızca tek çözümü olacak şekilde kontrol edilir, bu yüzden mantıkla tahmin yapmadan çözülebilir.</p>
+      <p><strong>Zorluk seviyeleri arasındaki fark ne?</strong> Kolay seviyede 40-45, orta seviyede 32-36, zor seviyede 26-30 ipucu rakamı verilir. Her seviyenin en iyi süresi ayrı tutulur.</p>
+      <p><strong>İpucu hakkım kaç tane?</strong> Her oyunda 3 ipucu hakkın var. İpucu seçili kareye, kare doluysa rastgele bir boş kareye doğru rakamı yazar.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mayın Tarlası</h3>
+          <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/2048/" data-title="2048" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#ffb547;--c2:#ff7a59"><span class="thumb-icon text" aria-hidden="true">2048</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>2048</h3>
+          <p>Aynı sayıları birleştir, 2048 karesine ulaş.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/hafiza/" data-title="hafıza kartları" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#a78bfa;--c2:#6d28d9"><span class="thumb-icon" aria-hidden="true">🃏</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Hafıza Kartları</h3>
+          <p>Kartları çevir, eşleri en az hamlede bul.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/yilan/" data-title="yılan" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5ee0b8;--c2:#2a9d8f"><span class="thumb-icon" aria-hidden="true">🐍</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Yılan</h3>
+          <p>Yemleri topla, uzadıkça kendine çarpma.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/bulmaca/">Tüm bulmaca oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/oyun.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
