@@ -23,7 +23,8 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-23 20:07
 
 ## H-3 | Mayın Tarlası: 1 saniyenin altında kazanınca en iyi süre görünmüyor
-- durum: acik
+- durum: duzeltildi
+- not: dc1103c ile düzeltildi; getBest() kayıt yoksa null döndürüyor, 0 sn geçerli rekor sayılıyor.
 - onem: dusuk
 - sayfa: games/mayin-tarlasi/
 - adimlar: İlk tıklamada açılan alanın tahtanın tamamını temizlediği (veya 1 saniye dolmadan bitirilen) bir oyunu kazan, sonra sayfayı yenile ve yeniden kazan.
