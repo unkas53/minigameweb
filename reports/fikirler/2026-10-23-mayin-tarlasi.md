@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: mayin-tarlasi
 baslik: Mayın Tarlası
 kategori: Bulmaca
