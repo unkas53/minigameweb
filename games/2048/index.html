@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2048 Oyna - Ücretsiz Online 2048 Oyunu | MiniOyun</title>
+  <meta name="description" content="2048 oyununu ücretsiz ve online oyna. Ok tuşlarıyla veya kaydırarak aynı sayıları birleştir, 2048 karesine ulaş.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/2048/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .board { --size: min(84vw, 400px); width: var(--size); height: var(--size); background: #3a3f63; border-radius: 12px; padding: 8px; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 8px; touch-action: none; user-select: none; }
+    .cell { background: #4a5080; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(var(--size) / 10); color: #1a1300; }
+    .v2 { background: #eee4da; } .v4 { background: #ede0c8; } .v8 { background: #f2b179; } .v16 { background: #f59563; }
+    .v32 { background: #f67c5f; } .v64 { background: #f65e3b; color: #fff; } .v128 { background: #edcf72; font-size: calc(var(--size) / 12); }
+    .v256 { background: #edcc61; font-size: calc(var(--size) / 12); } .v512 { background: #edc850; font-size: calc(var(--size) / 12); }
+    .v1024, .v2048, .vbig { background: #edc22e; font-size: calc(var(--size) / 15); color: #fff; }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"2048","url":"https://unkas53.github.io/minigameweb/games/2048/","genre":"Bulmaca","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../../">Mini<span>Oyun</span></a>
+      <nav class="nav">
+        <a href="../../">Oyunlar</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>2048</h1>
+        <div class="game-stats">
+          <div class="stat"><small>Skor</small><span id="score">0</span></div>
+          <div class="stat"><small>En iyi</small><span id="best">0</span></div>
+          <button class="btn" id="restart">Yeni oyun</button>
+        </div>
+        <div class="board" id="board" aria-label="2048 oyun tahtası"></div>
+        <div class="overlay-msg" id="msg"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>2048 nasıl oynanır?</h2>
+      <p>Bilgisayarda ok tuşlarını veya W, A, S, D tuşlarını kullanın; telefonda parmağınızı kaydırın. Tüm kareler seçtiğiniz yöne kayar. Aynı sayıya sahip iki kare çarpıştığında birleşir ve toplamları kadar puan kazanırsınız. Her hamleden sonra boş bir yere yeni bir 2 veya 4 gelir. Amaç 2048 karesini oluşturmaktır; hamle yapacak yer kalmazsa oyun biter.</p>
+      <h2>İpuçları</h2>
+      <p>En büyük sayıyı bir köşede tutun ve mümkün olduğunca iki yönde hamle yapın. Satırları dolu tutmak, büyük karelerin dağılmasını engeller.</p>
+    </section>
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>© 2026 MiniOyun</div>
+      <div>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

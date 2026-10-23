@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://unkas53.github.io/minigameweb/sitemap.xml
