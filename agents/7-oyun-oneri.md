@@ -13,7 +13,7 @@ Yayındaki oyunları oyuncu gözüyle inceleyip onları daha eğlenceli, anlaş�
 - **Yeni oyun:** 1. ajanın işidir.
 
 ## Neler önerilir
-Oynanışı ve deneyimi değiştiren, kalite listesinin ötesindeki şeyler. Örnekler: yeni oyun modu (süreli mod, sonsuz mod), daha iyi geri bildirim (animasyon, birleşme efekti, kombo göstergesi), ilk kez oynayan için kısa ipucu, geri al düğmesi, oyun dengesinin ayarı (çok kolay/zor bölümler), mobilde daha rahat kontroller, renk körlüğüne uygun renkler, oyun sonunda "bir sonraki hedef" gösterimi.
+Oynanışı ve deneyimi değiştiren, kalite listesinin ötesindeki şeyler. Örnekler: yeni oyun modu (süreli mod, sonsuz mod), daha iyi geri bildirim (animasyon, birleşme efekti, kombo göstergesi), ilk kez oynayan için kısa ipucu, geri al düğmesi, oyun dengesinin ayarı (çok kolay/zor bölümler), mobilde daha rahat kontroller, renk körlüğüne uygun renkler, oyun sonunda "bir sonraki hedef" gösterimi. Özellikle oyuncuyu geri getiren katmanlar önerin (`agents/ORTAK.md` "Oyun derinliği"): bölüm/kampanya modu, görevler, oynadıkça açılan temalar veya modlar, kalıcı yükseltmeler.
 
 ## Adımlar
 1. `agents/ORTAK.md` dosyasını okuyun.

@@ -25,6 +25,7 @@ Fikir ajanının yazdığı oyunları siteye eklemek.
      - Önemli anlarda `MiniOyun.ses('tik' | 'puan' | 'kazan' | 'kaybet')` kullanın.
      - Rastgelelik için `Math.random` yerine her yeni oyunun başında `var rnd = MiniOyun.rastgele();` alıp `rnd()` kullanın. `bitti` çağrısına kısa bir `sonuc` metni verin (ör. `'14 hamle'`, `'1916 puan'`). Bulmaca herkes için aynı olabiliyorsa `games.json` kaydına `"gunluk": true` ekleyin; oyun böylece günlük meydan okumaya girer.
      - Araç çubuğundaki "Nasıl oynanır" penceresi `.game-desc` bölümünü gösterir, o yüzden bu bölüm eksiksiz olmalı.
+   - Fikirdeki "İlerleme ve geri gelme" bölümünü eksiksiz uygulayın (bölümler, yıldızlar, açılan içerik, kalıcı kayıt). Bölümlü oyunda `seviye` olarak bölümü verin (`'bölüm 3'` gibi). Uzun süren oyunların testinde gerçek zamanı beklemeyin, `page.clock.install()` ve `page.clock.runFor(ms)` ile saati ileri sarın (örnek: `tools/tests/kule-savunmasi.js`).
    - Klavye ve dokunmatik kontrol; 360 px genişlikte yatay kaydırma olmamalı.
    - Harici kütüphane, görsel veya ses dosyası yok.
    - `js/sunucu.js`, `js/vendor/` ve `supabase/` dosyalarını değiştirmeyin; sunucu ayarları ve veritabanı elle yönetilir.
@@ -45,6 +46,7 @@ Her yeni oyun yayına girmeden önce bunları karşılamalı; test ajanı da bu 
 6. `.game-desc` içinde en az 150 kelimelik özgün Türkçe metin: nasıl oynanır, ipuçları, kısa SSS.
 7. `tools/tests/<slug>.js` oynanış testi geçiyor.
 8. Rastgelelik `MiniOyun.rastgele()` ile; uygunsa `"gunluk": true`.
+9. Uzun soluklu katman (`agents/ORTAK.md` "Oyun derinliği"): bölüm haritası/kampanya, kalıcı ilerleme veya açılan içerik; ilerleme `mo_<kısa-ad>` anahtarında kalıcı ve oynanış testi bunu kontrol ediyor. Eski oyunlarda iyileştirme modu bu maddeyi de tamamlayabilir (ör. 2048'e hedefli bölümler, Yılan'a açılan haritalar); mevcut rekor anahtarlarını bozmadan ayrı bir mod olarak ekleyin.
 8. Hepsi geçerse fikir dosyasında `durum: yayinda` yazın, tek commit'te push edin: `[gelistirme] <oyun adı> eklendi`.
 
 ## Kurallar
