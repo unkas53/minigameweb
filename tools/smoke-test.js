@@ -1,4 +1,5 @@
 // Tüm sayfaları gerçek tarayıcıda açar; JS hatası, kırık bağlantı ve yatay taşma arar.
+// Ardından her oyunun tools/tests/<slug>.js oynanış testini çalıştırır (yalnızca bir oyun için: --oyun <slug>).
 // Kullanım: npm install && node tools/smoke-test.js
 const http = require('http');
 const fs = require('fs');
@@ -98,6 +99,29 @@ function chromePath() {
     if (!sitemap.includes(`kategori/${c}/`)) errors.push(`kategori/${c}/ sitemap.xml içinde yok`);
   }
 
+  // Oynanış testleri: her oyun temiz bir tarayıcı profilinde oynanır
+  const only = process.argv.includes('--oyun') ? process.argv[process.argv.indexOf('--oyun') + 1] : null;
+  let played = 0;
+  for (const g of games.filter(x => !only || x.slug === only)) {
+    const file = path.join(__dirname, 'tests', g.slug + '.js');
+    if (!fs.existsSync(file)) { errors.push(`${g.slug}: oynanış testi yok (tools/tests/${g.slug}.js)`); continue; }
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} });
+    const page = await ctx.newPage();
+    page.on('pageerror', e => errors.push(`[oynanış] ${g.slug} JS hatası: ${e.message}`));
+    const helpers = {
+      git: async p => { await page.goto(origin + p); await page.waitForTimeout(200); },
+      beklenen: (ok, msg) => { if (!ok) throw new Error(msg); }
+    };
+    try {
+      await require(file)(page, helpers);
+      played++;
+    } catch (e) {
+      errors.push(`[oynanış] ${g.slug}: ${e.message.split('\n')[0]}`);
+    }
+    await ctx.close();
+  }
+
   await browser.close();
   server.close();
   const unique = [...new Set(errors)];
@@ -105,5 +129,5 @@ function chromePath() {
     console.log(`BAŞARISIZ: ${unique.length} sorun\n- ` + unique.join('\n- '));
     process.exit(1);
   }
-  console.log(`BAŞARILI: ${pages.length} sayfa, ${checkedLinks.size} bağlantı, 2 ekran boyutu kontrol edildi.`);
+  console.log(`BAŞARILI: ${pages.length} sayfa, ${checkedLinks.size} bağlantı, 2 ekran boyutu ve ${played} oyunun oynanış testi kontrol edildi.`);
 })();

@@ -11,7 +11,7 @@ Siteye eklenecek yeni mini oyun fikirleri bulmak ve geliştirici ajanın doğrud
 2. `reports/fikirler/` içinde `durum: bekliyor` olan fikirleri sayın. **3 veya daha fazlaysa hiçbir şey yapmadan çıkın.**
 3. `games.json` ve tüm fikir dosyalarını okuyun; mevcut veya önerilmiş bir oyunu tekrar önermeyin.
 4. `reports/rakip-analizi/` içindeki en son raporu okuyun ve oradaki popüler türlerden ve boşluklardan yararlanın.
-5. Tek bir yeni fikir seçin. Kriterler: tek dosya JavaScript ile 300-600 satırda yapılabilir, telefonda dokunmatikle oynanabilir, harici görsel/ses dosyası gerektirmez (emoji, canvas çizimi veya CSS kullanılabilir), bir oturum 1-5 dakika sürer, Türkiye'de aranan bir oyun adı veya türü var.
+5. Tek bir yeni fikir seçin. Önce sitede oyunu olmayan veya az olan kategorileri (`categories.json` ile `games.json`'ı karşılaştırın) ve herkese aynı bulmacanın verilebildiği, günlük meydan okumaya uygun oyunları tercih edin. Kriterler: tek dosya JavaScript ile 300-600 satırda yapılabilir, telefonda dokunmatikle oynanabilir, harici görsel/ses dosyası gerektirmez (emoji, canvas çizimi veya CSS kullanılabilir), bir oturum 1-5 dakika sürer, Türkiye'de aranan bir oyun adı veya türü var.
 6. Aşağıdaki şablonla `reports/fikirler/YYYY-AA-GG-<slug>.md` dosyasını oluşturun, commit edip push edin.
 
 ## Şablon
@@ -43,6 +43,9 @@ Renkler, oyun alanı boyutu, kullanılacak emoji veya şekiller.
 - "Nasıl oynanır" paragrafı
 - "İpuçları" paragrafı
 
+## Zorluk ve günlük mod
+Zorluk seviyeleri veya zorluk artışı; oyun günlük meydan okumaya uygun mu (herkese aynı bulmaca verilebilir mi), neden.
+
 ## Kabul kriterleri
-Geliştirici ve test ajanının kontrol edeceği maddeler listesi.
+Geliştirici ve test ajanının kontrol edeceği maddeler listesi. `agents/4-gelistirici.md` içindeki kalite listesini de karşılamalı.
 ```
