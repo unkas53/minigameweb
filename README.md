@@ -7,7 +7,8 @@
 - `index.html` – ana sayfa ve oyun kartları
 - `games/<slug>/index.html` + `game.js` – her oyun kendi klasöründe
 - `css/style.css`, `js/main.js` – ortak stil, çerez onayı, en yüksek skor yardımcıları, ana sayfadaki favoriler ve son oynananlar
-- `js/oyun.js` – ortak oyun çerçevesi: araç çubuğu (duraklat, yeniden başlat, ses, tam ekran, nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri. Oyun sayfalarına build ekler.
+- `js/oyun.js` – ortak oyun çerçevesi: araç çubuğu (duraklat, yeniden başlat, ses, tam ekran, nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri, oyun istatistikleri ve rozetler (`BADGES` listesi). Oyun sayfalarına build ekler.
+- `profil.html` + `js/profil.js` – Profilim sayfası: takma ad, avatar, istatistikler, rozetler, rekorlar, veri aktarma (oyun listesi build ile yazılır)
 - `games.json` – oyun kaydı (ajanlar buradan okur)
 - `categories.json` – kategori listesi ve kategori sayfası metinleri
 - `kategori/` – kategori sayfaları (otomatik üretilir)
@@ -19,7 +20,7 @@
 ## Yeni oyun ekleme
 
 1. `games/<slug>/` klasörünü mevcut bir oyunu örnek alarak oluşturun (başlık, açıklama, canonical, JSON-LD, nasıl oynanır metni). `<!-- oto:yol -->` ve `<!-- oto:benzer -->` işaretlerini koruyun. `game.js` içinde `MiniOyun.oyun({...})` ile ortak çerçeveye kaydolun ve oyun bitince `MiniOyun.bitti({...})` çağırın (ayrıntılar `agents/4-gelistirici.md` içinde).
-2. `games.json` dosyasına kayıt ekleyin: `slug`, `title`, `category` (`categories.json`'daki bir ad), `description`, `icon`, `colors`, `added`, `status`.
+2. `games.json` dosyasına kayıt ekleyin: `slug`, `title`, `category` (`categories.json`'daki bir ad), `description`, `icon`, `colors`, `added`, `status`. Rekor puan değilse `rekor` alanına birimini yazın (ör. `"hamle"`, `"sn"`); Profilim sayfası bunu kullanır.
 3. `npm run build` çalıştırın. Ana sayfa kartı, kategori sayfası, menüler, benzer oyunlar ve `sitemap.xml` kendiliğinden güncellenir.
 4. `npm test` ile kontrol edin.
 

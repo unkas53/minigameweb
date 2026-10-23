@@ -79,6 +79,14 @@
     });
   }
 
+  // Üst menüdeki "Profilim" bağlantısında seçilen avatarı göster
+  function drawHeaderAvatar() {
+    var avatar = '👤';
+    try { avatar = (JSON.parse(localStorage.getItem('mo_profil')) || {}).avatar || avatar; } catch (e) {}
+    var els = document.querySelectorAll('.nav-avatar');
+    for (var i = 0; i < els.length; i++) els[i].textContent = avatar;
+  }
+
   window.MiniOyun = {
     getBest: function (game) {
       try { return parseInt(localStorage.getItem('mo_best_' + game), 10) || 0; } catch (e) { return 0; }
@@ -94,13 +102,15 @@
       } catch (e) {}
       return false;
     },
-    hasAdConsent: function () { return getConsent() === 'accepted'; }
+    hasAdConsent: function () { return getConsent() === 'accepted'; },
+    ustAvatar: drawHeaderAvatar
   };
 
   document.addEventListener('DOMContentLoaded', function () {
     initCookieBanner();
     markNewGames();
     initPersonal();
+    drawHeaderAvatar();
     initSearch();
   });
 })();

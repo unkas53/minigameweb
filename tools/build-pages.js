@@ -3,6 +3,7 @@
 // - ana sayfada öne çıkan oyun, kategori kutuları ve oyun ızgarası
 // - kategori/<slug>/ sayfaları ve kategori/ listesi
 // - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar" ve ortak oyun çerçevesi betiği (js/oyun.js)
+// - profil sayfasındaki oyun listesi
 // - sitemap.xml
 // Kullanım: node tools/build-pages.js          (dosyaları yazar)
 //           node tools/build-pages.js --check  (yalnızca güncel mi diye bakar)
@@ -54,6 +55,7 @@ function header(p, current) {
         <a href="${p}kategori/">Kategoriler</a>
         <a href="${p}hakkinda.html">Hakkında</a>
         <a href="${p}iletisim.html">İletişim</a>
+        <a class="nav-profil" href="${p}profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
       </nav>
     </div>
     <nav class="cat-bar" aria-label="Kategoriler">
@@ -156,6 +158,13 @@ const put = (f, s) => outputs.set(f, s);
 // ---------- Diğer kök sayfalar ----------
 for (const f of ['hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html', '404.html']) {
   put(f, shell(read(f), '', ''));
+}
+
+// ---------- Profil sayfası: rekor listesi için oyun verisi ----------
+{
+  const data = sorted.map(g => ({ slug: g.slug, title: g.title, icon: g.icon, colors: g.colors, rekor: g.rekor || 'puan' }));
+  const json = JSON.stringify(data).replace(/</g, '\\u003c');
+  put('profil.html', replaceBlock(shell(read('profil.html'), '', ''), 'oyun-verisi', `<script>window.MO_OYUNLAR = ${json};</script>`, 'profil.html'));
 }
 
 // ---------- Oyun sayfaları ----------
