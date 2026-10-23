@@ -8,6 +8,14 @@ Bu dosyayı her ajan, kendi görev dosyasından önce okur.
 - Teknik yapı: saf HTML/CSS/JavaScript, derleme adımı yok, harici kütüphane yok. GitHub Pages `main` dalından yayınlar; `main`'e giren her şey birkaç dakika içinde canlıdır.
 - Gelir: Google AdSense. Reklam alanlarını (`.ad-slot`) silmeyin, oyunun üstüne reklam koymayın.
 
+## Oyun derinliği: uzun soluklu oyunlar
+Sitenin hedefi, oyuncunun tek oturumda bırakıp gittiği basit oyunlar değil, günlerce geri geldiği oyunlardır. Bu yüzden:
+- Her yeni oyunda en az bir **uzun soluklu katman** bulunur: bölüm haritası veya kampanya (bölüm başına 1-3 yıldız), kalıcı ilerleme, oynadıkça açılan içerik (yeni kule/karakter/mod/tema), kalıcı yükseltmeler veya yetenek ağacı, görevler.
+- Bir oturum yine kısa olabilir (bir bölüm 1-5 dakika), ama oyunun tamamı saatler sürecek kadar içerik sunar.
+- Öncelikli türler: kule savunması, bölümlü eşleştirme (match-3), idle/artımlı oyunlar, roguelite bulmaca, hafif strateji, bölümlü bulmaca kampanyaları, yükseltmeli arcade.
+- Kalıcı ilerleme `localStorage` içinde tek anahtarda tutulur: `mo_<kısa-ad>` (ör. Kule Savunması `mo_kule`). Kayıt bozuksa oyun sıfırdan başlar, hata vermez.
+- Örnek oyun: `games/kule-savunmasi/` (10 bölüm, yıldızlar, yetenek ağacı, açılan kuleler, 3 seviyeli yükseltme). Yeni derin oyunlar bu yapıyı örnek alabilir.
+
 ## Dosya düzeni
 - `games/<slug>/index.html` ve `game.js`: her oyun kendi klasöründe. Yeni oyunlar mevcut bir oyun sayfasını örnek alır (başlık, açıklama, canonical, JSON-LD, "nasıl oynanır" ve "ipuçları" metni, reklam alanları, çerez penceresi).
 - Site içi bağlantılar her zaman göreceli olmalı (`../../css/style.css` gibi). `/` ile başlayan bağlantı kullanmayın, GitHub Pages alt klasörde çalıştığı için kırılır.

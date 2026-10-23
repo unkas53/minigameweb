@@ -446,7 +446,8 @@
     { id: 'fil-hafizasi', ikon: '🐘', ad: 'Fil hafızası', aciklama: 'Hafıza Kartları\'nı 12 hamle veya daha azında bitir.', kosul: function () { var b = best('hafiza'); return b > 0 && b <= 12; } },
     { id: 'gunluk-ilk', ikon: '📅', ad: 'Günlükçü', aciklama: 'İlk günlük meydan okumanı tamamla.', kosul: function () { return Object.keys(load(DAILY_KEY, {})).length >= 1; } },
     { id: 'gunluk-seri', ikon: '🏅', ad: 'Günlük seri', aciklama: 'Günlük meydan okumayı 5 gün üst üste tamamla.', kosul: function () { return dailyStreak(load(DAILY_KEY, {})) >= 5; } },
-    { id: 'mayin-avcisi', ikon: '🚩', ad: 'Mayın avcısı', aciklama: 'Mayın Tarlası\'nda bir oyun kazan.', kosul: function (s) { return (s.kazanma['mayin-tarlasi'] || 0) >= 1; } }
+    { id: 'mayin-avcisi', ikon: '🚩', ad: 'Mayın avcısı', aciklama: 'Mayın Tarlası\'nda bir oyun kazan.', kosul: function (s) { return (s.kazanma['mayin-tarlasi'] || 0) >= 1; } },
+    { id: 'kale-komutani', ikon: '🏰', ad: 'Kale komutanı', aciklama: 'Kule Savunması\'nda 15 yıldız topla.', kosul: function () { var y = load('mo_kule', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 15; } }
   ];
 
   function checkBadges() {

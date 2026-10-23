@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kule Savunması Oyna - Ücretsiz Online Tower Defense | MiniOyun</title>
+  <meta name="description" content="Kule Savunması (tower defense) oyununu ücretsiz oyna. 10 bölüm, 4 kule türü, yükseltmeler ve yıldızlarla açılan yetenekler. İndirme yok.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/kule-savunmasi/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .ks-ust { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .ks-ust .stat { padding: 4px 12px; }
+    .ks-ust .btn { padding: 8px 14px; }
+    .ks-sahne { position: relative; width: min(100%, 660px); }
+    #alan { display: block; width: 100%; aspect-ratio: 3 / 2; border-radius: 14px; touch-action: manipulation; cursor: pointer; outline: none; box-shadow: inset 0 0 0 2px rgba(0,0,0,.25); }
+    #alan:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+    .ks-harita { padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .ks-harita h2 { margin: 0 0 4px; font-size: 1.15rem; }
+    .ks-harita p { margin: 0 0 8px; color: var(--muted); font-size: .9rem; }
+    .ks-bolumler { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; margin-bottom: 12px; }
+    .ks-bolum { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #f59f00, #e8590c); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .ks-bolum b { font-size: 1.1rem; line-height: 1.1; }
+    .ks-ad { font-size: .66rem; font-weight: 700; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ks-yildiz { font-size: .8rem; color: #ffe066; letter-spacing: .05em; }
+    .ks-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .ks-yetenekler { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px; text-align: left; }
+    .ks-yetenek { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; text-align: left; }
+    .ks-yetenek:disabled { opacity: .55; cursor: default; }
+    .ks-yetenek small { display: block; color: var(--muted); font-size: .72rem; }
+    .ks-y-ikon { font-size: 1.3rem; }
+    .ks-y-bedel { margin-left: auto; font-weight: 800; white-space: nowrap; }
+    .ks-sifirla { grid-column: 1 / -1; justify-self: center; padding: 6px 14px; font-size: .85rem; }
+    .ks-kuleler { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: min(100%, 660px); margin-top: 10px; }
+    .ks-kule { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; min-width: 0; }
+    .ks-kule.secili { border-color: var(--accent); }
+    .ks-kule.pahali .ks-k-bedel { color: #ff8787; }
+    .ks-kule:disabled { opacity: .5; cursor: not-allowed; }
+    .ks-k-ikon { font-size: 1.4rem; line-height: 1.2; }
+    .ks-k-ad { font-size: .78rem; font-weight: 800; }
+    .ks-k-bedel { font-size: .72rem; color: var(--muted); font-weight: 700; }
+    .ks-secim { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; min-height: 2.6em; margin-top: 8px; font-size: .9rem; color: var(--muted); text-align: center; }
+    .ks-secim .btn { padding: 6px 12px; font-size: .9rem; }
+    .ks-s-ad { color: var(--text); font-weight: 800; }
+    @media (max-width: 480px) { .ks-ust .stat { padding: 3px 8px; font-size: .9rem; } .ks-ust .btn { padding: 6px 10px; font-size: .9rem; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Kule Savunması","url":"https://unkas53.github.io/minigameweb/games/kule-savunmasi/","genre":"Strateji","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip active" href="../../kategori/strateji/" aria-current="page" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/strateji/">Strateji Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Kule Savunması</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Strateji Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/strateji/"},{"@type":"ListItem","position":3,"name":"Kule Savunması","item":"https://unkas53.github.io/minigameweb/games/kule-savunmasi/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Kule Savunması</h1>
+        <div class="ks-ust" id="ust">
+          <div class="stat"><small>Can</small><span id="can">-</span></div>
+          <div class="stat"><small>Altın</small><span id="altin">-</span></div>
+          <div class="stat"><small>Dalga</small><span id="dalga">-</span></div>
+          <button class="btn" id="dalga-btn" type="button">Dalga ▶</button>
+          <button class="btn btn-ghost" id="hiz" type="button" aria-label="Oyun hızı">1x</button>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="ks-sahne">
+          <canvas id="alan" width="576" height="384" tabindex="0" aria-label="Kule savunması oyun alanı. Ok tuşlarıyla kare seç, Enter ile kule kur."></canvas>
+          <div class="ks-harita" id="harita">
+            <h2>🗺️ Bölüm haritası</h2>
+            <p id="yildiz"></p>
+            <div class="ks-bolumler" id="bolumler"></div>
+            <h2>✨ Yetenekler</h2>
+            <p>Bölümlerden kazandığın yıldızları kalıcı güçlendirmelere harca.</p>
+            <div class="ks-yetenekler" id="yetenekler"></div>
+          </div>
+        </div>
+        <div class="ks-kuleler" id="kuleler" aria-label="Kule seçimi"></div>
+        <div class="ks-secim" id="secim" aria-live="polite"></div>
+        <div class="overlay-msg" id="msg"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Kule Savunması nasıl oynanır?</h2>
+      <p>Düşmanlar haritanın kenarından girip toprak yol boyunca kaleye yürür. Görevin, yolun kenarındaki boş çimen karelere kule kurarak onları kaleye varmadan durdurmak. Alttaki listeden bir kule seç, sonra boş bir kareye dokun veya tıkla. Hazır olduğunda "Dalga ▶" düğmesine bas. Her düşman kale kapısına ulaştığında can kaybedersin; canın biterse bölümü kaybedersin. Düşmanları yendikçe altın kazanır, bu altınla yeni kule kurar ya da kurduğun kuleye dokunup onu üç seviyeye kadar yükseltirsin. Gereksiz kuleyi harcadığın altının %70'i karşılığında satabilirsin.</p>
+      <p>Dört kule türü var: 🏹 Okçu ucuz ve hızlıdır, ❄️ Buz düşmanları yavaşlatır, 💣 Top alan hasarıyla kalabalık grupları dağıtır, 🔮 Büyü kulesi uzak mesafeden çok yüksek hasar verir. Okçu baştan açıktır; diğerleri bölüm geçtikçe açılır. Bilgisayarda ok tuşlarıyla kare seçip Enter ile kule kurabilir, 1-4 tuşlarıyla kule türü seçebilir, U ile yükseltip X ile satabilir, Boşluk ile dalgayı başlatıp F ile hızı değiştirebilirsin.</p>
+      <h2>Bölümler, yıldızlar ve yetenekler</h2>
+      <p>Haritada 10 bölüm var ve her bölüm bir öncekinden daha uzun, daha zorludur. Bir bölümü canının %90'ını koruyarak bitirirsen 3 yıldız, yarısını koruyarak bitirirsen 2 yıldız, sadece hayatta kalırsan 1 yıldız alırsın. Topladığın yıldızları haritadaki yetenek ağacında harcayabilirsin: başlangıç altını, kule hasarı, menzil ve kale canı kalıcı olarak artar. Yetenekleri istediğin zaman sıfırlayıp yıldızlarını geri alabilirsin. İlerlemen bu cihazda otomatik kaydedilir.</p>
+      <h2>İpuçları</h2>
+      <p>Kuleleri yolun kıvrıldığı köşelere kur; köşedeki bir kule yolun iki kolunu birden görür. Paranı ilk dalgalarda birkaç okçuya yatır, sonra en iyi yerdeki kuleleri yükselt. Hızlı kurtlara karşı Buz kulesi, toplu goblin ve ork dalgalarına karşı Top kulesi çok etkilidir. Geri sayım bitmeden "Dalga ▶" düğmesine basarsan kalan her saniye için 2 altın bonus alırsın.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>İlerlemem silinir mi?</strong> Hayır, yıldızların ve yeteneklerin tarayıcında saklanır; tarayıcı verilerini temizlemezsen kalır. <strong>Telefonda oynanır mı?</strong> Evet, tüm kontroller dokunmatik ekranla çalışır. <strong>Ücretli mi?</strong> Hayır, oyun tamamen ücretsizdir ve indirme gerektirmez.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/dort-baglanti/" data-title="dört bağlantı" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#be185d"><span class="thumb-icon" aria-hidden="true">🔴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Dört Bağlantı</h3>
+          <p>Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kelime-tahmin/" data-title="kelime tahmin" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#34d399;--c2:#0e7490"><span class="thumb-icon" aria-hidden="true">🔤</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kelime Tahmin</h3>
+          <p>Gizli 5 harfli Türkçe kelimeyi 6 denemede renkli ipuçlarıyla bul.</p>
+          <span class="tag" style="--c1:#60a5fa">🔤 Kelime</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/sudoku/" data-title="sudoku" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5aa9ff;--c2:#3b5bdb"><span class="thumb-icon" aria-hidden="true">🔢</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Sudoku</h3>
+          <p>Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mayın Tarlası</h3>
+          <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/strateji/">Tüm strateji oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>
