@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: kelime-tahmin
 baslik: Kelime Tahmin
 kategori: Kelime
