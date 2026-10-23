@@ -59,7 +59,9 @@ function chromePath() {
   const browser = await chromium.launch({ executablePath: chromePath() });
   for (const vp of [{ name: 'masaustu', width: 1280, height: 900 }, { name: 'mobil', width: 360, height: 740 }]) {
     const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+    await page.addInitScript(() => { window.MO_SUNUCU_KAPALI = true; });
     await page.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+    await page.route('https://*.supabase.co/**', r => r.abort());
     page.on('pageerror', e => errors.push(`[${vp.name}] JS hatası ${page.url()}: ${e.message}`));
     page.on('console', m => { if (m.type() === 'error') errors.push(`[${vp.name}] konsol ${page.url()}: ${m.text()}`); });
     page.on('response', r => { if (r.status() >= 400) errors.push(`[${vp.name}] ${r.status()} ${r.url()}`); });
@@ -107,8 +109,9 @@ function chromePath() {
     const file = path.join(__dirname, 'tests', g.slug + '.js');
     if (!fs.existsSync(file)) { errors.push(`${g.slug}: oynanış testi yok (tools/tests/${g.slug}.js)`); continue; }
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
-    await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} });
+    await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} window.MO_SUNUCU_KAPALI = true; });
     await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+    await ctx.route('https://*.supabase.co/**', r => r.abort());
     const page = await ctx.newPage();
     page.on('pageerror', e => errors.push(`[oynanış] ${g.slug} JS hatası: ${e.message}`));
     const helpers = {
@@ -131,10 +134,13 @@ function chromePath() {
     await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} });
     await ctx.addInitScript(sv.sahte);
     await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+    await ctx.route('https://*.supabase.co/**', r => r.abort());
     const page = await ctx.newPage();
     page.on('pageerror', e => errors.push(`[sunucu] JS hatası: ${e.message}`));
     try {
       await sv.test(page, {
+        origin,
+        yeniSayfa: () => ctx.newPage(),
         git: async p => { await page.goto(origin + p); await page.waitForTimeout(200); },
         beklenen: (ok, msg) => { if (!ok) throw new Error(msg); }
       });

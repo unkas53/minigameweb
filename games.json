@@ -3,5 +3,6 @@
   {"slug": "yilan", "gunluk": true, "title": "Yılan", "category": "Arcade", "description": "Yemleri topla, uzadıkça kendine çarpma.", "icon": "🐍", "colors": ["#5ee0b8", "#2a9d8f"], "added": "2026-10-23", "status": "live"},
   {"slug": "hafiza", "gunluk": true, "title": "Hafıza Kartları", "category": "Hafıza", "description": "Kartları çevir, eşleri en az hamlede bul.", "rekor": "hamle", "icon": "🃏", "colors": ["#a78bfa", "#6d28d9"], "added": "2026-10-23", "status": "live"},
   {"slug": "mayin-tarlasi", "title": "Mayın Tarlası", "category": "Bulmaca", "description": "Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.", "rekor": "sn", "icon": "💣", "colors": ["#94a3d6", "#4b5480"], "added": "2026-10-23", "status": "live"},
-  {"slug": "sudoku", "gunluk": true, "title": "Sudoku", "category": "Bulmaca", "description": "Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.", "rekor": "sn", "icon": "🔢", "colors": ["#5aa9ff", "#3b5bdb"], "added": "2026-10-23", "status": "live"}
+  {"slug": "sudoku", "gunluk": true, "title": "Sudoku", "category": "Bulmaca", "description": "Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.", "rekor": "sn", "icon": "🔢", "colors": ["#5aa9ff", "#3b5bdb"], "added": "2026-10-23", "status": "live"},
+  {"slug": "dort-baglanti", "title": "Dört Bağlantı", "category": "Strateji", "description": "Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.", "rekor": "hamle", "icon": "🔴", "colors": ["#f472b6", "#be185d"], "added": "2026-10-23", "status": "live"}
 ]

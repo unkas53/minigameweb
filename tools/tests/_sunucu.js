@@ -1,7 +1,7 @@
 // Sunucu arayüzü testi: gerçek Supabase yerine sahte bir istemciyle liderlik tablosu, skor gönderme,
 // hesap formu ve günlük liderler bölümü denenir. smoke-test.js tüm oyunlar test edilirken çalıştırır.
 module.exports.sahte = function () {
-  if (location.hash === '#sunucusuz') return;
+  if (location.hash === '#sunucusuz') { window.MO_SUNUCU_KAPALI = true; return; }
   var calls = window.__sunucuCagri = [];
   var session = null;
   var rows = [
@@ -40,12 +40,26 @@ module.exports.sahte = function () {
       if (name === 'liderler') return ok(rows);
       return ok(null);
     },
-    channel: function () { return {}; },
-    removeChannel: function () { return ok(null); }
+    // Oda kanalı: aynı tarayıcıdaki sekmeler arasında BroadcastChannel ile yayın
+    channel: function (name) {
+      var bc = new BroadcastChannel('sahte-' + name), handlers = {};
+      calls.push(['kanal', name]);
+      return {
+        on: function (type, filter, cb) { handlers[filter.event] = cb; return this; },
+        subscribe: function (cb) {
+          bc.onmessage = function (e) { var h = handlers[e.data.event]; if (h) h({ payload: e.data.payload }); };
+          setTimeout(function () { cb('SUBSCRIBED'); }, 20);
+          return this;
+        },
+        send: function (m) { bc.postMessage({ event: m.event, payload: m.payload }); return Promise.resolve('ok'); },
+        _kapat: function () { bc.close(); }
+      };
+    },
+    removeChannel: function (ch) { if (ch && ch._kapat) ch._kapat(); return ok(null); }
   };
 };
 
-module.exports.test = async function (page, { git, beklenen }) {
+module.exports.test = async function (page, { git, beklenen, origin, yeniSayfa }) {
   const calls = () => page.evaluate(() => window.__sunucuCagri);
 
   // Sunucu yokken liderlik düğmesi görünmemeli
@@ -97,4 +111,37 @@ module.exports.test = async function (page, { git, beklenen }) {
   await page.waitForSelector('#gunluk-lider-kutu .lider-liste li', { timeout: 3000 });
   const daily = (await calls()).find(c => c[0] === 'rpc' && c[1] === 'liderler');
   beklenen(daily && daily[2].p_seviye === null && daily[2].p_gun, 'günlük liderler yanlış sorgulandı: ' + JSON.stringify(daily));
+
+  // Dört Bağlantı çevrim içi oda: iki sekme aynı odada sırayla oynar
+  await git('games/dort-baglanti/');
+  await page.selectOption('#mod', 'cevrimici');
+  await page.click('#oda button:has-text("Oda kur")');
+  await page.waitForSelector('.db-oda-kod');
+  const kod = await page.textContent('.db-oda-kod');
+  beklenen(page.url().includes('?oda=' + kod), 'oda bağlantısı adres çubuğunda yok');
+  const p2 = await yeniSayfa();
+  await p2.goto(origin + 'games/dort-baglanti/?oda=' + kod);
+  await page.waitForFunction(() => /Sıra sende/.test(document.getElementById('durum').textContent), null, { timeout: 4000 });
+  await p2.waitForFunction(() => /Rakip düşünüyor/.test(document.getElementById('durum').textContent), null, { timeout: 4000 });
+  const col = (pg, c) => pg.click(`.db-hucre[data-c="${c}"] >> nth=0`);
+  const both = async (fn) => { await page.waitForFunction(fn, null, { timeout: 3000 }); await p2.waitForFunction(fn, null, { timeout: 3000 }); };
+  // Kırmızı (oda kuran) 0. sütunda dikey dörtlü yapar
+  for (let i = 0; i < 3; i++) {
+    await col(page, 0);
+    await both(`document.querySelectorAll('.db-hucre.k').length === ${i + 1}`);
+    await col(p2, 1);
+    await both(`document.querySelectorAll('.db-hucre.s').length === ${i + 1}`);
+  }
+  await col(p2, 2); // sırası olmayan oyuncunun hamlesi yok sayılmalı
+  await page.waitForTimeout(200);
+  beklenen(await p2.$$eval('.db-hucre.s', c => c.length) === 3, 'sırası olmayan oyuncu taş bırakabildi');
+  await col(page, 0);
+  await page.waitForSelector('.oyun-sonu[open]', { timeout: 3000 });
+  await p2.waitForSelector('.oyun-sonu[open]', { timeout: 3000 });
+  beklenen((await page.textContent('.oyun-sonu h2')).includes('Kazandın'), 'kazanan tarafta "Kazandın" yazmıyor');
+  beklenen((await p2.textContent('.oyun-sonu h2')).includes('Rakibin kazandı'), 'kaybeden tarafta sonuç yanlış');
+  // Rövanş: yeni oyunda Sarı başlar
+  await page.click('.oyun-sonu [data-a="tekrar"]');
+  await p2.waitForFunction(() => document.querySelectorAll('.db-hucre.k, .db-hucre.s').length === 0 && /Sıra sende/.test(document.getElementById('durum').textContent), null, { timeout: 3000 });
+  await p2.close();
 };
