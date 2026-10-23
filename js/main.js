@@ -87,6 +87,14 @@
     for (var i = 0; i < els.length; i++) els[i].textContent = avatar;
   }
 
+  // Ana sayfadaki günlük afişinde bugünkü meydan okuma bittiyse belirt
+  function markDailyDone() {
+    var btn = document.getElementById('gunluk-afis-dugme');
+    if (!btn) return;
+    var d = new Date(), key = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    try { if ((JSON.parse(localStorage.getItem('mo_gunluk')) || {})[key]) btn.textContent = '✅ Sonucun'; } catch (e) {}
+  }
+
   window.MiniOyun = {
     getBest: function (game) {
       try { return parseInt(localStorage.getItem('mo_best_' + game), 10) || 0; } catch (e) { return 0; }
@@ -111,6 +119,7 @@
     markNewGames();
     initPersonal();
     drawHeaderAvatar();
+    markDailyDone();
     initSearch();
   });
 })();

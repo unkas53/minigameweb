@@ -3,7 +3,7 @@
 // - ana sayfada öne çıkan oyun, kategori kutuları ve oyun ızgarası
 // - kategori/<slug>/ sayfaları ve kategori/ listesi
 // - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar" ve ortak oyun çerçevesi betiği (js/oyun.js)
-// - profil sayfasındaki oyun listesi
+// - profil ve günlük meydan okuma sayfalarındaki oyun listesi
 // - sitemap.xml
 // Kullanım: node tools/build-pages.js          (dosyaları yazar)
 //           node tools/build-pages.js --check  (yalnızca güncel mi diye bakar)
@@ -160,11 +160,13 @@ for (const f of ['hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.ht
   put(f, shell(read(f), '', ''));
 }
 
-// ---------- Profil sayfası: rekor listesi için oyun verisi ----------
+// ---------- Profil ve günlük sayfaları: oyun verisi ----------
 {
-  const data = sorted.map(g => ({ slug: g.slug, title: g.title, icon: g.icon, colors: g.colors, rekor: g.rekor || 'puan' }));
+  const data = sorted.map(g => ({ slug: g.slug, title: g.title, icon: g.icon, colors: g.colors, rekor: g.rekor || 'puan', gunluk: !!g.gunluk, description: g.description }));
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
-  put('profil.html', replaceBlock(shell(read('profil.html'), '', ''), 'oyun-verisi', `<script>window.MO_OYUNLAR = ${json};</script>`, 'profil.html'));
+  for (const f of ['profil.html', 'gunluk.html']) {
+    put(f, replaceBlock(shell(read(f), '', ''), 'oyun-verisi', `<script>window.MO_OYUNLAR = ${json};</script>`, f));
+  }
 }
 
 // ---------- Oyun sayfaları ----------
@@ -309,6 +311,7 @@ put('kategori/index.html', page({
     .concat(sorted.map(g => [`${SITE}games/${g.slug}/`, '0.8', g.added]))
     .concat([[`${SITE}kategori/`, '0.6', today]])
     .concat(activeCats.map(c => [`${SITE}kategori/${c.slug}/`, '0.7', today]))
+    .concat([[SITE + 'gunluk.html', '0.9', today]])
     .concat([['hakkinda.html', '0.3'], ['iletisim.html', '0.3'], ['gizlilik.html', '0.2'], ['cerezler.html', '0.2']].map(([f, pr]) => [SITE + f, pr, today]));
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -8,6 +8,7 @@
 - `games/<slug>/index.html` + `game.js` – her oyun kendi klasöründe
 - `css/style.css`, `js/main.js` – ortak stil, çerez onayı, en yüksek skor yardımcıları, ana sayfadaki favoriler ve son oynananlar
 - `js/oyun.js` – ortak oyun çerçevesi: araç çubuğu (duraklat, yeniden başlat, ses, tam ekran, nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri, oyun istatistikleri ve rozetler (`BADGES` listesi). Oyun sayfalarına build ekler.
+- `gunluk.html` + `js/gunluk.js` – Günün Meydan Okuması: `games.json`'da `"gunluk": true` olan oyunlar sırayla günün oyunu olur; oyun `?gunluk=YYYY-AA-GG` ile açılınca `MiniOyun.rastgele()` herkese aynı bulmacayı üretir
 - `profil.html` + `js/profil.js` – Profilim sayfası: takma ad, avatar, istatistikler, rozetler, rekorlar, veri aktarma (oyun listesi build ile yazılır)
 - `games.json` – oyun kaydı (ajanlar buradan okur)
 - `categories.json` – kategori listesi ve kategori sayfası metinleri

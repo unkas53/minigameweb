@@ -4,7 +4,7 @@
   var scoreEl = document.getElementById('score');
   var bestEl = document.getElementById('best');
   var msgEl = document.getElementById('msg');
-  var grid, score, won, over, startBest;
+  var grid, score, won, over, startBest, rnd;
 
   function emptyCells() {
     var cells = [];
@@ -17,8 +17,8 @@
   function addTile() {
     var cells = emptyCells();
     if (!cells.length) return;
-    var p = cells[Math.floor(Math.random() * cells.length)];
-    grid[p[0]][p[1]] = Math.random() < 0.9 ? 2 : 4;
+    var p = cells[Math.floor(rnd() * cells.length)];
+    grid[p[0]][p[1]] = rnd() < 0.9 ? 2 : 4;
   }
 
   function render() {
@@ -107,7 +107,7 @@
     if (!canMove()) {
       over = true;
       msgEl.textContent = 'Oyun bitti! Skorun: ' + score;
-      MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: score > startBest, kaybetti: score <= startBest, paylas: '2048\'de ' + score + ' puan yaptım! Sen kaç yaparsın?' });
+      MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: score > startBest, kaybetti: score <= startBest, sonuc: score + ' puan', paylas: '2048\'de ' + score + ' puan yaptım! Sen kaç yaparsın?' });
     }
   }
 
@@ -116,6 +116,7 @@
     for (var r = 0; r < SIZE; r++) grid.push([0, 0, 0, 0]);
     score = 0; won = false; over = false;
     startBest = MiniOyun.getBest('2048');
+    rnd = MiniOyun.rastgele();
     msgEl.textContent = '';
     addTile(); addTile();
     render();

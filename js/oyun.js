@@ -1,14 +1,20 @@
 // Ortak oyun çerçevesi: her oyun sayfasına araç çubuğu (duraklat, yeniden başlat, ses, tam ekran,
 // nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri, "son oynananlar" kaydı,
-// oyun istatistikleri ve rozetler ekler. Profil sayfası da istatistik ve rozetler için bu dosyayı yükler.
+// oyun istatistikleri, rozetler ve günlük meydan okuma modu (?gunluk=YYYY-AA-GG) ekler.
+// Profil ve günlük sayfaları da istatistik, rozet ve günlük verisi için bu dosyayı yükler.
 // Oyunlar MiniOyun.oyun({...}) ile kaydolur; kaydolmayan oyunda yalnızca genel düğmeler görünür.
 (function () {
   var SOUND_KEY = 'mo_ses';
   var FAV_KEY = 'mo_favoriler';
   var RECENT_KEY = 'mo_son_oynanan';
   var STATS_KEY = 'mo_istatistik';
+  var DAILY_KEY = 'mo_gunluk';
+  // Günlük meydan okumanın 1 numaralı günü
+  var DAILY_START = '2026-10-23';
   var match = location.pathname.match(/\/games\/([^/]+)\//);
   var slug = match ? match[1] : '';
+  var dailyMatch = location.search.match(/[?&]gunluk=(\d{4}-\d{2}-\d{2})/);
+  var dailyDate = slug && dailyMatch ? dailyMatch[1] : '';
   var box, bar, pauseBtn, pauseLayer, endDlg, helpDlg, toastEl, toastTimer;
   var hooks = {}, paused = false, audio;
 
@@ -61,8 +67,8 @@
     toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2200);
   }
 
-  function share(text) {
-    var url = location.href.split('#')[0];
+  function share(text, link) {
+    var url = link || location.href.split('#')[0];
     var title = document.querySelector('.game-box h1');
     var data = { title: (title ? title.textContent : 'MiniOyun') + ' | MiniOyun', text: text || 'Bu oyunu MiniOyun\'da oyna!', url: url };
     if (navigator.share) {
@@ -186,12 +192,14 @@
       drawFav(fav);
     }
     button('🔗', 'Paylaş', function () { share(); });
+    dailyBanner();
   }
 
   // Oyun sonu penceresi. opts: { baslik, metin, rekor, paylas }
   function finish(opts) {
     play(opts.kaybetti ? 'kaybet' : 'kazan');
     recordFinish(!opts.kaybetti);
+    var daily = recordDaily(opts);
     if (!endDlg) {
       endDlg = dialog('oyun-sonu');
       endDlg.innerHTML = '<div class="oyun-sonu-ikon" aria-hidden="true"></div><h2></h2><p class="oyun-sonu-metin"></p><p class="oyun-sonu-rekor">🏆 Yeni rekor!</p>' +
@@ -201,7 +209,7 @@
       endDlg.addEventListener('click', function (e) {
         var a = e.target.getAttribute && e.target.getAttribute('data-a');
         if (a === 'tekrar') { endDlg.close(); if (hooks.restart) hooks.restart(); }
-        else if (a === 'paylas') share(endDlg.dataset.paylas);
+        else if (a === 'paylas') share(endDlg.dataset.paylas, endDlg.dataset.url);
         else if (a === 'kapat') endDlg.close();
       });
     }
@@ -210,7 +218,16 @@
     endDlg.querySelector('.oyun-sonu-metin').textContent = opts.metin || '';
     endDlg.querySelector('.oyun-sonu-rekor').hidden = !opts.rekor;
     endDlg.querySelector('[data-a="tekrar"]').hidden = !hooks.restart;
-    endDlg.dataset.paylas = opts.paylas || opts.metin || '';
+    endDlg.dataset.paylas = daily ? daily.paylas : (opts.paylas || opts.metin || '');
+    endDlg.dataset.url = daily ? daily.url : '';
+    var note = endDlg.querySelector('.oyun-sonu-gunluk');
+    if (!note) {
+      note = document.createElement('p');
+      note.className = 'oyun-sonu-gunluk';
+      endDlg.querySelector('.oyun-dlg-actions').insertAdjacentElement('beforebegin', note);
+    }
+    note.hidden = !daily;
+    if (daily) note.textContent = daily.yeni ? '📅 Günlük sonucun kaydedildi: ' + daily.sonuc.sonuc : '📅 Bugünkü sonucun zaten kayıtlı: ' + daily.sonuc.sonuc;
     // Oyuncunun son hamleyi görmesi için kısa bir gecikme
     setTimeout(function () { if (!endDlg.open) endDlg.showModal(); }, 600);
   }
@@ -226,6 +243,59 @@
     if (st.gunler.indexOf(today) === -1) st.gunler = st.gunler.concat(today).slice(-60);
     save(STATS_KEY, st);
     checkBadges();
+  }
+
+  // ---------- Günlük meydan okuma ----------
+  // Tarih ve oyuna göre her gün aynı sayıları üreten rastgele sayı üreteci (mulberry32)
+  function seeded(str) {
+    var h = 1779033703 ^ str.length;
+    for (var i = 0; i < str.length; i++) {
+      h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+      h = h << 13 | h >>> 19;
+    }
+    return function () {
+      h = h + 0x6D2B79F5 | 0;
+      var t = Math.imul(h ^ h >>> 15, 1 | h);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function dayNumber(date) {
+    return Math.round((Date.parse(date) - Date.parse(DAILY_START)) / 864e5) + 1;
+  }
+
+  function dailyStreak(results) {
+    var n = 0, d = new Date();
+    if (!results[day(d)]) d.setDate(d.getDate() - 1);
+    while (results[day(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+
+  // Bugünün bulmacasıysa ilk sonucu kaydeder; paylaşım metnini döner.
+  function recordDaily(opts) {
+    if (!dailyDate || dailyDate !== day(new Date())) return null;
+    var results = load(DAILY_KEY, {}), isNew = !results[dailyDate];
+    if (isNew) {
+      results[dailyDate] = { oyun: slug, sonuc: opts.sonuc || opts.metin || '', kazandi: !opts.kaybetti };
+      save(DAILY_KEY, results);
+      checkBadges();
+    }
+    var r = results[dailyDate], title = document.querySelector('.game-box h1');
+    var base = location.href.split('/games/')[0] + '/gunluk.html';
+    var text = 'MiniOyun Günlük #' + dayNumber(dailyDate) + ' · ' + (title ? title.textContent : slug) + ': ' + r.sonuc + ' · 🔥 ' + dailyStreak(results) + ' gün seri';
+    return { yeni: isNew, sonuc: r, paylas: text, url: base };
+  }
+
+  function dailyBanner() {
+    if (!dailyDate || !box) return;
+    var b = document.createElement('div');
+    b.className = 'gunluk-bant';
+    var today = dailyDate === day(new Date());
+    var r = load(DAILY_KEY, {})[dailyDate];
+    b.textContent = '📅 Günün meydan okuması #' + dayNumber(dailyDate) + ' · ' + dailyDate.split('-').reverse().join('.') +
+      (!today ? ' (geçmiş gün, sonuç kaydedilmez)' : r ? ' · Sonucun: ' + r.sonuc + ' (tekrar oynayabilirsin, sonuç değişmez)' : ' · İlk denemen sayılır!');
+    bar.insertAdjacentElement('afterend', b);
   }
 
   // ---------- İstatistik ve rozetler ----------
@@ -295,6 +365,8 @@
     { id: '2048-usta', ikon: '🔢', ad: '2048 ustası', aciklama: '2048\'de 5000 puanı geç.', kosul: function () { return best('2048') >= 5000; } },
     { id: 'yilan-terbiyecisi', ikon: '🐍', ad: 'Yılan terbiyecisi', aciklama: 'Yılan\'da 150 puan yap.', kosul: function () { return best('yilan') >= 150; } },
     { id: 'fil-hafizasi', ikon: '🐘', ad: 'Fil hafızası', aciklama: 'Hafıza Kartları\'nı 12 hamle veya daha azında bitir.', kosul: function () { var b = best('hafiza'); return b > 0 && b <= 12; } },
+    { id: 'gunluk-ilk', ikon: '📅', ad: 'Günlükçü', aciklama: 'İlk günlük meydan okumanı tamamla.', kosul: function () { return Object.keys(load(DAILY_KEY, {})).length >= 1; } },
+    { id: 'gunluk-seri', ikon: '🏅', ad: 'Günlük seri', aciklama: 'Günlük meydan okumayı 5 gün üst üste tamamla.', kosul: function () { return dailyStreak(load(DAILY_KEY, {})) >= 5; } },
     { id: 'mayin-avcisi', ikon: '🚩', ad: 'Mayın avcısı', aciklama: 'Mayın Tarlası\'nda bir oyun kazan.', kosul: function (s) { return (s.kazanma['mayin-tarlasi'] || 0) >= 1; } }
   ];
 
@@ -335,6 +407,16 @@
   MiniOyun.paylas = share;
   MiniOyun.istatistik = function () { var s = stats(); s.seri = streak(s.gunler); return s; };
   MiniOyun.rozetler = BADGES;
+  // Oyunlar her yeni oyunda bir üreteç alır: günlük modda tarih+oyuna göre sabit, normalde Math.random.
+  MiniOyun.rastgele = function () { return dailyDate ? seeded(dailyDate + '/' + slug) : Math.random; };
+  MiniOyun.gunluk = {
+    tarih: dailyDate,
+    bugun: function () { return day(new Date()); },
+    no: dayNumber,
+    sonuclar: function () { return load(DAILY_KEY, {}); },
+    seri: function () { return dailyStreak(load(DAILY_KEY, {})); },
+    rastgele: seeded
+  };
   // Duraklatıldıysa veya bir pencere açıksa true; oyunlar girişleri bu sırada yok saymalı.
   MiniOyun.duraklatildi = function () { return paused || !!(endDlg && endDlg.open) || !!(helpDlg && helpDlg.open); };
 

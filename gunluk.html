@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Günün Meydan Okuması - Her Gün Yeni Bulmaca | MiniOyun</title>
+  <meta name="description" content="Her gün herkes aynı bulmacayı çözüyor. Günün meydan okumasını oyna, serini koru, sonucunu arkadaşlarınla paylaş. Ücretsiz, üyeliksiz.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/gunluk.html">
+  <meta property="og:title" content="Günün Meydan Okuması | MiniOyun">
+  <meta property="og:description" content="Her gün herkes aynı bulmacayı çözüyor. Sen kaçta bitireceksin?">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://unkas53.github.io/minigameweb/gunluk.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="">Oyunlar</a>
+        <a href="kategori/">Kategoriler</a>
+        <a href="hakkinda.html">Hakkında</a>
+        <a href="iletisim.html">İletişim</a>
+        <a class="nav-profil" href="profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="gunluk-hero">
+      <div>
+        <span class="featured-label" id="gunluk-no">📅 Günün meydan okuması</span>
+        <h1>Günün Meydan Okuması</h1>
+        <p>Her gün herkes aynı bulmacayı çözüyor. İlk denemen sayılır; sonucunu paylaş, arkadaşların seni geçebilecek mi?</p>
+      </div>
+      <div class="gunluk-oyun" id="bugun"></div>
+    </section>
+
+    <ul class="profil-sayilar" id="gunluk-sayilar"></ul>
+
+    <h2 class="section-title">Son 7 gün</h2>
+    <div class="gunluk-takvim" id="takvim"></div>
+
+    <section class="game-desc">
+      <h2>Nasıl çalışır?</h2>
+      <p>Her gün gece yarısı yeni bir meydan okuma başlar. O günün oyunu ve bulmacası herkes için aynıdır: Hafıza Kartları'nda kartlar aynı sırayla dizilir, 2048'de ve Yılan'da yeni kareler aynı sırayla gelir. İlk denemende aldığın sonuç günlük sonucun olarak kaydedilir. İstediğin kadar tekrar oynayabilirsin ama günlük sonucun değişmez.</p>
+      <h2>Seri nasıl korunur?</h2>
+      <p>Günlük meydan okumayı her gün tamamlarsan serin büyür. Bir gün atlarsan seri sıfırlanır. 5 gün üst üste tamamlayanlar "Günlük seri" rozetini kazanır. Tüm sonuçların sadece kendi tarayıcında saklanır; üyelik gerekmez.</p>
+    </section>
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="kategori/arcade/">Arcade Oyunları</a>
+          <a href="kategori/hafiza/">Hafıza Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="hakkinda.html">Hakkında</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="gizlilik.html">Gizlilik Politikası</a>
+        <a href="cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <!-- oto:oyun-verisi -->
+      <script>window.MO_OYUNLAR = [{"slug":"mayin-tarlasi","title":"Mayın Tarlası","icon":"💣","colors":["#94a3d6","#4b5480"],"rekor":"sn","gunluk":false,"description":"Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç."},{"slug":"hafiza","title":"Hafıza Kartları","icon":"🃏","colors":["#a78bfa","#6d28d9"],"rekor":"hamle","gunluk":true,"description":"Kartları çevir, eşleri en az hamlede bul."},{"slug":"yilan","title":"Yılan","icon":"🐍","colors":["#5ee0b8","#2a9d8f"],"rekor":"puan","gunluk":true,"description":"Yemleri topla, uzadıkça kendine çarpma."},{"slug":"2048","title":"2048","icon":"2048","colors":["#ffb547","#ff7a59"],"rekor":"puan","gunluk":true,"description":"Aynı sayıları birleştir, 2048 karesine ulaş."}];</script>
+      <!-- /oto:oyun-verisi -->
+  <script src="js/main.js"></script>
+  <script src="js/oyun.js"></script>
+  <script src="js/gunluk.js"></script>
+</body>
+</html>

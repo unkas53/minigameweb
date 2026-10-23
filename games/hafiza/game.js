@@ -5,12 +5,12 @@
   var timeEl = document.getElementById('time');
   var msgEl = document.getElementById('msg');
   var bestEl = document.getElementById('best');
-  var first, second, locked, moves, matched, seconds, timer, flipBack, paused;
+  var first, second, locked, moves, matched, seconds, timer, flipBack, paused, rnd;
   bestEl.textContent = MiniOyun.getBest('hafiza') || '-';
 
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
+      var j = Math.floor(rnd() * (i + 1));
       var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
     }
     return arr;
@@ -59,7 +59,7 @@
     var rekor = MiniOyun.setBest('hafiza', moves, true);
     bestEl.textContent = MiniOyun.getBest('hafiza');
     msgEl.textContent = 'Tebrikler! ' + moves + ' hamlede, ' + seconds + ' saniyede bitirdin.';
-    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: moves + ' hamlede, ' + seconds + ' saniyede bitirdin.', rekor: rekor, paylas: 'Hafıza Kartları\'nı ' + moves + ' hamlede bitirdim! Sen kaç hamlede bitirirsin?' });
+    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: moves + ' hamlede, ' + seconds + ' saniyede bitirdin.', rekor: rekor, sonuc: moves + ' hamle, ' + seconds + ' sn', paylas: 'Hafıza Kartları\'nı ' + moves + ' hamlede bitirdim! Sen kaç hamlede bitirirsin?' });
   }
 
   function start() {
@@ -68,6 +68,7 @@
     clearInterval(timer);
     timer = null;
     paused = false;
+    rnd = MiniOyun.rastgele();
     first = second = null;
     locked = false;
     moves = matched = seconds = 0;
