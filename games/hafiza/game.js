@@ -59,7 +59,7 @@
     var rekor = MiniOyun.setBest('hafiza', moves, true);
     bestEl.textContent = MiniOyun.getBest('hafiza');
     msgEl.textContent = 'Tebrikler! ' + moves + ' hamlede, ' + seconds + ' saniyede bitirdin.';
-    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: moves + ' hamlede, ' + seconds + ' saniyede bitirdin.', rekor: rekor, sonuc: moves + ' hamle, ' + seconds + ' sn', paylas: 'Hafıza Kartları\'nı ' + moves + ' hamlede bitirdim! Sen kaç hamlede bitirirsin?' });
+    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: moves + ' hamlede, ' + seconds + ' saniyede bitirdin.', rekor: rekor, skor: moves, sonuc: moves + ' hamle, ' + seconds + ' sn', paylas: 'Hafıza Kartları\'nı ' + moves + ' hamlede bitirdim! Sen kaç hamlede bitirirsin?' });
   }
 
   function start() {

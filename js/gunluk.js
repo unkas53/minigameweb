@@ -96,4 +96,11 @@
     cell.setAttribute('aria-label', trDate(date) + ' ' + g.title + (r ? ', sonuç ' + r.sonuc : ''));
     cal.appendChild(cell);
   }
+
+  // Bugünün liderlik tablosu (sunucu ayarlıysa)
+  var sv = MiniOyun.sunucu && MiniOyun.sunucu.hazir ? MiniOyun.sunucu : null;
+  if (sv) {
+    document.getElementById('gunluk-lider').hidden = false;
+    sv.tabloCiz(document.getElementById('gunluk-lider-kutu'), { oyun: game.slug, seviye: null, gun: today, birim: game.rekor, limit: 10 });
+  }
 })();

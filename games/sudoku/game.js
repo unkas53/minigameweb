@@ -291,7 +291,7 @@
     gridEl.classList.add('wave');
     var t = fmt(seconds), detail = t + ' sürede, ' + mistakes + ' hatayla çözdün.';
     finish('Tebrikler! ' + detail + (rekor ? ' Yeni rekor!' : ''));
-    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: LEVELS[level].ad + ' Sudoku\'yu ' + detail, rekor: rekor, sonuc: t + ' (' + LEVELS[level].ad + ')', paylas: LEVELS[level].ad + ' Sudoku\'yu ' + t + ' sürede çözdüm! Sen ne kadar sürede çözersin?' });
+    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: LEVELS[level].ad + ' Sudoku\'yu ' + detail, rekor: rekor, skor: seconds, sonuc: t + ' (' + LEVELS[level].ad + ')', paylas: LEVELS[level].ad + ' Sudoku\'yu ' + t + ' sürede çözdüm! Sen ne kadar sürede çözersin?' });
   }
 
   function lose() {
@@ -415,6 +415,7 @@
 
   MiniOyun.oyun({
     restart: newGame,
+    seviye: function () { return level; },
     canPause: function () { return !over; },
     pause: function () { paused = true; stopTimer(); save(); },
     resume: function () { paused = false; startTimer(); }

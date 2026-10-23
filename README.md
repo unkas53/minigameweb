@@ -9,7 +9,9 @@
 - `css/style.css`, `js/main.js` – ortak stil, çerez onayı, en yüksek skor yardımcıları, ana sayfadaki favoriler ve son oynananlar
 - `js/oyun.js` – ortak oyun çerçevesi: araç çubuğu (duraklat, yeniden başlat, ses, tam ekran, nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri, oyun istatistikleri ve rozetler (`BADGES` listesi). Oyun sayfalarına build ekler.
 - `gunluk.html` + `js/gunluk.js` – Günün Meydan Okuması: `games.json`'da `"gunluk": true` olan oyunlar sırayla günün oyunu olur; oyun `?gunluk=YYYY-AA-GG` ile açılınca `MiniOyun.rastgele()` herkese aynı bulmacayı üretir
-- `profil.html` + `js/profil.js` – Profilim sayfası: takma ad, avatar, istatistikler, rozetler, rekorlar, veri aktarma (oyun listesi build ile yazılır)
+- `profil.html` + `js/profil.js` – Profilim sayfası: takma ad, avatar, istatistikler, rozetler, rekorlar, veri aktarma, hesap (oyun listesi build ile yazılır)
+- `js/sunucu.js` – Supabase bağlantısı: liderlik tablosu (`skor_gonder`, `liderler`), anonim oturum, e-postayla hesap ve bulut yedeği, çevrim içi oda kanalları. Dosyanın başındaki `SUPABASE_URL` ve `SUPABASE_ANAHTAR` boşsa bu özellikler hiç görünmez. Kütüphane `js/vendor/` altında, yalnızca gerektiğinde yüklenir
+- `supabase/kurulum.sql` – veritabanı tabloları, güvenlik (RLS) kuralları ve fonksiyonlar; Supabase SQL Editor'de çalıştırılır, tekrar çalıştırmak güvenlidir
 - `games.json` – oyun kaydı (ajanlar buradan okur)
 - `categories.json` – kategori listesi ve kategori sayfası metinleri
 - `kategori/` – kategori sayfaları (otomatik üretilir)
@@ -62,4 +64,4 @@ Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO aj
 npm install
 npm test
 ```
-`tools/smoke-test.js` tüm sayfaları masaüstü ve mobil boyutta açar; JS hatası, kırık bağlantı, yatay taşma ve eksik kayıtları raporlar. Ardından `tools/tests/<slug>.js` oynanış testlerini çalıştırır (her oyunu baştan sona oynar). Tek oyun için: `node tools/smoke-test.js --oyun <slug>`.
+`tools/smoke-test.js` tüm sayfaları masaüstü ve mobil boyutta açar; JS hatası, kırık bağlantı, yatay taşma ve eksik kayıtları raporlar. Ardından `tools/tests/<slug>.js` oynanış testlerini çalıştırır (her oyunu baştan sona oynar). Son olarak sahte bir sunucu istemcisiyle (`tools/tests/_sunucu.js`) liderlik tablosu, skor gönderme ve hesap arayüzünü dener. Tek oyun için: `node tools/smoke-test.js --oyun <slug>`.

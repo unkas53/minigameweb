@@ -107,7 +107,7 @@
     if (!canMove()) {
       over = true;
       msgEl.textContent = 'Oyun bitti! Skorun: ' + score;
-      MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: score > startBest, kaybetti: score <= startBest, sonuc: score + ' puan', paylas: '2048\'de ' + score + ' puan yaptım! Sen kaç yaparsın?' });
+      MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: score > startBest, kaybetti: score <= startBest, skor: score, sonuc: score + ' puan', paylas: '2048\'de ' + score + ' puan yaptım! Sen kaç yaparsın?' });
     }
   }
 

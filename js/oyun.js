@@ -3,6 +3,7 @@
 // oyun istatistikleri, rozetler ve günlük meydan okuma modu (?gunluk=YYYY-AA-GG) ekler.
 // Profil ve günlük sayfaları da istatistik, rozet ve günlük verisi için bu dosyayı yükler.
 // Oyunlar MiniOyun.oyun({...}) ile kaydolur; kaydolmayan oyunda yalnızca genel düğmeler görünür.
+// Sunucu ayarlıysa (js/sunucu.js) liderlik tablosu düğmesi çıkar ve bitti({ skor }) skoru gönderir.
 (function () {
   var SOUND_KEY = 'mo_ses';
   var FAV_KEY = 'mo_favoriler';
@@ -15,7 +16,10 @@
   var slug = match ? match[1] : '';
   var dailyMatch = location.search.match(/[?&]gunluk=(\d{4}-\d{2}-\d{2})/);
   var dailyDate = slug && dailyMatch ? dailyMatch[1] : '';
-  var box, bar, pauseBtn, pauseLayer, endDlg, helpDlg, toastEl, toastTimer;
+  // Skor birimi (puan | hamle | sn) games.json'dan gelir; hamle ve sn'de küçük skor daha iyidir.
+  var birim = (document.currentScript && document.currentScript.getAttribute('data-rekor')) || 'puan';
+  var kucukIyi = birim === 'hamle' || birim === 'sn';
+  var box, bar, boardDlg, pauseBtn, pauseLayer, endDlg, helpDlg, toastEl, toastTimer;
   var hooks = {}, paused = false, audio;
 
   function load(key, def) {
@@ -191,11 +195,77 @@
       var fav = button('🤍', 'Favori', function () { toggleFav(fav); });
       drawFav(fav);
     }
+    if (slug && server()) button('🏆', 'Liderlik tablosu', function () { openBoard(); });
     button('🔗', 'Paylaş', function () { share(); });
     dailyBanner();
   }
 
-  // Oyun sonu penceresi. opts: { baslik, metin, rekor, paylas }
+  // ---------- Liderlik tablosu ----------
+  function server() { return MiniOyun.sunucu && MiniOyun.sunucu.hazir ? MiniOyun.sunucu : null; }
+  function level() { return hooks.seviye ? String(hooks.seviye() || '') : ''; }
+  function levelName(v) { return v ? v.charAt(0).toLocaleUpperCase('tr') + v.slice(1) : ''; }
+
+  function openBoard(lv) {
+    var sv = server();
+    if (!sv) return;
+    if (lv === undefined) lv = level();
+    var today = dailyDate && dailyDate === day(new Date());
+    if (!boardDlg) {
+      boardDlg = dialog('oyun-lider');
+      boardDlg.innerHTML = '<h2>🏆 Liderlik tablosu</h2><p class="lider-alt"></p><div class="lider-sekme" role="tablist"></div>' +
+        '<div class="lider-kutu"></div><p class="lider-not">Takma adını ve avatarını <a href="../../profil.html">profilinden</a> değiştirebilirsin.</p>' +
+        '<div class="oyun-dlg-actions"><button type="button" class="btn">Kapat</button></div>';
+      boardDlg.querySelector('.oyun-dlg-actions .btn').addEventListener('click', function () { boardDlg.close(); });
+      boardDlg.addEventListener('close', function () { setPaused(false); });
+    }
+    var tabs = boardDlg.querySelector('.lider-sekme'), list = boardDlg.querySelector('.lider-kutu');
+    var title = document.querySelector('.game-box h1');
+    boardDlg.querySelector('.lider-alt').textContent = (title ? title.textContent : slug) + (lv ? ' · ' + levelName(lv) : '');
+    tabs.innerHTML = '';
+    var views = [['Tüm zamanlar', null]];
+    if (today) views.unshift(['Günlük #' + dayNumber(dailyDate), dailyDate]);
+    views.forEach(function (v, i) {
+      var t = document.createElement('button');
+      t.type = 'button';
+      t.className = 'lider-sekme-btn';
+      t.setAttribute('role', 'tab');
+      t.textContent = v[0];
+      t.addEventListener('click', function () { show(i); });
+      tabs.appendChild(t);
+    });
+    tabs.hidden = views.length < 2;
+    function show(i) {
+      Array.prototype.forEach.call(tabs.children, function (t, j) { t.setAttribute('aria-selected', i === j ? 'true' : 'false'); });
+      sv.tabloCiz(list, { oyun: slug, seviye: lv, gun: views[i][1], birim: birim });
+    }
+    show(0);
+    setPaused(true);
+    if (!boardDlg.open) boardDlg.showModal();
+  }
+
+  // Skoru gönderip oyun sonu penceresine sırayı yazar
+  function submitScore(opts, note) {
+    var sv = server();
+    note.hidden = true;
+    if (!sv || !slug || typeof opts.skor !== 'number' || !isFinite(opts.skor)) return;
+    var lv = opts.seviye !== undefined ? String(opts.seviye) : level();
+    note.hidden = false;
+    note.textContent = '🌍 Skorun gönderiliyor…';
+    sv.skorGonder({ oyun: slug, seviye: lv, skor: opts.skor, kucukIyi: kucukIyi, gunluk: !!dailyDate && dailyDate === day(new Date()) }).then(function (sira) {
+      note.textContent = '';
+      note.appendChild(document.createTextNode('🌍 Sıralaman: #' + sira + ' '));
+      var a = document.createElement('button');
+      a.type = 'button';
+      a.className = 'lider-ac';
+      a.textContent = 'Tabloyu gör';
+      a.addEventListener('click', function () { endDlg.close(); openBoard(lv); });
+      note.appendChild(a);
+    }, function () {
+      note.hidden = true;
+    });
+  }
+
+  // Oyun sonu penceresi. opts: { baslik, metin, rekor, kaybetti, paylas, sonuc, skor, seviye }
   function finish(opts) {
     play(opts.kaybetti ? 'kaybet' : 'kazan');
     recordFinish(!opts.kaybetti);
@@ -228,6 +298,13 @@
       note.className = 'oyun-sonu-gunluk';
       endDlg.querySelector('.oyun-dlg-actions').insertAdjacentElement('beforebegin', note);
     }
+    var rank = endDlg.querySelector('.oyun-sonu-sira');
+    if (!rank) {
+      rank = document.createElement('p');
+      rank.className = 'oyun-sonu-sira';
+      note.insertAdjacentElement('afterend', rank);
+    }
+    submitScore(opts, rank);
     note.hidden = !daily;
     if (daily) note.textContent = daily.yeni ? '📅 Günlük sonucun kaydedildi: ' + daily.sonuc.sonuc : '📅 Bugünkü sonucun zaten kayıtlı: ' + daily.sonuc.sonuc;
     // Oyuncunun son hamleyi görmesi için kısa bir gecikme
@@ -397,7 +474,8 @@
   });
 
   window.MiniOyun = window.MiniOyun || {};
-  // hooks: { restart, pause, resume, canPause }. pause/resume birlikte verilmelidir.
+  // hooks: { restart, pause, resume, canPause, seviye }. pause/resume birlikte verilmelidir.
+  // seviye: seviyeli oyunlarda o anki seviyeyi döner; liderlik tablosu seviye başına ayrıdır.
   MiniOyun.oyun = function (h) {
     hooks = h || {};
     if (bar) { bar.remove(); bar = null; }
@@ -420,7 +498,8 @@
     rastgele: seeded
   };
   // Duraklatıldıysa veya bir pencere açıksa true; oyunlar girişleri bu sırada yok saymalı.
-  MiniOyun.duraklatildi = function () { return paused || !!(endDlg && endDlg.open) || !!(helpDlg && helpDlg.open); };
+  MiniOyun.duraklatildi = function () { return paused || !!(endDlg && endDlg.open) || !!(helpDlg && helpDlg.open) || !!(boardDlg && boardDlg.open); };
+  MiniOyun.liderlik = openBoard;
 
   rememberPlay();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildBar);
