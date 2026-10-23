@@ -5,7 +5,7 @@
 // - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar" ve ortak oyun çerçevesi betiği (js/oyun.js)
 // - profil ve günlük meydan okuma sayfalarındaki oyun listesi
 // - sitemap.xml
-// - PWA: tüm sayfalarda manifest/tema etiketleri ve çevrimdışı önbellek için sw.js
+// - PWA ve analitik: tüm sayfalarda manifest/tema etiketleri, GoatCounter sayacı ve çevrimdışı önbellek için sw.js
 // Kullanım: node tools/build-pages.js          (dosyaları yazar)
 //           node tools/build-pages.js --check  (yalnızca güncel mi diye bakar)
 const fs = require('fs');
@@ -128,13 +128,18 @@ function replaceBlock(html, name, content, file) {
 }
 
 // PWA etiketleri: manifest, tema rengi, iOS simgesi
+// GoatCounter: çerezsiz, kişisel veri toplamayan ziyaret sayacı (hesap: mami53)
+const ANALYTICS = '<script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>';
 const pwaTags = p => `<link rel="manifest" href="${p}manifest.webmanifest">
   <meta name="theme-color" content="#0d0b1f">
-  <link rel="apple-touch-icon" href="${p}icons/apple-touch-icon.png">`;
+  <link rel="apple-touch-icon" href="${p}icons/apple-touch-icon.png">
+  ${ANALYTICS}`;
 
 function shell(html, p, current) {
   if (!html.includes('rel="manifest"')) {
     html = html.replace(/(\n\s*)(<link rel="stylesheet")/, `$1${pwaTags(p)}$1$2`);
+  } else if (!html.includes('data-goatcounter')) {
+    html = html.replace(/(\n\s*)(<link rel="apple-touch-icon"[^>]*>)/, `$1$2$1${ANALYTICS}`);
   }
   return html
     .replace(/<header class="site-header">[\s\S]*?<\/header>/, header(p, current))

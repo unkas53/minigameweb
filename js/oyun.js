@@ -200,6 +200,8 @@
     play(opts.kaybetti ? 'kaybet' : 'kazan');
     recordFinish(!opts.kaybetti);
     var daily = recordDaily(opts);
+    // Analitik: biten oyunlar olay olarak sayılır (kişisel veri yok)
+    try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path: 'oyun-bitti/' + slug + (daily ? '/gunluk' : ''), title: 'Oyun bitti', event: true }); } catch (e) {}
     if (!endDlg) {
       endDlg = dialog('oyun-sonu');
       endDlg.innerHTML = '<div class="oyun-sonu-ikon" aria-hidden="true"></div><h2></h2><p class="oyun-sonu-metin"></p><p class="oyun-sonu-rekor">🏆 Yeni rekor!</p>' +
