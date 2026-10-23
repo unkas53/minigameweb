@@ -20,60 +20,116 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a class="logo" href="./">Mini<span>Oyun</span></a>
-      <nav class="nav">
-        <a href="./">Oyunlar</a>
+    <div class="container header-row">
+      <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="">Oyunlar</a>
+        <a href="kategori/">Kategoriler</a>
         <a href="hakkinda.html">Hakkında</a>
         <a href="iletisim.html">İletişim</a>
       </nav>
     </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip active" href="" aria-current="page" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+      </div>
+    </nav>
   </header>
 
   <main class="container">
     <section class="hero">
-      <h1>Ücretsiz Online Mini Oyunlar</h1>
-      <p>İndirme yok, kayıt yok. Bir oyun seç ve hemen oynamaya başla.</p>
+      <div class="hero-text">
+        <h1>Ücretsiz Online Mini Oyunlar</h1>
+        <p>İndirme yok, kayıt yok. Bir oyun seç ve hemen oynamaya başla.</p>
+        <form class="search" role="search" onsubmit="return false">
+          <label class="sr-only" for="oyun-ara">Oyun ara</label>
+          <input id="oyun-ara" type="search" placeholder="Oyun ara… (ör. yılan)" autocomplete="off">
+        </form>
+        <ul class="hero-stats">
+        <!-- oto:sayilar -->
+      <li><b>4</b> oyun</li>
+        <li><b>3</b> kategori</li>
+        <li><b>%100</b> ücretsiz</li>
+      <!-- /oto:sayilar -->
+        </ul>
+      </div>
+      <!-- oto:one-cikan -->
+      <a class="featured" href="games/mayin-tarlasi/" style="--c1:#94a3d6;--c2:#4b5480">
+        <span class="featured-label">✨ En yeni oyun</span>
+        <span class="featured-icon" aria-hidden="true">💣</span>
+        <span class="featured-title">Mayın Tarlası</span>
+        <span class="featured-desc">Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</span>
+        <span class="featured-meta">🧩 Bulmaca</span>
+        <span class="btn btn-play">Hemen oyna ▶</span>
+      </a>
+      <!-- /oto:one-cikan -->
     </section>
 
     <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
 
-    <h2 class="section-title">Tüm Oyunlar</h2>
-    <!-- Yeni oyun eklerken buraya bir kart ekleyin ve sitemap.xml + games.json dosyalarını güncelleyin -->
-    <div class="game-grid">
-      <a class="game-card" href="games/2048/">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#ffb547,#ff7a59)">2048</div>
-        <div class="info">
-          <h3>2048</h3>
-          <p>Aynı sayıları birleştir, 2048 karesine ulaş.</p>
-          <span class="tag">Bulmaca</span>
-        </div>
+    <h2 class="section-title">Kategoriler</h2>
+    <div class="cat-grid">
+      <!-- oto:kategoriler -->
+      <a class="cat-tile" href="kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59">
+        <span class="cat-icon" aria-hidden="true">🧩</span>
+        <span class="cat-name">Bulmaca</span>
+        <span class="cat-count">2 oyun</span>
       </a>
-      <a class="game-card" href="games/yilan/">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#5ee0b8,#2a9d8f)">🐍</div>
-        <div class="info">
-          <h3>Yılan</h3>
-          <p>Yemleri topla, uzadıkça kendine çarpma.</p>
-          <span class="tag">Arcade</span>
-        </div>
+      <a class="cat-tile" href="kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f">
+        <span class="cat-icon" aria-hidden="true">👾</span>
+        <span class="cat-name">Arcade</span>
+        <span class="cat-count">1 oyun</span>
       </a>
-      <a class="game-card" href="games/hafiza/">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#8f7cff,#5b4bdb)">🃏</div>
-        <div class="info">
-          <h3>Hafıza Kartları</h3>
-          <p>Kartları çevir, eşleri en az hamlede bul.</p>
-          <span class="tag">Hafıza</span>
-        </div>
+      <a class="cat-tile" href="kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9">
+        <span class="cat-icon" aria-hidden="true">🧠</span>
+        <span class="cat-name">Hafıza</span>
+        <span class="cat-count">1 oyun</span>
       </a>
-      <a class="game-card" href="games/mayin-tarlasi/">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#9aa3c7,#4b5480)">💣</div>
+      <!-- /oto:kategoriler -->
+    </div>
+
+    <h2 class="section-title" id="tum-oyunlar">Tüm Oyunlar</h2>
+    <!-- Kartlar games.json'dan üretilir: oyunu games.json'a ekleyip "npm run build" çalıştırın -->
+    <div class="game-grid" id="oyun-izgarasi">
+      <!-- oto:oyunlar -->
+      <a class="game-card" href="games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
           <h3>Mayın Tarlası</h3>
           <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
-          <span class="tag">Bulmaca</span>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
         </div>
       </a>
+      <a class="game-card" href="games/hafiza/" data-title="hafıza kartları" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#a78bfa;--c2:#6d28d9"><span class="thumb-icon" aria-hidden="true">🃏</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Hafıza Kartları</h3>
+          <p>Kartları çevir, eşleri en az hamlede bul.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+      <a class="game-card" href="games/yilan/" data-title="yılan" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5ee0b8;--c2:#2a9d8f"><span class="thumb-icon" aria-hidden="true">🐍</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Yılan</h3>
+          <p>Yemleri topla, uzadıkça kendine çarpma.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+      <a class="game-card" href="games/2048/" data-title="2048" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#ffb547;--c2:#ff7a59"><span class="thumb-icon text" aria-hidden="true">2048</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>2048</h3>
+          <p>Aynı sayıları birleştir, 2048 karesine ulaş.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <!-- /oto:oyunlar -->
     </div>
+    <p class="no-result" id="sonuc-yok" hidden>Aradığın oyunu bulamadık. Başka bir kelime dene.</p>
 
     <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
 
@@ -84,15 +140,26 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <div>© 2026 MiniOyun</div>
-      <div>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="kategori/arcade/">Arcade Oyunları</a>
+          <a href="kategori/hafiza/">Hafıza Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
         <a href="hakkinda.html">Hakkında</a>
         <a href="iletisim.html">İletişim</a>
         <a href="gizlilik.html">Gizlilik Politikası</a>
         <a href="cerezler.html">Çerez Politikası</a>
       </div>
     </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
   </footer>
 
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">

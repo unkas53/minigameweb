@@ -19,7 +19,7 @@ Siteye eklenecek yeni mini oyun fikirleri bulmak ve geliştirici ajanın doğrud
 durum: bekliyor
 slug: <kucuk-harf-tireli>
 baslik: <Türkçe oyun adı>
-kategori: <Bulmaca | Arcade | Hafıza | Kelime | Refleks | Strateji | Spor>
+kategori: <categories.json içindeki bir ad: Bulmaca | Arcade | Hafıza | Kelime | Refleks | Strateji | Spor>
 oncelik: <1-5, 5 en yüksek>
 
 ## Özet

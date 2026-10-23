@@ -11,14 +11,23 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a class="logo" href="./">Mini<span>Oyun</span></a>
-      <nav class="nav">
-        <a href="./">Oyunlar</a>
+    <div class="container header-row">
+      <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="">Oyunlar</a>
+        <a href="kategori/">Kategoriler</a>
         <a href="hakkinda.html">Hakkında</a>
         <a href="iletisim.html">İletişim</a>
       </nav>
     </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+      </div>
+    </nav>
   </header>
 
   <main class="container">
@@ -40,15 +49,26 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <div>© 2026 MiniOyun</div>
-      <div>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="kategori/arcade/">Arcade Oyunları</a>
+          <a href="kategori/hafiza/">Hafıza Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
         <a href="hakkinda.html">Hakkında</a>
         <a href="iletisim.html">İletişim</a>
         <a href="gizlilik.html">Gizlilik Politikası</a>
         <a href="cerezler.html">Çerez Politikası</a>
       </div>
     </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
   </footer>
 
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">

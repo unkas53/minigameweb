@@ -1,6 +1,6 @@
 [
-  {"slug": "2048", "title": "2048", "category": "Bulmaca", "added": "2026-10-23", "status": "live"},
-  {"slug": "yilan", "title": "Yılan", "category": "Arcade", "added": "2026-10-23", "status": "live"},
-  {"slug": "hafiza", "title": "Hafıza Kartları", "category": "Hafıza", "added": "2026-10-23", "status": "live"},
-  {"slug": "mayin-tarlasi", "title": "Mayın Tarlası", "category": "Bulmaca", "added": "2026-10-23", "status": "live"}
+  {"slug": "2048", "title": "2048", "category": "Bulmaca", "description": "Aynı sayıları birleştir, 2048 karesine ulaş.", "icon": "2048", "colors": ["#ffb547", "#ff7a59"], "added": "2026-10-23", "status": "live"},
+  {"slug": "yilan", "title": "Yılan", "category": "Arcade", "description": "Yemleri topla, uzadıkça kendine çarpma.", "icon": "🐍", "colors": ["#5ee0b8", "#2a9d8f"], "added": "2026-10-23", "status": "live"},
+  {"slug": "hafiza", "title": "Hafıza Kartları", "category": "Hafıza", "description": "Kartları çevir, eşleri en az hamlede bul.", "icon": "🃏", "colors": ["#a78bfa", "#6d28d9"], "added": "2026-10-23", "status": "live"},
+  {"slug": "mayin-tarlasi", "title": "Mayın Tarlası", "category": "Bulmaca", "description": "Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.", "icon": "💣", "colors": ["#94a3d6", "#4b5480"], "added": "2026-10-23", "status": "live"}
 ]

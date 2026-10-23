@@ -3,6 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 const { chromium } = require('playwright');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -39,10 +40,19 @@ function chromePath() {
 (async () => {
   const server = serve();
   const games = JSON.parse(fs.readFileSync(path.join(ROOT, 'games.json'), 'utf8'));
-  const pages = ['', 'hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html']
+  const katDir = path.join(ROOT, 'kategori');
+  const cats = fs.existsSync(katDir) ? fs.readdirSync(katDir).filter(d => fs.statSync(path.join(katDir, d)).isDirectory()) : [];
+  const pages = ['', 'hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html', 'kategori/']
+    .concat(cats.map(c => 'kategori/' + c + '/'))
     .concat(games.map(g => 'games/' + g.slug + '/'));
   const origin = `http://localhost:${PORT}${BASE}`;
   const errors = [];
+  // Ana sayfa, kategori sayfaları, menüler ve sitemap games.json ile uyumlu mu?
+  try {
+    execFileSync(process.execPath, [path.join(__dirname, 'build-pages.js'), '--check'], { stdio: 'pipe' });
+  } catch (e) {
+    errors.push(String(e.stderr || e.stdout || e.message).trim());
+  }
   const checkedLinks = new Set();
 
   const browser = await chromium.launch({ executablePath: chromePath() });
@@ -79,6 +89,9 @@ function chromePath() {
   for (const g of games) {
     if (!index.includes(`games/${g.slug}/`)) errors.push(`${g.slug} ana sayfada yok`);
     if (!sitemap.includes(`games/${g.slug}/`)) errors.push(`${g.slug} sitemap.xml içinde yok`);
+  }
+  for (const c of cats) {
+    if (!sitemap.includes(`kategori/${c}/`)) errors.push(`kategori/${c}/ sitemap.xml içinde yok`);
   }
 
   await browser.close();
