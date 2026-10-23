@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: kelime-tahmin
 baslik: Kelime Tahmin
 kategori: Kelime
