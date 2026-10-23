@@ -10,7 +10,7 @@ Fikir ajanının yazdığı oyunları siteye eklemek.
 1. `agents/ORTAK.md` dosyasını okuyun.
 2. `durum: gelistiriliyor` olan bir fikir varsa önce onu bitirin (önceki çalışma yarım kalmış olabilir).
 3. Yoksa `durum: bekliyor` fikirlerden `oncelik` değeri en yüksek, eşitse en eskisini seçin. Hiç yoksa **iyileştirme moduna** geçin:
-   - Aşağıdaki kalite listesini en az karşılayan yayındaki oyunu seçin (son 24 saatte iyileştirilenleri atlayın; `git log --grep "\[iyilestirme\]"`).
+   - Aşağıdaki kalite listesini en az karşılayan yayındaki oyunu seçin (son 24 saatte iyileştirilenleri atlayın; `git log --grep "\[iyilestirme\]"`). `reports/oyun-iyilestirme/` içinde `durum: uygulaniyor` önerisi olan oyunu da atlayın; o oyun üzerinde 8. ajan çalışıyor.
    - Eksik maddelerden en fazla ikisini tamamlayın (ör. zorluk seviyesi, ses efektleri, daha uzun açıklama metni). Oyunun mevcut davranışını ve rekor anahtarlarını bozmayın.
    - Oynanış testini güncelleyip `npm test` çalıştırın. Commit: `[iyilestirme] <oyun adı>: <ne eklendi>`. Ardından çıkın.
    - Tüm oyunlar listeyi tamamen karşılıyorsa hiçbir şey yapmadan çıkın.

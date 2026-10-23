@@ -45,7 +45,7 @@ Sonra http://localhost:8000 adresini açın.
 
 ## Ajanlar
 
-Siteyi 6 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her ajan önce `agents/ORTAK.md` dosyasını okur.
+Siteyi 10 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her ajan önce `agents/ORTAK.md` dosyasını okur.
 
 | Ajan | Dosya | Sıklık | Çıktı |
 |---|---|---|---|
@@ -55,8 +55,12 @@ Siteyi 6 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her aja
 | 4. Geliştirici | `agents/4-gelistirici.md` | saatlik | `games/<slug>/` |
 | 5. Test | `agents/5-test.md` | saatlik | `reports/test/` |
 | 6. Düzeltici | `agents/6-duzeltici.md` | saatlik | `reports/duzeltmeler/` |
+| 7. Oyun iyileştirme önericisi | `agents/7-oyun-oneri.md` | 6 saatte bir | `reports/oyun-iyilestirme/` |
+| 8. Oyun iyileştirme uygulayıcısı | `agents/8-oyun-uygulayici.md` | saatlik | `games/<slug>/` |
+| 9. Site iyileştirme önericisi | `agents/9-site-oneri.md` | 6 saatte bir | `reports/site-iyilestirme/` |
+| 10. Site iyileştirme uygulayıcısı | `agents/10-site-uygulayici.md` | saatlik | site CSS/JS ve build |
 
-Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO ajanı bağımsız çalışır.
+Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO ajanı bağımsız çalışır. İyileştirme hatları: oyun önericisi → oyun uygulayıcısı, site önericisi → site uygulayıcısı.
 
 ## Test
 
