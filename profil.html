@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profilim | MiniOyun</title>
+  <meta name="description" content="MiniOyun profilin: rekorların, rozetlerin ve oyun istatistiklerin.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/profil.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="">Oyunlar</a>
+        <a href="kategori/">Kategoriler</a>
+        <a href="hakkinda.html">Hakkında</a>
+        <a href="iletisim.html">İletişim</a>
+        <a class="nav-profil" href="profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="profil-kart">
+      <button class="profil-avatar" id="avatar" type="button" aria-label="Avatarı değiştir" aria-expanded="false">🙂</button>
+      <div class="profil-bilgi">
+        <h1>Profilim</h1>
+        <label class="sr-only" for="takma-ad">Takma ad</label>
+        <input id="takma-ad" class="profil-ad" type="text" maxlength="20" placeholder="Takma adını yaz" autocomplete="nickname">
+        <p class="profil-not">Bilgilerin sadece bu tarayıcıda saklanır; üyelik gerekmez.</p>
+      </div>
+      <div class="avatar-secici" id="avatar-secici" hidden></div>
+    </section>
+
+    <ul class="profil-sayilar" id="sayilar"></ul>
+
+    <h2 class="section-title">Rozetler <span class="rozet-sayac" id="rozet-sayac"></span></h2>
+    <div class="rozet-izgara" id="rozetler"></div>
+
+    <h2 class="section-title">Rekorlarım</h2>
+    <div class="rekor-liste" id="rekorlar"></div>
+
+    <h2 class="section-title">Verilerim</h2>
+    <section class="page veri-kutu">
+      <p>Rekorlarını ve rozetlerini başka bir cihaza taşımak için kodu kopyala, diğer cihazda bu sayfaya yapıştır.</p>
+      <div class="veri-dugmeler">
+        <button class="btn" id="disa-aktar" type="button">Kodu kopyala</button>
+        <button class="btn btn-ghost" id="ice-aktar" type="button">Kod yapıştır</button>
+        <button class="btn btn-ghost" id="sil" type="button">Tüm verilerimi sil</button>
+      </div>
+      <div id="ice-aktar-kutu" hidden>
+        <label class="sr-only" for="kod">Aktarma kodu</label>
+        <textarea id="kod" rows="3" placeholder="Kodu buraya yapıştır"></textarea>
+        <button class="btn" id="kod-uygula" type="button">Verileri yükle</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href=""><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="kategori/arcade/">Arcade Oyunları</a>
+          <a href="kategori/hafiza/">Hafıza Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="hakkinda.html">Hakkında</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="gizlilik.html">Gizlilik Politikası</a>
+        <a href="cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <!-- oto:oyun-verisi -->
+      <script>window.MO_OYUNLAR = [{"slug":"mayin-tarlasi","title":"Mayın Tarlası","icon":"💣","colors":["#94a3d6","#4b5480"],"rekor":"sn"},{"slug":"hafiza","title":"Hafıza Kartları","icon":"🃏","colors":["#a78bfa","#6d28d9"],"rekor":"hamle"},{"slug":"yilan","title":"Yılan","icon":"🐍","colors":["#5ee0b8","#2a9d8f"],"rekor":"puan"},{"slug":"2048","title":"2048","icon":"2048","colors":["#ffb547","#ff7a59"],"rekor":"puan"}];</script>
+      <!-- /oto:oyun-verisi -->
+  <script src="js/main.js"></script>
+  <script src="js/oyun.js"></script>
+  <script src="js/profil.js"></script>
+</body>
+</html>

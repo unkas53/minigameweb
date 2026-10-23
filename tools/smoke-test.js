@@ -42,7 +42,7 @@ function chromePath() {
   const games = JSON.parse(fs.readFileSync(path.join(ROOT, 'games.json'), 'utf8'));
   const katDir = path.join(ROOT, 'kategori');
   const cats = fs.existsSync(katDir) ? fs.readdirSync(katDir).filter(d => fs.statSync(path.join(katDir, d)).isDirectory()) : [];
-  const pages = ['', 'hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html', 'kategori/']
+  const pages = ['', 'hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html', 'profil.html', 'kategori/']
     .concat(cats.map(c => 'kategori/' + c + '/'))
     .concat(games.map(g => 'games/' + g.slug + '/'));
   const origin = `http://localhost:${PORT}${BASE}`;

@@ -1,10 +1,12 @@
 // Ortak oyun çerçevesi: her oyun sayfasına araç çubuğu (duraklat, yeniden başlat, ses, tam ekran,
-// nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri ve "son oynananlar" kaydı ekler.
+// nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri, "son oynananlar" kaydı,
+// oyun istatistikleri ve rozetler ekler. Profil sayfası da istatistik ve rozetler için bu dosyayı yükler.
 // Oyunlar MiniOyun.oyun({...}) ile kaydolur; kaydolmayan oyunda yalnızca genel düğmeler görünür.
 (function () {
   var SOUND_KEY = 'mo_ses';
   var FAV_KEY = 'mo_favoriler';
   var RECENT_KEY = 'mo_son_oynanan';
+  var STATS_KEY = 'mo_istatistik';
   var match = location.pathname.match(/\/games\/([^/]+)\//);
   var slug = match ? match[1] : '';
   var box, bar, pauseBtn, pauseLayer, endDlg, helpDlg, toastEl, toastTimer;
@@ -64,9 +66,10 @@
     var title = document.querySelector('.game-box h1');
     var data = { title: (title ? title.textContent : 'MiniOyun') + ' | MiniOyun', text: text || 'Bu oyunu MiniOyun\'da oyna!', url: url };
     if (navigator.share) {
-      navigator.share(data).catch(function () {});
+      navigator.share(data).then(function () { count('paylasim'); }, function () {});
       return;
     }
+    count('paylasim');
     var full = data.text + ' ' + url;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(full).then(function () { toast('Bağlantı kopyalandı'); }, function () { toast(full); });
@@ -107,6 +110,7 @@
     save(FAV_KEY, list);
     drawFav(btn);
     toast(on ? 'Favorilere eklendi' : 'Favorilerden çıkarıldı');
+    checkBadges();
   }
   function drawFav(btn) {
     var on = isFav();
@@ -187,6 +191,7 @@
   // Oyun sonu penceresi. opts: { baslik, metin, rekor, paylas }
   function finish(opts) {
     play(opts.kaybetti ? 'kaybet' : 'kazan');
+    recordFinish(!opts.kaybetti);
     if (!endDlg) {
       endDlg = dialog('oyun-sonu');
       endDlg.innerHTML = '<div class="oyun-sonu-ikon" aria-hidden="true"></div><h2></h2><p class="oyun-sonu-metin"></p><p class="oyun-sonu-rekor">🏆 Yeni rekor!</p>' +
@@ -215,6 +220,95 @@
     var list = load(RECENT_KEY, []).filter(function (s) { return s !== slug; });
     list.unshift(slug);
     save(RECENT_KEY, list.slice(0, 12));
+    var st = stats();
+    st.oynama[slug] = (st.oynama[slug] || 0) + 1;
+    var today = day(new Date());
+    if (st.gunler.indexOf(today) === -1) st.gunler = st.gunler.concat(today).slice(-60);
+    save(STATS_KEY, st);
+    checkBadges();
+  }
+
+  // ---------- İstatistik ve rozetler ----------
+  function day(d) {
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+
+  function stats() {
+    var st = load(STATS_KEY, {});
+    st.oynama = st.oynama || {};
+    st.bitirme = st.bitirme || {};
+    st.kazanma = st.kazanma || {};
+    st.gunler = st.gunler || [];
+    st.rozetler = st.rozetler || {};
+    st.paylasim = st.paylasim || 0;
+    st.gece = st.gece || 0;
+    return st;
+  }
+
+  function count(field) {
+    var st = stats();
+    st[field]++;
+    save(STATS_KEY, st);
+    checkBadges();
+  }
+
+  function recordFinish(won) {
+    if (!slug) return;
+    var st = stats();
+    st.bitirme[slug] = (st.bitirme[slug] || 0) + 1;
+    if (won) st.kazanma[slug] = (st.kazanma[slug] || 0) + 1;
+    if (new Date().getHours() < 5) st.gece++;
+    save(STATS_KEY, st);
+    checkBadges();
+  }
+
+  function sum(obj) {
+    var n = 0;
+    for (var k in obj) n += obj[k];
+    return n;
+  }
+
+  // Bugün veya dün biten, art arda ziyaret edilen gün sayısı
+  function streak(days) {
+    var set = {}, n = 0, d = new Date();
+    days.forEach(function (x) { set[x] = true; });
+    if (!set[day(d)]) d.setDate(d.getDate() - 1);
+    while (set[day(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+
+  function best(game) { return MiniOyun.getBest ? MiniOyun.getBest(game) : 0; }
+
+  // Yeni rozetler buraya eklenir; kosul istatistik nesnesini alır.
+  var BADGES = [
+    { id: 'ilk-adim', ikon: '👣', ad: 'İlk adım', aciklama: 'İlk oyununu bitir.', kosul: function (s) { return sum(s.bitirme) >= 1; } },
+    { id: 'kasif', ikon: '🧭', ad: 'Kaşif', aciklama: '3 farklı oyun oyna.', kosul: function (s) { return Object.keys(s.oynama).length >= 3; } },
+    { id: 'gezgin', ikon: '🗺️', ad: 'Gezgin', aciklama: '5 farklı oyun oyna.', kosul: function (s) { return Object.keys(s.oynama).length >= 5; } },
+    { id: 'azimli', ikon: '💪', ad: 'Azimli', aciklama: 'Toplam 10 oyun bitir.', kosul: function (s) { return sum(s.bitirme) >= 10; } },
+    { id: 'tutkun', ikon: '🔥', ad: 'Oyun tutkunu', aciklama: 'Toplam 50 oyun bitir.', kosul: function (s) { return sum(s.bitirme) >= 50; } },
+    { id: 'kazanan', ikon: '🥇', ad: 'Kazanan', aciklama: 'Toplam 5 oyunu kazanarak veya rekorla bitir.', kosul: function (s) { return sum(s.kazanma) >= 5; } },
+    { id: 'sadik', ikon: '📅', ad: 'Sadık oyuncu', aciklama: '3 gün üst üste gel.', kosul: function (s) { return streak(s.gunler) >= 3; } },
+    { id: 'haftalik', ikon: '🗓️', ad: 'Haftanın oyuncusu', aciklama: '7 gün üst üste gel.', kosul: function (s) { return streak(s.gunler) >= 7; } },
+    { id: 'kalp', ikon: '❤️', ad: 'Gönül verdim', aciklama: 'Bir oyunu favorilerine ekle.', kosul: function () { return load(FAV_KEY, []).length >= 1; } },
+    { id: 'paylasimci', ikon: '📣', ad: 'Paylaşımcı', aciklama: 'Bir oyunu veya skorunu paylaş.', kosul: function (s) { return s.paylasim >= 1; } },
+    { id: 'gece-kusu', ikon: '🦉', ad: 'Gece kuşu', aciklama: 'Gece 00:00 ile 05:00 arasında bir oyun bitir.', kosul: function (s) { return s.gece >= 1; } },
+    { id: '2048-usta', ikon: '🔢', ad: '2048 ustası', aciklama: '2048\'de 5000 puanı geç.', kosul: function () { return best('2048') >= 5000; } },
+    { id: 'yilan-terbiyecisi', ikon: '🐍', ad: 'Yılan terbiyecisi', aciklama: 'Yılan\'da 150 puan yap.', kosul: function () { return best('yilan') >= 150; } },
+    { id: 'fil-hafizasi', ikon: '🐘', ad: 'Fil hafızası', aciklama: 'Hafıza Kartları\'nı 12 hamle veya daha azında bitir.', kosul: function () { var b = best('hafiza'); return b > 0 && b <= 12; } },
+    { id: 'mayin-avcisi', ikon: '🚩', ad: 'Mayın avcısı', aciklama: 'Mayın Tarlası\'nda bir oyun kazan.', kosul: function (s) { return (s.kazanma['mayin-tarlasi'] || 0) >= 1; } }
+  ];
+
+  function checkBadges() {
+    var st = stats(), earned = [];
+    BADGES.forEach(function (b) {
+      if (!st.rozetler[b.id] && b.kosul(st)) { st.rozetler[b.id] = day(new Date()); earned.push(b); }
+    });
+    if (!earned.length) return;
+    save(STATS_KEY, st);
+    // Oyun sonu penceresiyle çakışmasın diye kısa gecikme
+    earned.forEach(function (b, i) {
+      setTimeout(function () { toast('🏅 Yeni rozet: ' + b.ikon + ' ' + b.ad); }, 900 + i * 2400);
+    });
   }
 
   // Sekme gizlenince oyunu duraklat
@@ -239,6 +333,8 @@
   MiniOyun.ses = play;
   MiniOyun.bitti = finish;
   MiniOyun.paylas = share;
+  MiniOyun.istatistik = function () { var s = stats(); s.seri = streak(s.gunler); return s; };
+  MiniOyun.rozetler = BADGES;
   // Duraklatıldıysa veya bir pencere açıksa true; oyunlar girişleri bu sırada yok saymalı.
   MiniOyun.duraklatildi = function () { return paused || !!(endDlg && endDlg.open) || !!(helpDlg && helpDlg.open); };
 

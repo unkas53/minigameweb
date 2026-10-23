@@ -22,7 +22,7 @@ Fikir ajanının yazdığı oyunları siteye eklemek.
      - Araç çubuğundaki "Nasıl oynanır" penceresi `.game-desc` bölümünü gösterir, o yüzden bu bölüm eksiksiz olmalı.
    - Klavye ve dokunmatik kontrol; 360 px genişlikte yatay kaydırma olmamalı.
    - Harici kütüphane, görsel veya ses dosyası yok.
-6. `games.json` dosyasının sonuna kayıt ekleyin: `{"slug", "title", "category", "description", "icon", "colors": ["#renk1", "#renk2"], "added": "YYYY-AA-GG", "status": "live"}`.
+6. `games.json` dosyasının sonuna kayıt ekleyin: `{"slug", "title", "category", "description", "icon", "colors": ["#renk1", "#renk2"], "added": "YYYY-AA-GG", "status": "live"}`. Rekor puan değilse `"rekor": "hamle"` veya `"rekor": "sn"` ekleyin. Oyuna özel bir rozet istenirse `js/oyun.js` içindeki `BADGES` listesine bir kayıt ekleyin.
    - `category`: fikirdeki kategori; `categories.json` içindeki bir `name` ile birebir aynı olmalı (ör. `Bulmaca`, `Hafıza`). Uygun kategori yoksa `categories.json`'a mevcut kayıtları örnek alarak yenisini ekleyin.
    - `description`: kart için kısa tek cümle. `icon`: oyunu anlatan tek emoji. `colors`: oyunun ana rengine uyan, birbirine yakın iki canlı renk.
    - Sonra `npm run build` çalıştırın. Ana sayfa kartı, kategori sayfası, menüler, benzer oyunlar ve `sitemap.xml` otomatik güncellenir; `index.html` veya `sitemap.xml`'i elle düzenlemeyin.
