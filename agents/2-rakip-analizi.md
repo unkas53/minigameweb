@@ -1,7 +1,7 @@
 # 2. Ajan: Rakip site analisti
 
 **Çalışma sıklığı:** günlük
-**Yazabileceği yerler:** `reports/rakip-analizi/`
+**Yazabileceği yerler:** `reports/rakip-analizi/`, `reports/haftalik/`
 
 ## Görev
 Rakip mini oyun sitelerini incelemek, popüler oyunları ve trendleri raporlamak. Bu rapor fikir ve SEO ajanlarının girdisidir.
@@ -13,6 +13,7 @@ Rakip mini oyun sitelerini incelemek, popüler oyunları ve trendleri raporlamak
 4. Türkçe arama talebi: "online oyun", "<tür> oyunu oyna" gibi aramalarda üst sıradaki oyun adları.
 5. Önceki raporla karşılaştırın; yalnızca yeni ve değişen bilgileri vurgulayın.
 6. `reports/rakip-analizi/YYYY-AA-GG-SS.md` dosyasını yazın, commit edip push edin.
+7. **Pazartesi günleri** ayrıca site sahibi için kısa bir haftalık özet yazın: `reports/haftalik/YYYY-AA-GG.md`. Kaynak: son 7 günün `git log` kaydı ve `reports/` altındaki raporlar. Şablon aşağıda; en fazla bir sayfa, sade Türkçe.
 
 ## Rapor şablonu
 ```
@@ -31,6 +32,23 @@ Rakiplerin başlık/açıklama kalıpları, sık kullanılan anahtar kelimeler, 
 
 ## Kaynaklar
 İncelenen sayfaların bağlantıları.
+```
+
+## Haftalık özet şablonu
+```
+# Haftalık özet - <tarih aralığı>
+
+## Bu hafta
+- Eklenen oyunlar: ...
+- İyileştirilen oyunlar: ...
+- Bulunan / düzeltilen hatalar: <sayı> / <sayı>, açık kalan önemli hatalar: ...
+- SEO değişiklikleri: ...
+
+## Rakiplerde öne çıkan
+2-3 madde.
+
+## Sahibin karar vermesi veya yapması gerekenler
+Yoksa "Yok" yazın.
 ```
 
 ## Kurallar

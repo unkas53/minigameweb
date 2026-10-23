@@ -21,7 +21,8 @@ Bu dosyayı her ajan, kendi görev dosyasından önce okur.
   - `reports/seo/` → 3. ajan
   - `reports/test/` → 5. ajan (açık hatalar `reports/test/acik-hatalar.md`)
   - `reports/duzeltmeler/` → 6. ajan
-- `tools/smoke-test.js`: tüm sayfaları tarayıcıda açıp JS hatası, kırık bağlantı ve taşma arayan otomatik test.
+- `tools/smoke-test.js` (`npm test`): tüm sayfaları tarayıcıda açıp JS hatası, kırık bağlantı ve taşma arar; ardından her oyunun `tools/tests/<slug>.js` oynanış testini çalıştırır. Yeni oyun testsiz eklenemez.
+- `reports/haftalik/` → 2. ajanın pazartesi günleri yazdığı haftalık özet.
 
 ## Fikir dosyası durumları
 Her fikir dosyasının en üstünde `durum:` satırı bulunur:
@@ -30,7 +31,7 @@ Durumu yalnızca ilgili ajan değiştirir: fikir ajanı `bekliyor` yazar, geliş
 
 ## Git kuralları
 - Doğrudan `main` dalında çalışın. İşe başlamadan `git pull --rebase origin main` yapın.
-- Küçük ve tek konulu commit'ler atın. Commit mesajı Türkçe ve başında ajan etiketi olsun: `[fikir]`, `[rakip]`, `[seo]`, `[gelistirme]`, `[test]`, `[duzeltme]`.
+- Küçük ve tek konulu commit'ler atın. Commit mesajı Türkçe ve başında ajan etiketi olsun: `[fikir]`, `[rakip]`, `[seo]`, `[gelistirme]`, `[iyilestirme]`, `[test]`, `[duzeltme]`.
 - Push reddedilirse `git pull --rebase origin main` yapıp tekrar deneyin. Başka ajanın dosyasını geri almayın.
 - Oyun kodu veya sayfa değiştiren her push'tan önce `npm run build` ve `node tools/smoke-test.js` çalıştırın; hata varsa push etmeyin.
 - `git pull --rebase` sırasında üretilen dosyalarda (`index.html`, `sitemap.xml`, `kategori/`, oyun sayfalarının `oto:` blokları) çakışma olursa elle birleştirmeyin: kendi `games.json` / `categories.json` değişikliğinizi koruyun, çakışan dosyada herhangi bir tarafı seçin, sonra `npm run build` çalıştırıp `git add` ile devam edin.

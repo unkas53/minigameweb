@@ -62,4 +62,4 @@ Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO aj
 npm install
 npm test
 ```
-`tools/smoke-test.js` tüm sayfaları masaüstü ve mobil boyutta açar; JS hatası, kırık bağlantı, yatay taşma ve eksik kayıtları raporlar.
+`tools/smoke-test.js` tüm sayfaları masaüstü ve mobil boyutta açar; JS hatası, kırık bağlantı, yatay taşma ve eksik kayıtları raporlar. Ardından `tools/tests/<slug>.js` oynanış testlerini çalıştırır (her oyunu baştan sona oynar). Tek oyun için: `node tools/smoke-test.js --oyun <slug>`.
