@@ -19,6 +19,7 @@ Fikir ajanının yazdığı oyunları siteye eklemek.
      - Girişleri `MiniOyun.duraklatildi()` true iken yok sayın.
      - Oyun bitince `MiniOyun.bitti({ baslik, metin, rekor, kaybetti, paylas })` çağırın.
      - Önemli anlarda `MiniOyun.ses('tik' | 'puan' | 'kazan' | 'kaybet')` kullanın.
+     - Rastgelelik için `Math.random` yerine her yeni oyunun başında `var rnd = MiniOyun.rastgele();` alıp `rnd()` kullanın. `bitti` çağrısına kısa bir `sonuc` metni verin (ör. `'14 hamle'`, `'1916 puan'`). Bulmaca herkes için aynı olabiliyorsa `games.json` kaydına `"gunluk": true` ekleyin; oyun böylece günlük meydan okumaya girer.
      - Araç çubuğundaki "Nasıl oynanır" penceresi `.game-desc` bölümünü gösterir, o yüzden bu bölüm eksiksiz olmalı.
    - Klavye ve dokunmatik kontrol; 360 px genişlikte yatay kaydırma olmamalı.
    - Harici kütüphane, görsel veya ses dosyası yok.

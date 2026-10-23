@@ -8,7 +8,7 @@
   var msgEl = document.getElementById('msg');
   var btn = document.getElementById('restart');
 
-  var snake, dir, nextDir, food, score, timer, running, paused;
+  var snake, dir, nextDir, food, score, timer, running, paused, rnd = Math.random;
   var DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
 
   bestEl.textContent = MiniOyun.getBest('yilan');
@@ -18,7 +18,7 @@
     for (var x = 0; x < CELLS; x++)
       for (var y = 0; y < CELLS; y++)
         if (!snake.some(function (s) { return s[0] === x && s[1] === y; })) free.push([x, y]);
-    food = free[Math.floor(Math.random() * free.length)];
+    food = free[Math.floor(rnd() * free.length)];
   }
 
   function draw() {
@@ -69,12 +69,13 @@
     bestEl.textContent = MiniOyun.getBest('yilan');
     msgEl.textContent = 'Oyun bitti! Skorun: ' + score;
     btn.textContent = 'Tekrar oyna';
-    MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: rekor, kaybetti: !rekor, paylas: 'Yılan oyununda ' + score + ' puan yaptım! Sen kaç yaparsın?' });
+    MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: rekor, kaybetti: !rekor, sonuc: score + ' puan', paylas: 'Yılan oyununda ' + score + ' puan yaptım! Sen kaç yaparsın?' });
   }
 
   function start() {
     clearInterval(timer);
     paused = false;
+    rnd = MiniOyun.rastgele();
     snake = [[10, 10], [9, 10], [8, 10]];
     dir = nextDir = 'right';
     score = 0;

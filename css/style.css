@@ -235,10 +235,42 @@ a { color: var(--accent); }
 #ice-aktar-kutu .btn { justify-self: start; }
 .veri-durum { margin: 12px 0 0 !important; font-weight: 700; color: var(--accent-2) !important; }
 
+/* Günlük meydan okuma */
+.gunluk-afis { display: flex; align-items: center; gap: 16px; margin-top: 24px; padding: 16px 20px; border-radius: var(--radius); background: linear-gradient(135deg, rgba(255, 194, 61, .18), rgba(255, 92, 168, .18)); border: 1px solid rgba(255, 194, 61, .35); color: var(--text); text-decoration: none; transition: transform .15s; }
+.gunluk-afis:hover { transform: translateY(-2px); }
+.gunluk-afis-ikon { font-size: 2.4rem; line-height: 1; }
+.gunluk-afis-metin { flex: 1; color: var(--muted); font-weight: 600; }
+.gunluk-afis-metin b { display: block; color: var(--text); font-size: 1.15rem; font-weight: 900; }
+.gunluk-afis .btn { flex: none; }
+.gunluk-hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: center; margin-top: 24px; }
+.gunluk-hero h1 { margin: 10px 0 8px; font-size: clamp(1.8rem, 4.5vw, 2.8rem); line-height: 1.1; font-weight: 900; }
+.gunluk-hero p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+.gunluk-oyun { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 240px; padding: 24px; border-radius: 24px; overflow: hidden; color: #fff; background: linear-gradient(135deg, var(--c1, var(--violet)), var(--c2, var(--pink))); box-shadow: 0 20px 50px rgba(0, 0, 0, .45); }
+.gunluk-ikon { position: absolute; right: 16px; top: 12px; font-size: 5.5rem; line-height: 1; transform: rotate(-8deg); filter: drop-shadow(0 10px 20px rgba(0, 0, 0, .3)); }
+.gunluk-ikon.metin { font-size: 3rem; font-weight: 900; top: 24px; }
+.gunluk-baslik { font-size: 1.6rem; font-weight: 900; text-shadow: 0 2px 6px rgba(0, 0, 0, .25); max-width: 70%; }
+.gunluk-aciklama { font-weight: 600; opacity: .95; max-width: 70%; }
+.gunluk-sonuc { margin-top: 6px; padding: 4px 12px; border-radius: 999px; background: rgba(0, 0, 0, .25); font-weight: 900; }
+.gunluk-dugmeler { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 10px; }
+.gunluk-oyun .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, .7); }
+.gunluk-oyun > .btn-play { margin-top: auto; }
+.gunluk-geri-sayim { font-size: .85rem; font-weight: 700; opacity: .9; font-variant-numeric: tabular-nums; }
+.gunluk-takvim { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+.gunluk-gun { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 6px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); color: var(--text); text-decoration: none; text-align: center; transition: transform .15s; }
+.gunluk-gun:hover { transform: translateY(-3px); }
+.gunluk-gun.tamam { border-color: rgba(75, 227, 193, .5); background: linear-gradient(160deg, rgba(75, 227, 193, .15), var(--surface) 70%); }
+.gunluk-gun.bugun { border-color: var(--accent); }
+.gunluk-gun-tarih { font-size: .78rem; font-weight: 800; color: var(--muted); }
+.gunluk-gun-ikon { font-size: 1.8rem; line-height: 1.2; }
+.gunluk-gun-sonuc { font-size: .72rem; font-weight: 700; color: var(--muted); }
+.gunluk-bant { margin: -4px 0 14px; padding: 8px 14px; border-radius: 12px; background: rgba(255, 194, 61, .14); border: 1px solid rgba(255, 194, 61, .35); font-size: .88rem; font-weight: 700; text-align: center; }
+.oyun-sonu-gunluk { margin: 10px 0 0; font-weight: 800; color: var(--accent-2); }
+
 @media (max-width: 860px) {
   .site-header { position: static; }
   .hero { grid-template-columns: 1fr; padding-top: 24px; }
   .game-layout { grid-template-columns: 1fr; }
+  .gunluk-hero { grid-template-columns: 1fr; }
   .ad-slot.ad-side { max-width: 100%; min-height: 100px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
@@ -263,6 +295,9 @@ a { color: var(--accent); }
   .cat-hero-icon { font-size: 3.2rem; }
   .kisisel-sira { grid-auto-columns: 150px; gap: 10px; }
   .rozet-izgara { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .gunluk-takvim { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .gunluk-afis { flex-wrap: wrap; gap: 10px; }
+  .gunluk-afis-metin { flex-basis: calc(100% - 60px); }
   .profil-kart { padding: 18px; }
 }
 
