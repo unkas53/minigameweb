@@ -4,6 +4,7 @@
   var PROFILE_KEY = 'mo_profil';
   var AVATARS = ['🙂', '😎', '🤓', '🥳', '🤖', '👾', '🦊', '🐼', '🐯', '🐸', '🦄', '🐙', '🚀', '⚡', '🌟', '🍕'];
   var games = window.MO_OYUNLAR || [];
+  var sv = MiniOyun.sunucu && MiniOyun.sunucu.hazir ? MiniOyun.sunucu : null;
 
   function load(key, def) {
     try { var v = JSON.parse(localStorage.getItem(key)); return v === null ? def : v; } catch (e) { return def; }
@@ -44,6 +45,7 @@
       avatarBtn.setAttribute('aria-expanded', 'false');
       drawProfile();
       if (MiniOyun.ustAvatar) MiniOyun.ustAvatar();
+      if (sv) sv.profilDegisti();
     });
     picker.appendChild(b);
   });
@@ -54,6 +56,7 @@
   nameInput.addEventListener('input', function () {
     profile.ad = nameInput.value.trim().slice(0, 20);
     save(PROFILE_KEY, profile);
+    if (sv && profile.ad) sv.profilDegisti();
   });
 
   function drawStats(st) {
@@ -226,5 +229,73 @@
     statusEl.textContent = text;
   }
 
+  // ---------- Hesap (sunucu ayarlıysa) ----------
+  function initAccount() {
+    var wrap = document.getElementById('hesap');
+    var form = document.getElementById('hesap-form');
+    var stateEl = document.getElementById('hesap-durum');
+    var btns = document.getElementById('hesap-dugmeler');
+    var delAcc = document.getElementById('hesap-sil');
+    var msg = document.getElementById('hesap-mesaj');
+    var anonText = stateEl.textContent, delAccArmed = null;
+    wrap.hidden = false;
+    document.querySelector('.profil-not').textContent = 'Takma adın ve avatarın liderlik tablolarında görünür. Diğer bilgilerin bu tarayıcıda saklanır.';
+
+    function draw(user) {
+      var mail = user && user.email && !user.is_anonymous;
+      stateEl.textContent = mail ? '✅ ' + user.email + ' ile giriş yaptın. İlerlemen her oyundan sonra otomatik yedeklenir.' : anonText;
+      form.hidden = !!mail;
+      btns.hidden = !mail;
+      delAcc.hidden = !user;
+    }
+    function fail() { msg.textContent = 'Bir sorun oldu. Bağlantını kontrol edip tekrar dene.'; }
+
+    sv.kullanici().then(function (user) {
+      draw(user);
+      if (!user || user.is_anonymous) return;
+      return sv.esitle().then(function (r) {
+        if (r === 'yuklendi') {
+          profile = load(PROFILE_KEY, {});
+          drawAll();
+          if (MiniOyun.ustAvatar) MiniOyun.ustAvatar();
+          msg.textContent = 'Buluttaki ilerlemen bu cihaza yüklendi.';
+        }
+      });
+    }).catch(function () {});
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var mail = document.getElementById('eposta').value.trim();
+      msg.textContent = 'Gönderiliyor…';
+      sv.epostaGonder(mail).then(function (r) {
+        sv.kullanici().then(draw);
+        msg.textContent = r === 'giris'
+          ? 'Bu e-postayla bir hesap var. Giriş bağlantısını gönderdik; e-postandaki bağlantıya bu cihazda tıkla.'
+          : 'Onay bağlantısını gönderdik. E-postandaki bağlantıya tıklayınca hesabın hazır olur.';
+      }, fail);
+    });
+    document.getElementById('yedekle').addEventListener('click', function () {
+      sv.yedekle().then(function () { msg.textContent = 'İlerlemen buluta yedeklendi.'; }, fail);
+    });
+    document.getElementById('cikis').addEventListener('click', function () {
+      sv.cikis().then(function () { draw(null); msg.textContent = 'Çıkış yaptın. Bu cihazdaki verilerin duruyor.'; }, fail);
+    });
+    delAcc.addEventListener('click', function () {
+      if (!delAccArmed) {
+        delAcc.textContent = 'Emin misin? Tekrar bas';
+        delAccArmed = setTimeout(function () { delAccArmed = null; delAcc.textContent = 'Hesabımı ve skorlarımı sil'; }, 4000);
+        return;
+      }
+      clearTimeout(delAccArmed);
+      delAccArmed = null;
+      delAcc.textContent = 'Hesabımı ve skorlarımı sil';
+      sv.hesapSil().then(function () {
+        draw(null);
+        msg.textContent = 'Hesabın, skorların ve bulut yedeğin silindi. Bu cihazdaki veriler için "Tüm verilerimi sil" düğmesini kullanabilirsin.';
+      }, fail);
+    });
+  }
+
   drawAll();
+  if (sv) initAccount();
 })();

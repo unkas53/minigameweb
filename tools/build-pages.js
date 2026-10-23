@@ -2,7 +2,7 @@
 // - tüm sayfalarda üst menü + kategori çubuğu ve alt bilgi
 // - ana sayfada öne çıkan oyun, kategori kutuları ve oyun ızgarası
 // - kategori/<slug>/ sayfaları ve kategori/ listesi
-// - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar" ve ortak oyun çerçevesi betiği (js/oyun.js)
+// - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar", sunucu bağlantısı (js/sunucu.js) ve ortak oyun çerçevesi (js/oyun.js)
 // - profil ve günlük meydan okuma sayfalarındaki oyun listesi
 // - sitemap.xml
 // - PWA ve analitik: tüm sayfalarda manifest/tema etiketleri, GoatCounter sayacı ve çevrimdışı önbellek için sw.js
@@ -198,10 +198,9 @@ for (const g of sorted) {
   if (!html.includes('<!-- oto:benzer -->')) {
     html = html.replace(/(\n\s*<div class="ad-slot" aria-label="Reklam">Reklam alanı<\/div>\s*\n\s*<\/main>)/, '\n\n    <!-- oto:benzer -->\n    <!-- /oto:benzer -->$1');
   }
-  // Ortak oyun çerçevesi game.js'den önce yüklenmeli
-  if (!html.includes('js/oyun.js')) {
-    html = html.replace('<script src="game.js"></script>', '<script src="../../js/oyun.js"></script>\n  <script src="game.js"></script>');
-  }
+  // Sunucu bağlantısı ve ortak oyun çerçevesi game.js'den önce yüklenmeli; skor birimi data-rekor ile geçer
+  html = html.replace(/[ \t]*<script src="\.\.\/\.\.\/js\/(?:sunucu|oyun)\.js"[^>]*><\/script>\n/g, '');
+  html = html.replace('<script src="game.js"></script>', `<script src="../../js/sunucu.js"></script>\n  <script src="../../js/oyun.js" data-rekor="${g.rekor || 'puan'}"></script>\n  <script src="game.js"></script>`);
   html = replaceBlock(html, 'yol', crumbs, f);
   const same = sorted.filter(x => x !== g && x.category === g.category);
   const others = sorted.filter(x => x !== g && x.category !== g.category);

@@ -69,7 +69,7 @@
     bestEl.textContent = MiniOyun.getBest('yilan');
     msgEl.textContent = 'Oyun bitti! Skorun: ' + score;
     btn.textContent = 'Tekrar oyna';
-    MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: rekor, kaybetti: !rekor, sonuc: score + ' puan', paylas: 'Yılan oyununda ' + score + ' puan yaptım! Sen kaç yaparsın?' });
+    MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: rekor, kaybetti: !rekor, skor: score, sonuc: score + ' puan', paylas: 'Yılan oyununda ' + score + ' puan yaptım! Sen kaç yaparsın?' });
   }
 
   function start() {

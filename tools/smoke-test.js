@@ -124,6 +124,26 @@ function chromePath() {
     await ctx.close();
   }
 
+  // Sunucu arayüzü (sahte istemciyle): liderlik tablosu, skor gönderme, hesap
+  if (!only) {
+    const sv = require(path.join(__dirname, 'tests', '_sunucu.js'));
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} });
+    await ctx.addInitScript(sv.sahte);
+    await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+    const page = await ctx.newPage();
+    page.on('pageerror', e => errors.push(`[sunucu] JS hatası: ${e.message}`));
+    try {
+      await sv.test(page, {
+        git: async p => { await page.goto(origin + p); await page.waitForTimeout(200); },
+        beklenen: (ok, msg) => { if (!ok) throw new Error(msg); }
+      });
+    } catch (e) {
+      errors.push(`[sunucu] ${e.message.split('\n')[0]}`);
+    }
+    await ctx.close();
+  }
+
   await browser.close();
   server.close();
   const unique = [...new Set(errors)];
@@ -131,5 +151,5 @@ function chromePath() {
     console.log(`BAŞARISIZ: ${unique.length} sorun\n- ` + unique.join('\n- '));
     process.exit(1);
   }
-  console.log(`BAŞARILI: ${pages.length} sayfa, ${checkedLinks.size} bağlantı, 2 ekran boyutu ve ${played} oyunun oynanış testi kontrol edildi.`);
+  console.log(`BAŞARILI: ${pages.length} sayfa, ${checkedLinks.size} bağlantı, 2 ekran boyutu, ${played} oyunun oynanış testi${only ? '' : ' ve sunucu arayüzü'} kontrol edildi.`);
 })();

@@ -172,7 +172,7 @@
     showBest();
     var rekor = prev === null || seconds < prev;
     end('Tebrikler! ' + seconds + ' saniyede temizledin.' + (rekor ? ' Yeni rekor!' : ''));
-    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: seconds + ' saniyede temizledin.', rekor: rekor, sonuc: seconds + ' sn', paylas: 'Mayın Tarlası\'nı ' + seconds + ' saniyede temizledim! Sen kaç saniyede bitirirsin?' });
+    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: seconds + ' saniyede temizledin.', rekor: rekor, skor: seconds, sonuc: seconds + ' sn', paylas: 'Mayın Tarlası\'nı ' + seconds + ' saniyede temizledim! Sen kaç saniyede bitirirsin?' });
   }
 
   function setCursor(i) {
@@ -286,6 +286,7 @@
   levelEl.addEventListener('change', start);
   MiniOyun.oyun({
     restart: start,
+    seviye: function () { return level; },
     canPause: function () { return placed && !over; },
     pause: function () { paused = true; stopTimer(); },
     resume: function () { paused = false; if (placed && !over) startTimer(); }

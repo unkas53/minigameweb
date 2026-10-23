@@ -1,6 +1,6 @@
 // Bu dosya tools/build-pages.js ile üretilir. Elle değiştirmeyin.
 // Sayfalar önce ağdan, yoksa önbellekten; diğer dosyalar önbellekten gelir ve arka planda güncellenir.
-const SURUM = 'mo-b55d7849f0';
+const SURUM = 'mo-385e4bdfe3';
 const DOSYALAR = [
   "./",
   "./manifest.webmanifest",
@@ -9,6 +9,7 @@ const DOSYALAR = [
   "./js/main.js",
   "./js/oyun.js",
   "./js/profil.js",
+  "./js/sunucu.js",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512-maskable.png",

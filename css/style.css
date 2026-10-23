@@ -267,6 +267,28 @@ a { color: var(--accent); }
 .gunluk-bant { margin: -4px 0 14px; padding: 8px 14px; border-radius: 12px; background: rgba(255, 194, 61, .14); border: 1px solid rgba(255, 194, 61, .35); font-size: .88rem; font-weight: 700; text-align: center; }
 .oyun-sonu-gunluk { margin: 10px 0 0; font-weight: 800; color: var(--accent-2); }
 
+/* Liderlik tablosu ve hesap */
+.oyun-sonu-sira { margin: 10px 0 0; font-weight: 800; color: var(--violet); }
+.lider-ac { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-weight: 800; text-decoration: underline; cursor: pointer; }
+.lider-alt { margin: 0 0 12px; color: var(--muted); font-weight: 700; }
+.lider-sekme { display: flex; gap: 6px; margin-bottom: 12px; }
+.lider-sekme-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface-2); color: var(--muted); font: inherit; font-weight: 800; cursor: pointer; }
+.lider-sekme-btn[aria-selected="true"] { background: var(--violet); color: #fff; }
+.lider-liste { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.lider-liste li { display: grid; grid-template-columns: 36px 30px 1fr auto; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: rgba(255, 255, 255, .04); }
+.lider-liste li.ben { background: rgba(139, 123, 255, .25); outline: 1px solid var(--violet); }
+.lider-sira { font-weight: 900; text-align: center; color: var(--muted); }
+.lider-avatar { font-size: 1.3rem; text-align: center; }
+.lider-ad { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.lider-skor { font-weight: 900; color: var(--accent); }
+.lider-durum { margin: 8px 0; color: var(--muted); text-align: center; }
+.lider-not { margin: 12px 0 0; font-size: .85rem; color: var(--muted); }
+.lider-not a { color: var(--accent-2); }
+.lider-sayfa { max-width: 560px; }
+.hesap-form { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.hesap-form input { flex: 1 1 220px; min-width: 0; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--surface-2); background: var(--bg); color: var(--text); font: inherit; }
+.hesap-sil { margin-top: 12px; }
+
 @media (max-width: 860px) {
   .site-header { position: static; }
   .hero { grid-template-columns: 1fr; padding-top: 24px; }
