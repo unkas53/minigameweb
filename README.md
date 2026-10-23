@@ -14,6 +14,7 @@
 - `categories.json` – kategori listesi ve kategori sayfası metinleri
 - `kategori/` – kategori sayfaları (otomatik üretilir)
 - `tools/build-pages.js` – menüleri, kategori sayfalarını, ana sayfa ızgarasını, benzer oyunları ve sitemap'i üretir (`npm run build`)
+- `manifest.webmanifest`, `icons/`, `sw.js` – PWA: telefona uygulama gibi kurulur, internetsiz oynanır. `sw.js` build ile üretilir (önbellek listesi ve sürüm), elle düzenlemeyin
 - `sitemap.xml`, `robots.txt` – SEO
 - `gizlilik.html`, `cerezler.html`, `hakkinda.html`, `iletisim.html` – AdSense için gerekli sayfalar
 - `reports/` – ajanların raporları (fikirler, rakip-analizi, seo, test, duzeltmeler)
@@ -25,7 +26,7 @@
 3. `npm run build` çalıştırın. Ana sayfa kartı, kategori sayfası, menüler, benzer oyunlar ve `sitemap.xml` kendiliğinden güncellenir.
 4. `npm test` ile kontrol edin.
 
-Üretilen parçaları (`<!-- oto:... -->` blokları, üst menü, alt bilgi, `kategori/` klasörü) elle düzenlemeyin; bir sonraki build'de üzerine yazılır.
+Üretilen parçaları (`<!-- oto:... -->` blokları, üst menü, alt bilgi, PWA etiketleri, `kategori/` klasörü, `sw.js`) elle düzenlemeyin; bir sonraki build'de üzerine yazılır.
 
 ## Yayına almadan önce
 

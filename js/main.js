@@ -95,6 +95,34 @@
     try { if ((JSON.parse(localStorage.getItem('mo_gunluk')) || {})[key]) btn.textContent = '✅ Sonucun'; } catch (e) {}
   }
 
+  // PWA: çevrimdışı önbellek (sw.js) ve "Uygulamayı yükle" düğmesi
+  var installPrompt = null;
+  function initPwa() {
+    var buttons = document.querySelectorAll('.pwa-yukle');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function () {
+        if (!installPrompt) return;
+        installPrompt.prompt();
+        installPrompt = null;
+        showInstall(false);
+      });
+    }
+    if (!('serviceWorker' in navigator)) return;
+    var script = document.querySelector('script[src$="js/main.js"]');
+    var root = script ? script.src.replace(/js\/main\.js.*$/, '') : '';
+    navigator.serviceWorker.register(root + 'sw.js').catch(function () {});
+  }
+  function showInstall(on) {
+    var buttons = document.querySelectorAll('.pwa-yukle');
+    for (var i = 0; i < buttons.length; i++) buttons[i].hidden = !on;
+  }
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    installPrompt = e;
+    showInstall(true);
+  });
+  window.addEventListener('appinstalled', function () { showInstall(false); });
+
   window.MiniOyun = {
     getBest: function (game) {
       try { return parseInt(localStorage.getItem('mo_best_' + game), 10) || 0; } catch (e) { return 0; }
@@ -120,6 +148,7 @@
     initPersonal();
     drawHeaderAvatar();
     markDailyDone();
+    initPwa();
     initSearch();
   });
 })();

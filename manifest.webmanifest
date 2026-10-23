@@ -1,0 +1,21 @@
+{
+  "name": "MiniOyun - Ücretsiz Online Mini Oyunlar",
+  "short_name": "MiniOyun",
+  "description": "İndirme yok, kayıt yok. Ücretsiz mini oyunlar; internetsiz de oynanır.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0b1f",
+  "theme_color": "#0d0b1f",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Günün meydan okuması", "url": "gunluk.html", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Profilim", "url": "profil.html", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

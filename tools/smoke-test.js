@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const BASE = '/minigameweb/'; // GitHub Pages alt klasörünü taklit eder
 const PORT = 8790;
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.png': 'image/png', '.svg': 'image/svg+xml' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json' };
 
 function serve() {
   return http.createServer((req, res) => {

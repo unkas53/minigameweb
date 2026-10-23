@@ -5,10 +5,12 @@
 // - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar" ve ortak oyun çerçevesi betiği (js/oyun.js)
 // - profil ve günlük meydan okuma sayfalarındaki oyun listesi
 // - sitemap.xml
+// - PWA: tüm sayfalarda manifest/tema etiketleri ve çevrimdışı önbellek için sw.js
 // Kullanım: node tools/build-pages.js          (dosyaları yazar)
 //           node tools/build-pages.js --check  (yalnızca güncel mi diye bakar)
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://unkas53.github.io/minigameweb/';
@@ -74,6 +76,7 @@ function footer(p) {
       <div class="footer-brand">
         <a class="logo" href="${p}"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
         <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
       </div>
       <div class="footer-col">
         <h2>Kategoriler</h2>
@@ -124,7 +127,15 @@ function replaceBlock(html, name, content, file) {
   return html.replace(re, `$1\n      ${content}\n      $2`);
 }
 
+// PWA etiketleri: manifest, tema rengi, iOS simgesi
+const pwaTags = p => `<link rel="manifest" href="${p}manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="${p}icons/apple-touch-icon.png">`;
+
 function shell(html, p, current) {
+  if (!html.includes('rel="manifest"')) {
+    html = html.replace(/(\n\s*)(<link rel="stylesheet")/, `$1${pwaTags(p)}$1$2`);
+  }
   return html
     .replace(/<header class="site-header">[\s\S]*?<\/header>/, header(p, current))
     .replace(/<footer class="site-footer">[\s\S]*?<\/footer>/, footer(p));
@@ -225,6 +236,7 @@ function page({ p, title, description, url, current, jsonld, body }) {
   <meta property="og:type" content="website">
   <meta property="og:url" content="${url}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  ${pwaTags(p)}
   <link rel="stylesheet" href="${p}css/style.css">
   <!-- AdSense: onay geldikten sonra ca-pub kimliğini girip bu satırı açın -->
   <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
@@ -319,6 +331,58 @@ ${entries.map(([l, pr, d]) => `  <url><loc>${l}</loc><lastmod>${lastmod[l] || d}
 </urlset>
 `;
   put('sitemap.xml', xml);
+}
+
+// ---------- sw.js: çevrimdışı oynama için önbellek ----------
+{
+  const files = ['', 'manifest.webmanifest', 'css/style.css']
+    .concat(fs.readdirSync(path.join(ROOT, 'js')).filter(f => f.endsWith('.js')).sort().map(f => 'js/' + f))
+    .concat(fs.readdirSync(path.join(ROOT, 'icons')).filter(f => f.endsWith('.png')).sort().map(f => 'icons/' + f))
+    .concat(['gunluk.html', 'profil.html', 'kategori/'])
+    .concat(activeCats.map(c => `kategori/${c.slug}/`))
+    .concat(sorted.flatMap(g => [`games/${g.slug}/`, `games/${g.slug}/game.js`]))
+    .concat(['hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html']);
+  // Dosyalar değişince sürüm değişir; tarayıcı eski önbelleği atar
+  const hash = crypto.createHash('sha1');
+  for (const f of files) {
+    const rel = f === '' || f.endsWith('/') ? f + 'index.html' : f;
+    hash.update(rel + '\0' + (outputs.has(rel) ? outputs.get(rel) : fs.readFileSync(path.join(ROOT, rel))));
+  }
+  put('sw.js', `// Bu dosya tools/build-pages.js ile üretilir. Elle değiştirmeyin.
+// Sayfalar önce ağdan, yoksa önbellekten; diğer dosyalar önbellekten gelir ve arka planda güncellenir.
+const SURUM = 'mo-${hash.digest('hex').slice(0, 10)}';
+const DOSYALAR = ${JSON.stringify(files.map(f => './' + f), null, 2)};
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(SURUM).then(c => c.addAll(DOSYALAR)).then(() => self.skipWaiting()));
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys()
+    .then(keys => Promise.all(keys.filter(k => k !== SURUM).map(k => caches.delete(k))))
+    .then(() => self.clients.claim()));
+});
+
+self.addEventListener('fetch', e => {
+  const req = e.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  if (req.mode === 'navigate') {
+    e.respondWith(fetch(req).then(res => {
+      const copy = res.clone();
+      caches.open(SURUM).then(c => c.put(req, copy));
+      return res;
+    }).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match('./'))));
+    return;
+  }
+  e.respondWith(caches.match(req, { ignoreSearch: true }).then(cached => {
+    const fresh = fetch(req).then(res => {
+      if (res.ok) { const copy = res.clone(); caches.open(SURUM).then(c => c.put(req, copy)); }
+      return res;
+    }).catch(() => cached);
+    return cached || fresh;
+  }));
+});
+`);
 }
 
 // ---------- Yaz veya kontrol et ----------
