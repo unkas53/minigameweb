@@ -152,6 +152,7 @@ a { color: var(--accent); }
 .site-footer { margin-top: 56px; padding: 36px 0 20px; background: rgba(10, 8, 26, .85); border-top: 1px solid var(--border); color: var(--muted); font-size: .92rem; }
 .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 24px; }
 .footer-brand p { margin: 10px 0 0; max-width: 320px; }
+.pwa-yukle { margin-top: 14px; font-size: .9rem; padding: 8px 16px; }
 .footer-col { display: flex; flex-direction: column; gap: 6px; }
 .footer-col h2 { margin: 0 0 4px; font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text); }
 .site-footer a:not(.logo) { color: var(--muted); text-decoration: none; }
