@@ -22,16 +22,20 @@
   // Süre en iyisi en küçük değerdir; MiniOyun.setBest büyük skoru tuttuğu için ayrı anahtar kullanılır.
   function bestKey() { return 'mayin-tarlasi-en-iyi-' + level; }
   function getBest() {
-    try { return parseInt(localStorage.getItem(bestKey()), 10) || 0; } catch (e) { return 0; }
+    // Kayıt yoksa null döner; 0 sn geçerli bir rekordur.
+    try {
+      var v = parseInt(localStorage.getItem(bestKey()), 10);
+      return isNaN(v) ? null : v;
+    } catch (e) { return null; }
   }
   function saveBest(t) {
     var b = getBest();
-    if (b && t >= b) return;
+    if (b !== null && t >= b) return;
     try { localStorage.setItem(bestKey(), String(t)); } catch (e) {}
   }
   function showBest() {
     var b = getBest();
-    bestEl.textContent = b ? b + ' sn' : '-';
+    bestEl.textContent = b !== null ? b + ' sn' : '-';
   }
 
   function neighbors(i) {
@@ -166,7 +170,7 @@
     var prev = getBest();
     saveBest(seconds);
     showBest();
-    var rekor = !prev || seconds < prev;
+    var rekor = prev === null || seconds < prev;
     end('Tebrikler! ' + seconds + ' saniyede temizledin.' + (rekor ? ' Yeni rekor!' : ''));
     MiniOyun.bitti({ baslik: 'Tebrikler!', metin: seconds + ' saniyede temizledin.', rekor: rekor, sonuc: seconds + ' sn', paylas: 'Mayın Tarlası\'nı ' + seconds + ' saniyede temizledim! Sen kaç saniyede bitirirsin?' });
   }
