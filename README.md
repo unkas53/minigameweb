@@ -30,3 +30,26 @@
 python3 -m http.server 8000
 ```
 Sonra http://localhost:8000 adresini açın.
+
+## Ajanlar
+
+Siteyi 6 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her ajan önce `agents/ORTAK.md` dosyasını okur.
+
+| Ajan | Dosya | Sıklık | Çıktı |
+|---|---|---|---|
+| 1. Fikir | `agents/1-fikir.md` | saatlik | `reports/fikirler/` |
+| 2. Rakip analizi | `agents/2-rakip-analizi.md` | günlük | `reports/rakip-analizi/` |
+| 3. SEO | `agents/3-seo.md` | günlük | `reports/seo/` + sayfa metinleri |
+| 4. Geliştirici | `agents/4-gelistirici.md` | saatlik | `games/<slug>/` |
+| 5. Test | `agents/5-test.md` | saatlik | `reports/test/` |
+| 6. Düzeltici | `agents/6-duzeltici.md` | saatlik | `reports/duzeltmeler/` |
+
+Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO ajanı bağımsız çalışır.
+
+## Test
+
+```
+npm install
+npm test
+```
+`tools/smoke-test.js` tüm sayfaları masaüstü ve mobil boyutta açar; JS hatası, kırık bağlantı, yatay taşma ve eksik kayıtları raporlar.
