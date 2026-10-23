@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: mayin-tarlasi
 baslik: Mayın Tarlası
 kategori: Bulmaca
