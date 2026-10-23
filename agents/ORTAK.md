@@ -11,7 +11,10 @@ Bu dosyayı her ajan, kendi görev dosyasından önce okur.
 ## Dosya düzeni
 - `games/<slug>/index.html` ve `game.js`: her oyun kendi klasöründe. Yeni oyunlar mevcut bir oyun sayfasını örnek alır (başlık, açıklama, canonical, JSON-LD, "nasıl oynanır" ve "ipuçları" metni, reklam alanları, çerez penceresi).
 - Site içi bağlantılar her zaman göreceli olmalı (`../../css/style.css` gibi). `/` ile başlayan bağlantı kullanmayın, GitHub Pages alt klasörde çalıştığı için kırılır.
-- `games.json`: oyun kaydı. `index.html` oyun ızgarası ve `sitemap.xml` ile birlikte güncel tutulur.
+- `games.json`: oyun kaydı. Her oyunun alanları: `slug`, `title`, `category`, `description` (kart metni, tek cümle), `icon` (emoji veya kısa metin), `colors` (kart için iki renk), `added`, `status`.
+- `categories.json`: kategori listesi (Bulmaca, Arcade, Hafıza, Kelime, Refleks, Strateji, Spor). Her oyunun `category` değeri buradaki bir `name` ile birebir aynı olmalı. Yeni kategori gerekiyorsa buraya eklenir (slug, ad, emoji, renkler, title, description, tanıtım metni).
+- **Otomatik üretilen parçalar:** `npm run build` (`tools/build-pages.js`) `games.json` ve `categories.json`'dan şunları üretir: tüm sayfalardaki üst menü, kategori çubuğu ve alt bilgi; ana sayfadaki öne çıkan oyun, kategori kutuları ve oyun ızgarası; `kategori/` sayfalarının tamamı; oyun sayfalarındaki yol (breadcrumb) ve "Benzer oyunlar" bölümü; `sitemap.xml`. Bu parçaları ve `kategori/` altını elle düzenlemeyin; `<!-- oto:... -->` işaretleri arası her build'de yeniden yazılır. `games.json` veya `categories.json` değiştiren herkes push etmeden önce `npm run build` çalıştırır. Smoke test, build güncel değilse başarısız olur.
+- Oyunu en az bir oyunu olan kategoriler sitede görünür; boş kategori sayfası oluşturulmaz.
 - `reports/`: ajan raporları.
   - `reports/fikirler/` → 1. ajan
   - `reports/rakip-analizi/` → 2. ajan
@@ -29,7 +32,8 @@ Durumu yalnızca ilgili ajan değiştirir: fikir ajanı `bekliyor` yazar, geliş
 - Doğrudan `main` dalında çalışın. İşe başlamadan `git pull --rebase origin main` yapın.
 - Küçük ve tek konulu commit'ler atın. Commit mesajı Türkçe ve başında ajan etiketi olsun: `[fikir]`, `[rakip]`, `[seo]`, `[gelistirme]`, `[test]`, `[duzeltme]`.
 - Push reddedilirse `git pull --rebase origin main` yapıp tekrar deneyin. Başka ajanın dosyasını geri almayın.
-- Oyun kodu değiştiren her push'tan önce `node tools/smoke-test.js` çalıştırın; hata varsa push etmeyin.
+- Oyun kodu veya sayfa değiştiren her push'tan önce `npm run build` ve `node tools/smoke-test.js` çalıştırın; hata varsa push etmeyin.
+- `git pull --rebase` sırasında üretilen dosyalarda (`index.html`, `sitemap.xml`, `kategori/`, oyun sayfalarının `oto:` blokları) çakışma olursa elle birleştirmeyin: kendi `games.json` / `categories.json` değişikliğinizi koruyun, çakışan dosyada herhangi bir tarafı seçin, sonra `npm run build` çalıştırıp `git add` ile devam edin.
 
 ## Sınırlar
 - Kendi görev alanınızın dışındaki dosyaları değiştirmeyin (görev dosyanızda yazar).

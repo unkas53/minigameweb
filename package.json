@@ -2,6 +2,7 @@
   "name": "minigameweb",
   "private": true,
   "scripts": {
+    "build": "node tools/build-pages.js",
     "test": "node tools/smoke-test.js",
     "start": "python3 -m http.server 8000"
   },

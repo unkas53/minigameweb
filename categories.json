@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "bulmaca", "name": "Bulmaca", "icon": "🧩", "colors": ["#ffb547", "#ff7a59"],
+    "title": "Bulmaca Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online bulmaca oyunları: 2048, Mayın Tarlası ve daha fazlası. Zekanı çalıştır, indirme ve üyelik olmadan tarayıcıda hemen oyna.",
+    "intro": "Bulmaca oyunları mantığını ve dikkatini çalıştırmak için birebir. Sayıları birleştir, ipuçlarını çöz, en iyi hamleyi bul. Tüm bulmaca oyunlarımız ücretsizdir, telefonda ve bilgisayarda indirme gerektirmeden çalışır."
+  },
+  {
+    "slug": "arcade", "name": "Arcade", "icon": "👾", "colors": ["#5ee0b8", "#2a9d8f"],
+    "title": "Arcade Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online arcade oyunları: Yılan ve klasik atari tadında hızlı oyunlar. İndirme yok, üyelik yok, tarayıcıda hemen oyna.",
+    "intro": "Arcade oyunları kısa, hızlı ve bağımlılık yapıcıdır. Klasik atari oyunlarının ruhunu taşıyan bu oyunlarda refleksini ve dikkatini konuştur, en yüksek skoru kır. Klavye ve dokunmatik ekranla oynanır."
+  },
+  {
+    "slug": "hafiza", "name": "Hafıza", "icon": "🧠", "colors": ["#a78bfa", "#6d28d9"],
+    "title": "Hafıza Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online hafıza oyunları: kart eşleştirme ve hafıza güçlendirici oyunlar. Çocuklar ve yetişkinler için, tarayıcıda hemen oyna.",
+    "intro": "Hafıza oyunları görsel hafızanı ve odaklanma becerini geliştirir. Kartları çevir, yerlerini aklında tut ve eşleri en az hamlede bul. Her yaştan oyuncu için uygun, kısa molalarda oynanabilecek oyunlar."
+  },
+  {
+    "slug": "kelime", "name": "Kelime", "icon": "🔤", "colors": ["#60a5fa", "#2563eb"],
+    "title": "Kelime Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online Türkçe kelime oyunları. Kelime bul, harfleri diz, kelime dağarcığını geliştir. İndirme ve üyelik gerekmez.",
+    "intro": "Kelime oyunları Türkçe kelime dağarcığını genişletmenin eğlenceli yoludur. Harfleri birleştir, gizli kelimeyi tahmin et ve kendini dene. Tüm kelime oyunlarımız ücretsiz ve tarayıcıda oynanır."
+  },
+  {
+    "slug": "refleks", "name": "Refleks", "icon": "⚡", "colors": ["#fde047", "#f59e0b"],
+    "title": "Refleks Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online refleks ve hız oyunları. Tepki süreni ölç, hızlı düşün, en yüksek skoru yap. Tarayıcıda hemen oyna.",
+    "intro": "Refleks oyunları tepki süreni ve el göz koordinasyonunu sınar. Saniyelerin önemli olduğu bu oyunlarda hızlı ol, hata yapma ve skorunu her seferinde biraz daha yukarı taşı."
+  },
+  {
+    "slug": "strateji", "name": "Strateji", "icon": "♟️", "colors": ["#f472b6", "#be185d"],
+    "title": "Strateji Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online strateji oyunları. Planını yap, rakibini alt et. İndirme ve üyelik olmadan tarayıcıda oyna.",
+    "intro": "Strateji oyunlarında kazanmak için önceden düşünmek gerekir. Hamlelerini planla, rakibinin ne yapacağını tahmin et ve en iyi stratejiyi bul. Kısa ama düşündüren oyunlar."
+  },
+  {
+    "slug": "spor", "name": "Spor", "icon": "⚽", "colors": ["#4ade80", "#15803d"],
+    "title": "Spor Oyunları - Ücretsiz Online Oyna | MiniOyun",
+    "description": "Ücretsiz online spor oyunları: futbol, basketbol ve daha fazlası. İndirme yok, tarayıcıda hemen oyna.",
+    "intro": "Spor oyunlarında sahaya çık ve becerini göster. Futboldan basketbola kısa ve eğlenceli spor oyunları, telefonda ve bilgisayarda ücretsiz oynanır."
+  }
+]

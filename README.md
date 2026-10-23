@@ -8,15 +8,21 @@
 - `games/<slug>/index.html` + `game.js` – her oyun kendi klasöründe
 - `css/style.css`, `js/main.js` – ortak stil, çerez onayı, en yüksek skor yardımcıları
 - `games.json` – oyun kaydı (ajanlar buradan okur)
+- `categories.json` – kategori listesi ve kategori sayfası metinleri
+- `kategori/` – kategori sayfaları (otomatik üretilir)
+- `tools/build-pages.js` – menüleri, kategori sayfalarını, ana sayfa ızgarasını, benzer oyunları ve sitemap'i üretir (`npm run build`)
 - `sitemap.xml`, `robots.txt` – SEO
 - `gizlilik.html`, `cerezler.html`, `hakkinda.html`, `iletisim.html` – AdSense için gerekli sayfalar
 - `reports/` – ajanların raporları (fikirler, rakip-analizi, seo, test, duzeltmeler)
 
 ## Yeni oyun ekleme
 
-1. `games/<slug>/` klasörünü mevcut bir oyunu örnek alarak oluşturun (başlık, açıklama, canonical, JSON-LD, nasıl oynanır metni).
-2. `index.html` içindeki oyun ızgarasına kart ekleyin.
-3. `games.json` ve `sitemap.xml` dosyalarına kayıt ekleyin.
+1. `games/<slug>/` klasörünü mevcut bir oyunu örnek alarak oluşturun (başlık, açıklama, canonical, JSON-LD, nasıl oynanır metni). `<!-- oto:yol -->` ve `<!-- oto:benzer -->` işaretlerini koruyun.
+2. `games.json` dosyasına kayıt ekleyin: `slug`, `title`, `category` (`categories.json`'daki bir ad), `description`, `icon`, `colors`, `added`, `status`.
+3. `npm run build` çalıştırın. Ana sayfa kartı, kategori sayfası, menüler, benzer oyunlar ve `sitemap.xml` kendiliğinden güncellenir.
+4. `npm test` ile kontrol edin.
+
+Üretilen parçaları (`<!-- oto:... -->` blokları, üst menü, alt bilgi, `kategori/` klasörü) elle düzenlemeyin; bir sonraki build'de üzerine yazılır.
 
 ## Yayına almadan önce
 

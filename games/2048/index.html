@@ -22,17 +22,30 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a class="logo" href="../../">Mini<span>Oyun</span></a>
-      <nav class="nav">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
         <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
         <a href="../../hakkinda.html">Hakkında</a>
         <a href="../../iletisim.html">İletişim</a>
       </nav>
     </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip active" href="../../kategori/bulmaca/" aria-current="page" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+      </div>
+    </nav>
   </header>
 
   <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/bulmaca/">Bulmaca Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">2048</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Bulmaca Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/bulmaca/"},{"@type":"ListItem","position":3,"name":"2048","item":"https://unkas53.github.io/minigameweb/games/2048/"}]}</script>
+      <!-- /oto:yol -->
     <div class="game-layout">
       <section class="game-box">
         <h1>2048</h1>
@@ -54,19 +67,63 @@
       <p>En büyük sayıyı bir köşede tutun ve mümkün olduğunca iki yönde hamle yapın. Satırları dolu tutmak, büyük karelerin dağılmasını engeller.</p>
     </section>
 
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mayın Tarlası</h3>
+          <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/hafiza/" data-title="hafıza kartları" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#a78bfa;--c2:#6d28d9"><span class="thumb-icon" aria-hidden="true">🃏</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Hafıza Kartları</h3>
+          <p>Kartları çevir, eşleri en az hamlede bul.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/yilan/" data-title="yılan" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5ee0b8;--c2:#2a9d8f"><span class="thumb-icon" aria-hidden="true">🐍</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Yılan</h3>
+          <p>Yemleri topla, uzadıkça kendine çarpma.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/bulmaca/">Tüm bulmaca oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
     <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <div>© 2026 MiniOyun</div>
-      <div>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
         <a href="../../hakkinda.html">Hakkında</a>
         <a href="../../iletisim.html">İletişim</a>
         <a href="../../gizlilik.html">Gizlilik Politikası</a>
         <a href="../../cerezler.html">Çerez Politikası</a>
       </div>
     </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
   </footer>
 
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
