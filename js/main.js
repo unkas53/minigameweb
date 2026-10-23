@@ -57,9 +57,11 @@
     getBest: function (game) {
       try { return parseInt(localStorage.getItem('mo_best_' + game), 10) || 0; } catch (e) { return 0; }
     },
-    setBest: function (game, score) {
+    // lowerIsBetter: hamle/süre gibi küçük değerin daha iyi olduğu oyunlar için.
+    setBest: function (game, score, lowerIsBetter) {
       try {
-        if (score > this.getBest(game)) localStorage.setItem('mo_best_' + game, String(score));
+        var best = this.getBest(game);
+        if (lowerIsBetter ? (!best || score < best) : score > best) localStorage.setItem('mo_best_' + game, String(score));
       } catch (e) {}
     },
     hasAdConsent: function () { return getConsent() === 'accepted'; }

@@ -4,7 +4,9 @@
   var movesEl = document.getElementById('moves');
   var timeEl = document.getElementById('time');
   var msgEl = document.getElementById('msg');
-  var first, second, locked, moves, matched, seconds, timer;
+  var bestEl = document.getElementById('best');
+  var first, second, locked, moves, matched, seconds, timer, flipBack;
+  bestEl.textContent = MiniOyun.getBest('hafiza') || '-';
 
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
@@ -38,7 +40,8 @@
       if (matched === ICONS.length) finish();
     } else {
       locked = true;
-      setTimeout(function () {
+      flipBack = setTimeout(function () {
+        flipBack = null;
         first.classList.remove('open');
         second.classList.remove('open');
         first.setAttribute('aria-label', 'Kapalı kart');
@@ -52,10 +55,14 @@
   function finish() {
     clearInterval(timer);
     timer = null;
+    MiniOyun.setBest('hafiza', moves, true);
+    bestEl.textContent = MiniOyun.getBest('hafiza');
     msgEl.textContent = 'Tebrikler! ' + moves + ' hamlede, ' + seconds + ' saniyede bitirdin.';
   }
 
   function start() {
+    clearTimeout(flipBack);
+    flipBack = null;
     clearInterval(timer);
     timer = null;
     first = second = null;
