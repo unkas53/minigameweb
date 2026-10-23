@@ -8,7 +8,7 @@
   var msgEl = document.getElementById('msg');
   var btn = document.getElementById('restart');
 
-  var snake, dir, nextDir, food, score, timer, running;
+  var snake, dir, nextDir, food, score, timer, running, paused;
   var DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
 
   bestEl.textContent = MiniOyun.getBest('yilan');
@@ -52,6 +52,7 @@
     if (ate) {
       score += 10;
       scoreEl.textContent = score;
+      MiniOyun.ses('puan');
       placeFood();
       clearInterval(timer);
       timer = setInterval(tick, speed());
@@ -64,14 +65,16 @@
   function gameOver() {
     clearInterval(timer);
     running = false;
-    MiniOyun.setBest('yilan', score);
+    var rekor = MiniOyun.setBest('yilan', score);
     bestEl.textContent = MiniOyun.getBest('yilan');
     msgEl.textContent = 'Oyun bitti! Skorun: ' + score;
     btn.textContent = 'Tekrar oyna';
+    MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: rekor, kaybetti: !rekor, paylas: 'Yılan oyununda ' + score + ' puan yaptım! Sen kaç yaparsın?' });
   }
 
   function start() {
     clearInterval(timer);
+    paused = false;
     snake = [[10, 10], [9, 10], [8, 10]];
     dir = nextDir = 'right';
     score = 0;
@@ -85,6 +88,7 @@
   }
 
   function turn(d) {
+    if (paused || MiniOyun.duraklatildi()) return;
     if (!running) { start(); }
     var cur = DIRS[dir];
     // Ters yöne anında dönüşü engelle
@@ -115,6 +119,12 @@
   });
 
   btn.addEventListener('click', start);
+  MiniOyun.oyun({
+    restart: start,
+    canPause: function () { return running; },
+    pause: function () { paused = true; clearInterval(timer); },
+    resume: function () { paused = false; if (running) timer = setInterval(tick, speed()); }
+  });
 
   snake = [[10, 10], [9, 10], [8, 10]];
   dir = nextDir = 'right';

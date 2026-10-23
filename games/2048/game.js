@@ -4,7 +4,7 @@
   var scoreEl = document.getElementById('score');
   var bestEl = document.getElementById('best');
   var msgEl = document.getElementById('msg');
-  var grid, score, won, over;
+  var grid, score, won, over, startBest;
 
   function emptyCells() {
     var cells = [];
@@ -85,25 +85,29 @@
   }
 
   function move(dir) {
-    if (over) return;
-    var moved = false;
+    if (over || MiniOyun.duraklatildi()) return;
+    var moved = false, merged = false;
     for (var i = 0; i < SIZE; i++) {
       var before = getLine(dir, i);
       var res = slideRow(before);
       if (res.row.join() !== before.join()) moved = true;
       setLine(dir, i, res.row);
       score += res.gained;
+      if (res.gained) merged = true;
     }
     if (!moved) return;
+    MiniOyun.ses(merged ? 'puan' : 'tik');
     addTile();
     render();
     if (!won && grid.some(function (row) { return row.indexOf(2048) !== -1; })) {
       won = true;
       msgEl.textContent = 'Tebrikler, 2048! Devam edebilirsin.';
+      MiniOyun.ses('kazan');
     }
     if (!canMove()) {
       over = true;
       msgEl.textContent = 'Oyun bitti! Skorun: ' + score;
+      MiniOyun.bitti({ baslik: 'Oyun bitti!', metin: 'Skorun: ' + score, rekor: score > startBest, kaybetti: score <= startBest, paylas: '2048\'de ' + score + ' puan yaptım! Sen kaç yaparsın?' });
     }
   }
 
@@ -111,6 +115,7 @@
     grid = [];
     for (var r = 0; r < SIZE; r++) grid.push([0, 0, 0, 0]);
     score = 0; won = false; over = false;
+    startBest = MiniOyun.getBest('2048');
     msgEl.textContent = '';
     addTile(); addTile();
     render();
@@ -135,5 +140,6 @@
   });
 
   document.getElementById('restart').addEventListener('click', start);
+  MiniOyun.oyun({ restart: start });
   start();
 })();

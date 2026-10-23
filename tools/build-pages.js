@@ -2,7 +2,7 @@
 // - tüm sayfalarda üst menü + kategori çubuğu ve alt bilgi
 // - ana sayfada öne çıkan oyun, kategori kutuları ve oyun ızgarası
 // - kategori/<slug>/ sayfaları ve kategori/ listesi
-// - oyun sayfalarında yol (breadcrumb) ve "Benzer oyunlar"
+// - oyun sayfalarında yol (breadcrumb), "Benzer oyunlar" ve ortak oyun çerçevesi betiği (js/oyun.js)
 // - sitemap.xml
 // Kullanım: node tools/build-pages.js          (dosyaları yazar)
 //           node tools/build-pages.js --check  (yalnızca güncel mi diye bakar)
@@ -170,6 +170,10 @@ for (const g of sorted) {
   }
   if (!html.includes('<!-- oto:benzer -->')) {
     html = html.replace(/(\n\s*<div class="ad-slot" aria-label="Reklam">Reklam alanı<\/div>\s*\n\s*<\/main>)/, '\n\n    <!-- oto:benzer -->\n    <!-- /oto:benzer -->$1');
+  }
+  // Ortak oyun çerçevesi game.js'den önce yüklenmeli
+  if (!html.includes('js/oyun.js')) {
+    html = html.replace('<script src="game.js"></script>', '<script src="../../js/oyun.js"></script>\n  <script src="game.js"></script>');
   }
   html = replaceBlock(html, 'yol', crumbs, f);
   const same = sorted.filter(x => x !== g && x.category === g.category);

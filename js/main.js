@@ -1,4 +1,4 @@
-// Ortak site betiği: çerez onayı, oyun arama, YENİ rozeti ve en yüksek skor yardımcıları.
+// Ortak site betiği: çerez onayı, oyun arama, YENİ rozeti, favori/son oynanan sıraları ve en yüksek skor yardımcıları.
 (function () {
   var CONSENT_KEY = 'mo_cookie_consent';
 
@@ -53,16 +53,46 @@
     });
   }
 
+  // Ana sayfada "Favorilerin" ve "Son oynadıkların" sıraları (veri js/oyun.js tarafından yazılır)
+  function initPersonal() {
+    var grid = document.getElementById('oyun-izgarasi');
+    var holder = document.getElementById('kisisel');
+    if (!grid || !holder) return;
+    function list(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; }
+    }
+    var rows = [['mo_favoriler', '❤️ Favorilerin'], ['mo_son_oynanan', '🕹️ Son oynadıkların']];
+    rows.forEach(function (r) {
+      var cards = list(r[0]).map(function (slug) {
+        return grid.querySelector('.game-card[href="games/' + slug + '/"]');
+      }).filter(Boolean);
+      if (!cards.length) return;
+      var h = document.createElement('h2');
+      h.className = 'section-title';
+      h.textContent = r[1];
+      var row = document.createElement('div');
+      row.className = 'kisisel-sira';
+      cards.forEach(function (c) { row.appendChild(c.cloneNode(true)); });
+      holder.appendChild(h);
+      holder.appendChild(row);
+      holder.hidden = false;
+    });
+  }
+
   window.MiniOyun = {
     getBest: function (game) {
       try { return parseInt(localStorage.getItem('mo_best_' + game), 10) || 0; } catch (e) { return 0; }
     },
-    // lowerIsBetter: hamle/süre gibi küçük değerin daha iyi olduğu oyunlar için.
+    // lowerIsBetter: hamle/süre gibi küçük değerin daha iyi olduğu oyunlar için. Yeni rekorsa true döner.
     setBest: function (game, score, lowerIsBetter) {
       try {
         var best = this.getBest(game);
-        if (lowerIsBetter ? (!best || score < best) : score > best) localStorage.setItem('mo_best_' + game, String(score));
+        if (lowerIsBetter ? (!best || score < best) : score > best) {
+          localStorage.setItem('mo_best_' + game, String(score));
+          return true;
+        }
       } catch (e) {}
+      return false;
     },
     hasAdConsent: function () { return getConsent() === 'accepted'; }
   };
@@ -70,6 +100,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initCookieBanner();
     markNewGames();
+    initPersonal();
     initSearch();
   });
 })();
