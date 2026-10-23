@@ -5,7 +5,7 @@
   var timeEl = document.getElementById('time');
   var msgEl = document.getElementById('msg');
   var bestEl = document.getElementById('best');
-  var first, second, locked, moves, matched, seconds, timer, flipBack;
+  var first, second, locked, moves, matched, seconds, timer, flipBack, paused;
   bestEl.textContent = MiniOyun.getBest('hafiza') || '-';
 
   function shuffle(arr) {
@@ -22,8 +22,9 @@
   }
 
   function flip(card) {
-    if (locked || card === first || card.classList.contains('done')) return;
+    if (locked || paused || MiniOyun.duraklatildi() || card === first || card.classList.contains('done')) return;
     startTimer();
+    MiniOyun.ses('tik');
     card.classList.add('open');
     card.setAttribute('aria-label', card.dataset.icon);
     if (!first) { first = card; return; }
@@ -37,7 +38,7 @@
       second.classList.add('done');
       first = second = null;
       matched++;
-      if (matched === ICONS.length) finish();
+      if (matched === ICONS.length) finish(); else MiniOyun.ses('puan');
     } else {
       locked = true;
       flipBack = setTimeout(function () {
@@ -55,9 +56,10 @@
   function finish() {
     clearInterval(timer);
     timer = null;
-    MiniOyun.setBest('hafiza', moves, true);
+    var rekor = MiniOyun.setBest('hafiza', moves, true);
     bestEl.textContent = MiniOyun.getBest('hafiza');
     msgEl.textContent = 'Tebrikler! ' + moves + ' hamlede, ' + seconds + ' saniyede bitirdin.';
+    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: moves + ' hamlede, ' + seconds + ' saniyede bitirdin.', rekor: rekor, paylas: 'Hafıza Kartları\'nı ' + moves + ' hamlede bitirdim! Sen kaç hamlede bitirirsin?' });
   }
 
   function start() {
@@ -65,6 +67,7 @@
     flipBack = null;
     clearInterval(timer);
     timer = null;
+    paused = false;
     first = second = null;
     locked = false;
     moves = matched = seconds = 0;
@@ -84,5 +87,11 @@
   }
 
   document.getElementById('restart').addEventListener('click', start);
+  MiniOyun.oyun({
+    restart: start,
+    canPause: function () { return !!timer; },
+    pause: function () { paused = true; clearInterval(timer); timer = null; },
+    resume: function () { paused = false; startTimer(); }
+  });
   start();
 })();

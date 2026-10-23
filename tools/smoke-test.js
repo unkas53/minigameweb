@@ -77,6 +77,10 @@ function chromePath() {
         const r = await page.request.get(clean);
         if (r.status() >= 400) errors.push(`kırık bağlantı ${clean} (${p || '/'} sayfasında)`);
       }
+      if (p.startsWith('games/')) {
+        const tools = await page.$$eval('.oyun-arac .oyun-btn', els => els.length);
+        if (tools < 3) errors.push(`[${vp.name}] ${p} sayfasında ortak oyun araç çubuğu yok (js/oyun.js yüklenmemiş olabilir)`);
+      }
       const abs = await page.$$eval('[href^="/"]:not([href^="//"]), [src^="/"]:not([src^="//"])', els => els.map(e => e.outerHTML.slice(0, 80)));
       abs.forEach(a => errors.push(`mutlak yol kullanılmış ${p || '/'}: ${a}`));
     }

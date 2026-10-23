@@ -1,0 +1,248 @@
+// Ortak oyun çerçevesi: her oyun sayfasına araç çubuğu (duraklat, yeniden başlat, ses, tam ekran,
+// nasıl oynanır, favori, paylaş), oyun sonu penceresi, ses efektleri ve "son oynananlar" kaydı ekler.
+// Oyunlar MiniOyun.oyun({...}) ile kaydolur; kaydolmayan oyunda yalnızca genel düğmeler görünür.
+(function () {
+  var SOUND_KEY = 'mo_ses';
+  var FAV_KEY = 'mo_favoriler';
+  var RECENT_KEY = 'mo_son_oynanan';
+  var match = location.pathname.match(/\/games\/([^/]+)\//);
+  var slug = match ? match[1] : '';
+  var box, bar, pauseBtn, pauseLayer, endDlg, helpDlg, toastEl, toastTimer;
+  var hooks = {}, paused = false, audio;
+
+  function load(key, def) {
+    try { var v = JSON.parse(localStorage.getItem(key)); return v === null ? def : v; } catch (e) { return def; }
+  }
+  function save(key, v) {
+    try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) {}
+  }
+
+  function soundOn() { return load(SOUND_KEY, true) !== false; }
+
+  // Web Audio ile üretilen kısa efektler; ses dosyası gerekmez.
+  var TONES = {
+    tik: [[660, 0.04]],
+    puan: [[880, 0.06], [1320, 0.08]],
+    kazan: [[523, 0.1], [659, 0.1], [784, 0.1], [1047, 0.2]],
+    kaybet: [[392, 0.15], [311, 0.15], [233, 0.3]]
+  };
+  function play(name) {
+    var notes = TONES[name];
+    if (!notes || !soundOn()) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      var t = audio.currentTime;
+      notes.forEach(function (n) {
+        var osc = audio.createOscillator(), gain = audio.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = n[0];
+        gain.gain.setValueAtTime(0.12, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + n[1]);
+        osc.connect(gain).connect(audio.destination);
+        osc.start(t);
+        osc.stop(t + n[1]);
+        t += n[1] * 0.9;
+      });
+    } catch (e) {}
+  }
+
+  function toast(text) {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'oyun-toast';
+      toastEl.setAttribute('role', 'status');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.textContent = text;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2200);
+  }
+
+  function share(text) {
+    var url = location.href.split('#')[0];
+    var title = document.querySelector('.game-box h1');
+    var data = { title: (title ? title.textContent : 'MiniOyun') + ' | MiniOyun', text: text || 'Bu oyunu MiniOyun\'da oyna!', url: url };
+    if (navigator.share) {
+      navigator.share(data).catch(function () {});
+      return;
+    }
+    var full = data.text + ' ' + url;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(full).then(function () { toast('Bağlantı kopyalandı'); }, function () { toast(full); });
+    } else {
+      toast(full);
+    }
+  }
+
+  function button(icon, label, onClick, cls) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'oyun-btn' + (cls ? ' ' + cls : '');
+    b.textContent = icon;
+    b.title = label;
+    b.setAttribute('aria-label', label);
+    b.addEventListener('click', onClick);
+    bar.appendChild(b);
+    return b;
+  }
+
+  function setPaused(p) {
+    if (!hooks.pause || paused === p) return;
+    if (p && hooks.canPause && !hooks.canPause()) return;
+    paused = p;
+    if (p) hooks.pause(); else hooks.resume();
+    pauseLayer.hidden = !p;
+    pauseBtn.textContent = p ? '▶️' : '⏸️';
+    pauseBtn.setAttribute('aria-label', p ? 'Devam et' : 'Duraklat');
+    pauseBtn.title = pauseBtn.getAttribute('aria-label');
+    if (!p) pauseBtn.focus();
+  }
+
+  function isFav() { return load(FAV_KEY, []).indexOf(slug) !== -1; }
+  function toggleFav(btn) {
+    var list = load(FAV_KEY, []).filter(function (s) { return s !== slug; });
+    var on = !isFav();
+    if (on) list.unshift(slug);
+    save(FAV_KEY, list);
+    drawFav(btn);
+    toast(on ? 'Favorilere eklendi' : 'Favorilerden çıkarıldı');
+  }
+  function drawFav(btn) {
+    var on = isFav();
+    btn.textContent = on ? '❤️' : '🤍';
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  function drawSound(btn) {
+    var on = soundOn();
+    btn.textContent = on ? '🔊' : '🔇';
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  function dialog(cls) {
+    var d = document.createElement('dialog');
+    d.className = 'oyun-dlg ' + cls;
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+    document.body.appendChild(d);
+    return d;
+  }
+
+  function openHelp() {
+    if (!helpDlg) {
+      helpDlg = dialog('oyun-yardim');
+      var desc = document.querySelector('.game-desc');
+      helpDlg.innerHTML = '<div class="oyun-dlg-body"></div><div class="oyun-dlg-actions"><button type="button" class="btn">Anladım</button></div>';
+      var body = helpDlg.querySelector('.oyun-dlg-body');
+      if (desc) body.innerHTML = desc.innerHTML;
+      else body.textContent = 'Bu oyun için açıklama yok.';
+      helpDlg.querySelector('.btn').addEventListener('click', function () { helpDlg.close(); });
+      helpDlg.addEventListener('close', function () { setPaused(false); });
+    }
+    setPaused(true);
+    helpDlg.showModal();
+  }
+
+  function fullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else box.requestFullscreen().catch(function () { toast('Tam ekran açılamadı'); });
+  }
+
+  function buildBar() {
+    box = document.querySelector('.game-box');
+    if (!box || bar) return;
+    bar = document.createElement('div');
+    bar.className = 'oyun-arac';
+    bar.setAttribute('role', 'toolbar');
+    bar.setAttribute('aria-label', 'Oyun araçları');
+    var h1 = box.querySelector('h1');
+    if (h1) h1.insertAdjacentElement('afterend', bar); else box.insertBefore(bar, box.firstChild);
+
+    if (hooks.pause) {
+      pauseBtn = button('⏸️', 'Duraklat', function () { setPaused(!paused); });
+      pauseLayer = document.createElement('div');
+      pauseLayer.className = 'oyun-duraklat';
+      pauseLayer.hidden = true;
+      pauseLayer.innerHTML = '<p>Duraklatıldı</p>';
+      var resume = document.createElement('button');
+      resume.type = 'button';
+      resume.className = 'btn';
+      resume.textContent = 'Devam et ▶';
+      resume.addEventListener('click', function () { setPaused(false); });
+      pauseLayer.appendChild(resume);
+      box.appendChild(pauseLayer);
+    }
+    if (hooks.restart) button('🔄', 'Yeniden başlat', function () { setPaused(false); hooks.restart(); });
+    var snd = button('🔊', 'Ses', function () { save(SOUND_KEY, !soundOn()); drawSound(snd); });
+    drawSound(snd);
+    if (box.requestFullscreen) button('⛶', 'Tam ekran', fullscreen);
+    button('❓', 'Nasıl oynanır', openHelp);
+    if (slug) {
+      var fav = button('🤍', 'Favori', function () { toggleFav(fav); });
+      drawFav(fav);
+    }
+    button('🔗', 'Paylaş', function () { share(); });
+  }
+
+  // Oyun sonu penceresi. opts: { baslik, metin, rekor, paylas }
+  function finish(opts) {
+    play(opts.kaybetti ? 'kaybet' : 'kazan');
+    if (!endDlg) {
+      endDlg = dialog('oyun-sonu');
+      endDlg.innerHTML = '<div class="oyun-sonu-ikon" aria-hidden="true"></div><h2></h2><p class="oyun-sonu-metin"></p><p class="oyun-sonu-rekor">🏆 Yeni rekor!</p>' +
+        '<div class="oyun-dlg-actions"><button type="button" class="btn" data-a="tekrar">Tekrar oyna</button>' +
+        '<button type="button" class="btn btn-ghost" data-a="paylas">Paylaş</button>' +
+        '<button type="button" class="btn btn-ghost" data-a="kapat">Kapat</button></div>';
+      endDlg.addEventListener('click', function (e) {
+        var a = e.target.getAttribute && e.target.getAttribute('data-a');
+        if (a === 'tekrar') { endDlg.close(); if (hooks.restart) hooks.restart(); }
+        else if (a === 'paylas') share(endDlg.dataset.paylas);
+        else if (a === 'kapat') endDlg.close();
+      });
+    }
+    endDlg.querySelector('.oyun-sonu-ikon').textContent = opts.kaybetti ? '😵' : (opts.rekor ? '🏆' : '🎉');
+    endDlg.querySelector('h2').textContent = opts.baslik || 'Oyun bitti!';
+    endDlg.querySelector('.oyun-sonu-metin').textContent = opts.metin || '';
+    endDlg.querySelector('.oyun-sonu-rekor').hidden = !opts.rekor;
+    endDlg.querySelector('[data-a="tekrar"]').hidden = !hooks.restart;
+    endDlg.dataset.paylas = opts.paylas || opts.metin || '';
+    // Oyuncunun son hamleyi görmesi için kısa bir gecikme
+    setTimeout(function () { if (!endDlg.open) endDlg.showModal(); }, 600);
+  }
+
+  function rememberPlay() {
+    if (!slug) return;
+    var list = load(RECENT_KEY, []).filter(function (s) { return s !== slug; });
+    list.unshift(slug);
+    save(RECENT_KEY, list.slice(0, 12));
+  }
+
+  // Sekme gizlenince oyunu duraklat
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) setPaused(true);
+  });
+  document.addEventListener('keydown', function (e) {
+    if ((e.key === 'p' || e.key === 'P' || e.key === 'Escape') && hooks.pause && !(endDlg && endDlg.open) && !(helpDlg && helpDlg.open)) {
+      if (e.key === 'Escape' && !paused) return;
+      setPaused(!paused);
+    }
+  });
+
+  window.MiniOyun = window.MiniOyun || {};
+  // hooks: { restart, pause, resume, canPause }. pause/resume birlikte verilmelidir.
+  MiniOyun.oyun = function (h) {
+    hooks = h || {};
+    if (bar) { bar.remove(); bar = null; }
+    if (pauseLayer) { pauseLayer.remove(); pauseLayer = null; }
+    if (document.readyState !== 'loading') buildBar();
+  };
+  MiniOyun.ses = play;
+  MiniOyun.bitti = finish;
+  MiniOyun.paylas = share;
+  // Duraklatıldıysa veya bir pencere açıksa true; oyunlar girişleri bu sırada yok saymalı.
+  MiniOyun.duraklatildi = function () { return paused || !!(endDlg && endDlg.open) || !!(helpDlg && helpDlg.open); };
+
+  rememberPlay();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildBar);
+  else buildBar();
+})();

@@ -17,7 +17,7 @@
   var againEl = document.getElementById('again');
 
   var level, size, total, cells, els, placed, over, flags, opened, seconds, timer, cursor, flagMode = false;
-  var pressTimer = null, suppressClick = false, lastTouch = 0;
+  var pressTimer = null, suppressClick = false, lastTouch = 0, paused = false;
 
   // Süre en iyisi en küçük değerdir; MiniOyun.setBest büyük skoru tuttuğu için ayrı anahtar kullanılır.
   function bestKey() { return 'mayin-tarlasi-en-iyi-' + level; }
@@ -124,7 +124,7 @@
 
   function toggleFlag(i) {
     var cell = cells[i];
-    if (over || cell.open) return;
+    if (over || paused || MiniOyun.duraklatildi() || cell.open) return;
     cell.flag = !cell.flag;
     flags += cell.flag ? 1 : -1;
     updateCounter();
@@ -132,6 +132,7 @@
   }
 
   function act(i, wantFlag) {
+    if (paused || MiniOyun.duraklatildi()) return;
     setCursor(i);
     if (cells[i].open) { chord(i); return; }
     if (wantFlag) toggleFlag(i); else open(i);
@@ -152,6 +153,7 @@
     });
     faceEl.textContent = '😵';
     end('Mayına bastın! Tekrar dene.');
+    MiniOyun.bitti({ baslik: 'Mayına bastın!', metin: 'Bir dahakine daha dikkatli ol.', kaybetti: true, paylas: 'Mayın Tarlası\'nda şansını dene!' });
   }
 
   function win() {
@@ -164,7 +166,9 @@
     var prev = getBest();
     saveBest(seconds);
     showBest();
-    end('Tebrikler! ' + seconds + ' saniyede temizledin.' + (!prev || seconds < prev ? ' Yeni rekor!' : ''));
+    var rekor = !prev || seconds < prev;
+    end('Tebrikler! ' + seconds + ' saniyede temizledin.' + (rekor ? ' Yeni rekor!' : ''));
+    MiniOyun.bitti({ baslik: 'Tebrikler!', metin: seconds + ' saniyede temizledin.', rekor: rekor, paylas: 'Mayın Tarlası\'nı ' + seconds + ' saniyede temizledim! Sen kaç saniyede bitirirsin?' });
   }
 
   function setCursor(i) {
@@ -176,6 +180,7 @@
 
   function start() {
     stopTimer();
+    paused = false;
     level = levelEl.value;
     size = LEVELS[level].size;
     total = size * size;
@@ -275,6 +280,12 @@
   faceEl.addEventListener('click', start);
   againEl.addEventListener('click', start);
   levelEl.addEventListener('change', start);
+  MiniOyun.oyun({
+    restart: start,
+    canPause: function () { return placed && !over; },
+    pause: function () { paused = true; stopTimer(); },
+    resume: function () { paused = false; if (placed && !over) startTimer(); }
+  });
 
   start();
 })();
