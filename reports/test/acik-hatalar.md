@@ -3,7 +3,8 @@
 Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test.md` dosyasına bakın.
 
 ## H-1 | Hafıza Kartları: eşleşmeyen kartlar kapanmadan "Yeni oyun"a basınca JS hatası
-- durum: duzeltildi
+- durum: dogrulandi
+- not: 2026-10-23 22:08 tekrar test edildi, geçiyor (yeni oyundan sonra açılan kart açık kalıyor, JS hatası yok).
 - not: 72a12dc ile düzeltildi; start() bekleyen setTimeout'u clearTimeout ile iptal ediyor.
 - onem: orta
 - sayfa: games/hafiza/
@@ -13,7 +14,8 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-23 20:07
 
 ## H-2 | Hafıza Kartları: en iyi skor kaydedilmiyor
-- durum: duzeltildi
+- durum: dogrulandi
+- not: 2026-10-23 22:08 tekrar test edildi, geçiyor (en az hamle kaydediliyor ve yenilemeden sonra 'En iyi' alanında görünüyor).
 - not: 72a12dc ile düzeltildi; en az hamle 'En iyi' alanında gösteriliyor ve MiniOyun.setBest('hafiza', hamle, true) ile kaydediliyor.
 - onem: dusuk
 - sayfa: games/hafiza/
