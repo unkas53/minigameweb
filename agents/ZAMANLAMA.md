@@ -10,6 +10,12 @@ Sahibin seçimi (2026-10-23): karma zamanlama.
 | MiniOyun 4 - Geliştirici ajanı | `0 * * * *` (saatlik) | `agents/4-gelistirici.md` |
 | MiniOyun 5 - Test ajanı | `0 * * * *` (saatlik) | `agents/5-test.md` |
 | MiniOyun 6 - Düzeltici ajanı | `0 * * * *` (saatlik) | `agents/6-duzeltici.md` |
+| MiniOyun 7 - Oyun öneri ajanı | `23 */6 * * *` (6 saatte bir, UTC 00:23, 06:23, 12:23, 18:23) | `agents/7-oyun-oneri.md` |
+| MiniOyun 8 - Oyun uygulama ajanı | `33 * * * *` (saatlik, :33) | `agents/8-oyun-uygulayici.md` |
+| MiniOyun 9 - Site öneri ajanı | `43 3-23/6 * * *` (6 saatte bir, UTC 03:43, 09:43, 15:43, 21:43) | `agents/9-site-oneri.md` |
+| MiniOyun 10 - Site uygulama ajanı | `48 * * * *` (saatlik, :48) | `agents/10-site-uygulayici.md` |
+
+Not: saatlik görevler sunucu tarafından oluşturuldukları dakikaya sabitlenir (1-6 için :03/:04). 7-10 bilerek saatin ikinci yarısına konuldu; böylece :03'teki geliştirme/test/düzeltme turlarıyla aynı anda push etmezler.
 
 Her görev her çalışmada yeni bir oturum açar ve aşağıdaki istemi `{AJAN}` ve `{DOSYA}` doldurulmuş olarak kullanır:
 
