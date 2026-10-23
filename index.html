@@ -40,6 +40,7 @@
         <a class="cat-chip" href="kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
         <a class="cat-chip" href="kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
         <a class="cat-chip" href="kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
       </div>
     </nav>
   </header>
@@ -55,19 +56,19 @@
         </form>
         <ul class="hero-stats">
         <!-- oto:sayilar -->
-      <li><b>5</b> oyun</li>
-        <li><b>3</b> kategori</li>
+      <li><b>6</b> oyun</li>
+        <li><b>4</b> kategori</li>
         <li><b>%100</b> ücretsiz</li>
       <!-- /oto:sayilar -->
         </ul>
       </div>
       <!-- oto:one-cikan -->
-      <a class="featured" href="games/sudoku/" style="--c1:#5aa9ff;--c2:#3b5bdb">
+      <a class="featured" href="games/dort-baglanti/" style="--c1:#f472b6;--c2:#be185d">
         <span class="featured-label">✨ En yeni oyun</span>
-        <span class="featured-icon" aria-hidden="true">🔢</span>
-        <span class="featured-title">Sudoku</span>
-        <span class="featured-desc">Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.</span>
-        <span class="featured-meta">🧩 Bulmaca</span>
+        <span class="featured-icon" aria-hidden="true">🔴</span>
+        <span class="featured-title">Dört Bağlantı</span>
+        <span class="featured-desc">Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.</span>
+        <span class="featured-meta">♟️ Strateji</span>
         <span class="btn btn-play">Hemen oyna ▶</span>
       </a>
       <!-- /oto:one-cikan -->
@@ -101,6 +102,11 @@
         <span class="cat-name">Hafıza</span>
         <span class="cat-count">1 oyun</span>
       </a>
+      <a class="cat-tile" href="kategori/strateji/" style="--c1:#f472b6;--c2:#be185d">
+        <span class="cat-icon" aria-hidden="true">♟️</span>
+        <span class="cat-name">Strateji</span>
+        <span class="cat-count">1 oyun</span>
+      </a>
       <!-- /oto:kategoriler -->
     </div>
 
@@ -108,6 +114,14 @@
     <!-- Kartlar games.json'dan üretilir: oyunu games.json'a ekleyip "npm run build" çalıştırın -->
     <div class="game-grid" id="oyun-izgarasi">
       <!-- oto:oyunlar -->
+      <a class="game-card" href="games/dort-baglanti/" data-title="dört bağlantı" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#be185d"><span class="thumb-icon" aria-hidden="true">🔴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Dört Bağlantı</h3>
+          <p>Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
       <a class="game-card" href="games/sudoku/" data-title="sudoku" data-added="2026-10-23">
         <div class="game-thumb" style="--c1:#5aa9ff;--c2:#3b5bdb"><span class="thumb-icon" aria-hidden="true">🔢</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
@@ -172,6 +186,7 @@
         <a href="kategori/bulmaca/">Bulmaca Oyunları</a>
           <a href="kategori/arcade/">Arcade Oyunları</a>
           <a href="kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="kategori/strateji/">Strateji Oyunları</a>
       </div>
       <div class="footer-col">
         <h2>Site</h2>

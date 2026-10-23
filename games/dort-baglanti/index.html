@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dört Bağlantı Oyna - Ücretsiz Online 4 Taş Birleştirme | MiniOyun</title>
+  <meta name="description" content="Dört Bağlantı (4 taş birleştirme) oyununu ücretsiz oyna. Bilgisayara karşı 3 zorluk, aynı cihazda iki kişi veya bağlantıyla arkadaşınla çevrim içi.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/dort-baglanti/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .db-ayar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 12px; }
+    .db-ayar select { padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; font-weight: 700; }
+    .db-durum { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 2em; margin-bottom: 10px; font-weight: 800; text-align: center; }
+    .db-tas-ornek { display: inline-block; width: 1em; height: 1em; border-radius: 50%; }
+    .db-tahta { --size: min(84vw, 470px); width: var(--size); display: grid; grid-template-columns: repeat(7, 1fr); gap: calc(var(--size) / 70); padding: calc(var(--size) / 50); border-radius: 18px; background: linear-gradient(180deg, #3b5bdb, #2b3fa8); box-shadow: inset 0 -6px 0 rgba(0,0,0,.25); touch-action: manipulation; user-select: none; outline: none; }
+    .db-tahta:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+    .db-hucre { aspect-ratio: 1; border-radius: 50%; background: var(--bg); cursor: pointer; position: relative; overflow: hidden; }
+    .db-tahta.kilit .db-hucre { cursor: default; }
+    .db-hucre.secili { background: #1c1946; }
+    .db-hucre::after { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(0); }
+    .db-hucre.k::after, .db-tas-ornek.k { background: radial-gradient(circle at 35% 30%, #ff8a8a, #e03131 60%, #a51111); }
+    .db-hucre.s::after, .db-tas-ornek.s { background: radial-gradient(circle at 35% 30%, #fff1a6, #fcc419 60%, #c78f00); }
+    .db-hucre.k::after, .db-hucre.s::after { transform: none; }
+    .db-hucre.yeni::after { animation: db-dus .35s cubic-bezier(.5, 0, .75, 0) both; }
+    .db-hucre.dort { box-shadow: 0 0 0 4px #fff inset; }
+    .db-hucre.dort::after { animation: db-parla .9s ease-in-out infinite alternate; }
+    @keyframes db-dus { from { transform: translateY(calc(var(--d, 6) * -110%)); } to { transform: none; } }
+    @keyframes db-parla { to { filter: brightness(1.35); } }
+    .db-oda { width: min(84vw, 470px); margin: 0 auto 12px; padding: 12px; border-radius: 14px; background: var(--surface-2); text-align: center; }
+    .db-oda p { margin: 0 0 8px; }
+    .db-oda-kod { font-size: 1.4rem; font-weight: 900; letter-spacing: .2em; color: var(--accent); }
+    .db-oda-satir { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .db-oda input { width: 9em; padding: 8px 12px; border-radius: 12px; border: 2px solid var(--surface); background: var(--bg); color: var(--text); font: inherit; font-weight: 800; text-transform: uppercase; letter-spacing: .15em; text-align: center; }
+    @media (prefers-reduced-motion: reduce) { .db-hucre.yeni::after, .db-hucre.dort::after { animation: none; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Dört Bağlantı","url":"https://unkas53.github.io/minigameweb/games/dort-baglanti/","genre":"Strateji","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","playMode":["SinglePlayer","MultiPlayer"],"offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip active" href="../../kategori/strateji/" aria-current="page" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/strateji/">Strateji Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Dört Bağlantı</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Strateji Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/strateji/"},{"@type":"ListItem","position":3,"name":"Dört Bağlantı","item":"https://unkas53.github.io/minigameweb/games/dort-baglanti/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Dört Bağlantı</h1>
+        <div class="db-ayar">
+          <label class="sr-only" for="mod">Oyun modu</label>
+          <select id="mod">
+            <option value="pc">🤖 Bilgisayara karşı</option>
+            <option value="iki">👥 Aynı cihazda iki kişi</option>
+            <option value="cevrimici" hidden>🌍 Arkadaşınla çevrim içi</option>
+          </select>
+          <label class="sr-only" for="level">Zorluk</label>
+          <select id="level">
+            <option value="kolay">Kolay</option>
+            <option value="orta" selected>Orta</option>
+            <option value="zor">Zor</option>
+          </select>
+          <button class="btn" id="restart" type="button">Yeni oyun</button>
+        </div>
+        <div class="db-oda" id="oda" hidden></div>
+        <div class="db-durum" id="durum" role="status" aria-live="polite"></div>
+        <div class="db-tahta" id="tahta" tabindex="0" role="grid" aria-label="Dört Bağlantı tahtası. Sol ve sağ oklarla sütun seç, Enter ile taş bırak."></div>
+        <div class="game-stats" style="margin-top:14px">
+          <div class="stat"><small>Galibiyet</small><span id="galibiyet">0</span></div>
+          <div class="stat"><small>En hızlı galibiyet</small><span id="best">-</span></div>
+        </div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Dört Bağlantı nasıl oynanır?</h2>
+      <p>Dört Bağlantı, 7 sütun ve 6 satırlık dik bir tahtada iki oyuncuyla oynanan klasik bir strateji oyunudur. Oyuncular sırayla bir sütun seçer ve taşlarını o sütuna bırakır; taş, sütundaki en alttaki boş yere düşer. Kendi renginden dört taşı yatay, dikey ya da çapraz olarak yan yana getiren ilk oyuncu kazanır. Tahta dolar ve kimse dört taşı birleştiremezse oyun berabere biter.</p>
+      <p>Bir sütuna tıklayarak ya da dokunarak taş bırakabilirsin. Klavyede sol ve sağ ok tuşlarıyla sütun seçip Enter veya boşlukla taşı bırakabilir, 1-7 rakam tuşlarıyla doğrudan sütun seçebilirsin.</p>
+      <h2>Oyun modları</h2>
+      <p><strong>Bilgisayara karşı</strong> modunda üç zorluk vardır: Kolay seviyedeki rakip bazen dikkatsizdir, Orta seviyedeki birkaç hamle ilerisini düşünür, Zor seviyedeki ise tuzaklarını hemen fark eder. Bilgisayarı ne kadar az hamlede yenersen rekorun o kadar iyi olur. <strong>Aynı cihazda iki kişi</strong> modunda bir telefonu veya bilgisayarı sırayla kullanırsınız. <strong>Çevrim içi</strong> modunda bir oda kurup bağlantıyı arkadaşına gönderirsin; arkadaşın bağlantıyı açınca oyun başlar ve her ikiniz de kendi cihazınızdan oynarsınız.</p>
+      <h2>İpuçları</h2>
+      <p>Orta sütun en değerli sütundur, çünkü en çok dörtlüye katılabilir; ilk taşını oraya koymak iyi bir başlangıçtır. Rakibin üç taşı yan yana geldiğinde dördüncü yeri hemen kapat. Aynı anda iki ayrı tehdit oluşturursan rakibin ikisini birden engelleyemez. Bir taş bırakmadan önce, hemen üstündeki yeri rakibine kazandırıp kazandırmayacağını da düşün.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/sudoku/" data-title="sudoku" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5aa9ff;--c2:#3b5bdb"><span class="thumb-icon" aria-hidden="true">🔢</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Sudoku</h3>
+          <p>Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mayın Tarlası</h3>
+          <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/hafiza/" data-title="hafıza kartları" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#a78bfa;--c2:#6d28d9"><span class="thumb-icon" aria-hidden="true">🃏</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Hafıza Kartları</h3>
+          <p>Kartları çevir, eşleri en az hamlede bul.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/yilan/" data-title="yılan" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5ee0b8;--c2:#2a9d8f"><span class="thumb-icon" aria-hidden="true">🐍</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Yılan</h3>
+          <p>Yemleri topla, uzadıkça kendine çarpma.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/strateji/">Tüm strateji oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="hamle"></script>
+  <script src="game.js"></script>
+</body>
+</html>

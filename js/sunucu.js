@@ -5,8 +5,8 @@
 // Kütüphane (js/vendor/supabase-*.js) yalnızca sunucu ilk kez gerektiğinde yüklenir.
 // Oyun sayfalarında js/oyun.js'den önce yüklenmelidir.
 (function () {
-  var SUPABASE_URL = '';
-  var SUPABASE_ANAHTAR = '';
+  var SUPABASE_URL = 'https://ayatemjvbwysvkzphqbn.supabase.co';
+  var SUPABASE_ANAHTAR = 'sb_publishable_u0RCQXZMxubEMCH9DUO5ZQ_VsVvS6Wr';
   var KUTUPHANE = 'vendor/supabase-2.117.2.js';
   var PROFILE_KEY = 'mo_profil';
 
@@ -14,7 +14,8 @@
   var jsDir = me ? me.src.replace(/[^/]*$/, '') : '';
   var siteRoot = jsDir.replace(/js\/$/, '');
   var clientP = null, sessionP = null, backupTimer = null;
-  var hazir = !!(SUPABASE_URL && SUPABASE_ANAHTAR);
+  // Testler window.MO_SUNUCU_KAPALI ile sunucuyu kapatabilir
+  var hazir = !!(SUPABASE_URL && SUPABASE_ANAHTAR) && !window.MO_SUNUCU_KAPALI;
 
   function load(key, def) {
     try { var v = JSON.parse(localStorage.getItem(key)); return v === null ? def : v; } catch (e) { return def; }
@@ -29,7 +30,7 @@
 
   // Testler window.MO_SUNUCU_TEST ile sahte bir istemci verebilir.
   function istemci() {
-    if (!hazir && !window.MO_SUNUCU_TEST) return Promise.reject(new Error('sunucu ayarlı değil'));
+    if (!MiniOyun.sunucu.hazir) return Promise.reject(new Error('sunucu ayarlı değil'));
     if (clientP) return clientP;
     clientP = new Promise(function (resolve, reject) {
       if (window.MO_SUNUCU_TEST) return resolve(window.MO_SUNUCU_TEST);
@@ -80,7 +81,7 @@
 
   // Varsa mevcut kullanıcı; yoksa null (yeni oturum açmaz)
   function kullanici() {
-    if (!hazir && !window.MO_SUNUCU_TEST) return Promise.resolve(null);
+    if (!MiniOyun.sunucu.hazir) return Promise.resolve(null);
     return istemci().then(function (c) {
       return c.auth.getSession().then(function (r) { return (r.data && r.data.session && r.data.session.user) || null; });
     }, function () { return null; });
