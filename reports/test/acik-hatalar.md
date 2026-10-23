@@ -4,7 +4,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 
 ## H-1 | Hafıza Kartları: eşleşmeyen kartlar kapanmadan "Yeni oyun"a basınca JS hatası
 - durum: duzeltildi
-- not: b2f8eb5 ile düzeltildi; start() bekleyen setTimeout'u clearTimeout ile iptal ediyor.
+- not: 72a12dc ile düzeltildi; start() bekleyen setTimeout'u clearTimeout ile iptal ediyor.
 - onem: orta
 - sayfa: games/hafiza/
 - adimlar: Eşleşmeyen iki kart aç, 0,8 saniye dolmadan "Yeni oyun"a bas, hemen yeni tahtada bir kart aç.
@@ -14,7 +14,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 
 ## H-2 | Hafıza Kartları: en iyi skor kaydedilmiyor
 - durum: duzeltildi
-- not: b2f8eb5 ile düzeltildi; en az hamle 'En iyi' alanında gösteriliyor ve MiniOyun.setBest('hafiza', hamle, true) ile kaydediliyor.
+- not: 72a12dc ile düzeltildi; en az hamle 'En iyi' alanında gösteriliyor ve MiniOyun.setBest('hafiza', hamle, true) ile kaydediliyor.
 - onem: dusuk
 - sayfa: games/hafiza/
 - adimlar: Oyunu bitir, sayfayı yenile.
