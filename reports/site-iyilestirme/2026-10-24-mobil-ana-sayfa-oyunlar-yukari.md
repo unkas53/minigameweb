@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 baslik: Mobil ana sayfada oyun ızgarasını yukarı taşı
 oncelik: 4
 boyut: orta
