@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kızma Birader Oyna - Ücretsiz Online | MiniOyun</title>
+  <meta name="description" content="Kızma Birader'i ücretsiz oyna: zar at, rakip piyonları kır, 4 piyonunu eve ilk sen sok. Bilgisayara karşı 24 maçlık turnuva, yıldızlar ve temalar.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/kizma-birader/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .kb-alan { width: min(100%, 520px); margin: 0 auto; }
+    .kb-menu { padding: 12px; border-radius: 16px; background: var(--surface); text-align: center; }
+    .kb-menu h2 { margin: 10px 0 6px; font-size: 1.1rem; }
+    .kb-menu p { margin: 0 0 8px; color: var(--muted); font-size: .9rem; }
+    .kb-ozet { display: flex; gap: 8px; justify-content: center; margin-bottom: 6px; }
+    .kb-ozet .stat { padding: 4px 12px; }
+    .kb-lig { margin-bottom: 10px; text-align: left; }
+    .kb-lig h3 { margin: 0 0 4px; font-size: .95rem; }
+    .kb-lig h3 small { color: var(--muted); font-weight: 600; }
+    .kb-lig.kilitli h3 { color: var(--muted); }
+    .kb-maclar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+    .kb-mac { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px 2px; border-radius: 10px; border: 0; background: linear-gradient(135deg, #ef4444, #3b82f6); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .kb-mac.final { background: linear-gradient(135deg, #eab308, #22c55e); }
+    .kb-mac b { font-size: 1rem; line-height: 1.1; }
+    .kb-mac span { font-size: .72rem; color: #fff3b0; letter-spacing: .03em; min-height: 1em; }
+    .kb-mac.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .kb-secenek { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 6px; }
+    .kb-secenek label { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 10px; background: var(--surface-2); cursor: pointer; font-size: .9rem; }
+    .kb-varyant { display: flex !important; text-align: left; }
+    .kb-varyant small { color: var(--muted); }
+    .kb-varyant.kilitli { opacity: .6; cursor: default !important; }
+    .kb-gorevler { list-style: none; margin: 0 0 6px; padding: 0; text-align: left; font-size: .9rem; }
+    .kb-gorevler li { padding: 5px 8px; border-radius: 10px; background: var(--surface-2); margin-bottom: 4px; }
+    .kb-gorevler li.tamam { opacity: .7; }
+    .kb-gorevler small { color: var(--muted); }
+    .kb-sec { padding: 6px 10px; border-radius: 10px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+    .kb-sec.secili { border-color: var(--accent); }
+    .kb-sec:disabled { opacity: .5; cursor: not-allowed; }
+    .kb-ist { font-size: .82rem; color: var(--muted); margin-top: 6px; }
+    .kb-ust { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; font-size: .85rem; color: var(--muted); }
+    .kb-ust .btn { padding: 6px 10px; font-size: .8rem; }
+    .kb-oyuncular { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 4px; margin-bottom: 6px; }
+    .kb-oyuncu { display: flex; align-items: center; gap: 4px; padding: 4px 6px; border-radius: 10px; background: var(--surface-2); font-size: .78rem; border: 2px solid transparent; min-width: 0; }
+    .kb-oyuncu .ad { flex: 1; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .kb-oyuncu .evde { white-space: nowrap; }
+    .kb-oyuncu.aktif { border-color: var(--rk); box-shadow: 0 0 10px var(--rk); }
+    .r0 { --rk: #ef4444; } .r1 { --rk: #3b82f6; } .r2 { --rk: #22c55e; } .r3 { --rk: #eab308; }
+    .kb-oyuncu .av { font-size: 1.1rem; }
+    .kb-tahta { --zemin: #fdf3dc; --kare: #fffaf0; --cizgi: #8a6d3b; display: grid; grid-template-columns: repeat(11, 1fr); gap: 2px; padding: 6px; border-radius: 14px; background: var(--zemin); aspect-ratio: 1; width: 100%; box-sizing: border-box; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+    .kb-tahta.tema-gece { --zemin: #1e1b4b; --kare: #312e81; --cizgi: #a5b4fc; }
+    .kb-tahta.tema-ahsap { --zemin: #92400e; --kare: #fcd9a8; --cizgi: #451a03; }
+    .kb-tahta.tema-deniz { --zemin: #0c4a6e; --kare: #e0f2fe; --cizgi: #082f49; }
+    .kb-tahta.tema-bahce { --zemin: #166534; --kare: #ecfccb; --cizgi: #14532d; }
+    .kb-tahta.tema-altin { --zemin: linear-gradient(135deg, #fde68a, #b45309); --kare: #fffbeb; --cizgi: #78350f; }
+    .kb-sec.tema-gece { background: #312e81; } .kb-sec.tema-ahsap { background: #92400e; } .kb-sec.tema-deniz { background: #0c4a6e; } .kb-sec.tema-bahce { background: #166534; } .kb-sec.tema-altin { background: #b45309; }
+    .kb-h { position: relative; display: flex; align-items: center; justify-content: center; border-radius: 50%; aspect-ratio: 1; min-width: 0; font-size: .9rem; }
+    .kb-h.yol { background: var(--kare); box-shadow: inset 0 0 0 2px var(--cizgi); }
+    .kb-h.cikis { background: var(--rk); }
+    .kb-tahta.guvenli .kb-h.guv::before { content: '★'; position: absolute; color: var(--cizgi); opacity: .5; font-size: .8em; }
+    .kb-h.ev { background: var(--rk); opacity: .85; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .25); }
+    .kb-h.bahce { background: color-mix(in srgb, var(--rk) 35%, transparent); box-shadow: inset 0 0 0 2px var(--rk); }
+    .kb-h.orta { font-size: 1.2rem; }
+    .kb-piyon { position: absolute; inset: 9%; border-radius: 50%; border: 2px solid rgba(0, 0, 0, .45); background: radial-gradient(circle at 35% 30%, #fff8, transparent 45%), var(--rk); box-shadow: 0 2px 3px rgba(0, 0, 0, .45); padding: 0; font-size: .7em; line-height: 1; color: #fff; cursor: default; display: flex; align-items: center; justify-content: center; transition: transform .1s; z-index: 1; }
+    .kb-piyon.oynar { cursor: pointer; animation: kb-parla 0.9s ease-in-out infinite; z-index: 2; }
+    .kb-piyon.secili { outline: 3px solid #fff; outline-offset: 1px; }
+    @keyframes kb-parla { 50% { box-shadow: 0 0 12px 4px #fff; } }
+    .kb-alt { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+    .kb-zarlar { display: flex; gap: 6px; }
+    .kb-zar { width: 46px; height: 46px; border-radius: 10px; background: #fff; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); padding: 6px; box-sizing: border-box; box-shadow: 0 3px 0 #94a3b8; border: 3px solid transparent; cursor: pointer; }
+    .kb-zar i { display: block; margin: auto; width: 8px; height: 8px; border-radius: 50%; }
+    .kb-zar i.n { background: #111827; }
+    .kb-zar.secili { border-color: var(--accent); }
+    .kb-zar.donuyor { animation: kb-don .38s ease-out; }
+    @keyframes kb-don { from { transform: rotate(-200deg) scale(.6); } to { transform: none; } }
+    .kb-alt .btn { flex: none; padding: 12px 18px; font-size: 1rem; touch-action: manipulation; }
+    .kb-bilgi { flex: 1; margin: 0; font-size: .85rem; color: var(--muted); min-width: 0; }
+    .kb-balon { margin: 6px 0 0; padding: 6px 10px; border-radius: 12px; background: var(--surface-2); font-size: .85rem; }
+    @media (max-width: 420px) { .kb-maclar { grid-template-columns: repeat(3, 1fr); } .kb-zar { width: 40px; height: 40px; padding: 5px; } .kb-zar i { width: 7px; height: 7px; } .kb-alt .btn { padding: 10px 12px; } }
+    @media (prefers-reduced-motion: reduce) { .kb-piyon.oynar { animation: none; outline: 2px dashed #fff; } .kb-zar.donuyor { animation: none; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Kızma Birader","url":"https://unkas53.github.io/minigameweb/games/kizma-birader/","genre":"Strateji","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip active" href="../../kategori/strateji/" aria-current="page" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/strateji/">Strateji Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Kızma Birader</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Strateji Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/strateji/"},{"@type":"ListItem","position":3,"name":"Kızma Birader","item":"https://unkas53.github.io/minigameweb/games/kizma-birader/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Kızma Birader</h1>
+        <div class="kb-alan">
+          <div class="kb-menu" id="menu">
+            <div class="kb-ozet">
+              <div class="stat"><small>Yıldız</small><span id="yildiz-ozet">⭐ 0</span></div>
+              <div class="stat"><small>Galibiyet</small><span id="galibiyet-ozet">🏆 0</span></div>
+            </div>
+            <div id="gunluk-alan" hidden>
+              <h2>📅 Günlük maç</h2>
+              <p>Bugün herkes aynı zar dizisiyle Hesapçı Hikmet'e karşı oynuyor. En yüksek puanı sen yap!</p>
+              <button class="btn" type="button" id="gunluk-basla">Günlük maça başla</button>
+            </div>
+            <div id="kampanya-alan">
+              <h2>🏆 Turnuva</h2>
+              <p>4 ligde 24 maç. Her ligin son maçı 4 kişilik final; finali kazan, sonraki ligi aç.</p>
+              <div id="ligler"></div>
+              <h2>🎲 Serbest oyun</h2>
+              <div class="kb-secenek" role="radiogroup" aria-label="Oyuncu sayısı">
+                <label><input type="radio" name="kisi" value="2" checked> 2 oyuncu</label>
+                <label><input type="radio" name="kisi" value="4"> 4 oyuncu</label>
+              </div>
+              <div class="kb-secenek" role="radiogroup" aria-label="Zorluk">
+                <label><input type="radio" name="zorluk" value="kolay"> Kolay</label>
+                <label><input type="radio" name="zorluk" value="orta" checked> Orta</label>
+                <label><input type="radio" name="zorluk" value="usta"> Usta</label>
+              </div>
+              <div class="kb-secenek" id="varyantlar"></div>
+              <button class="btn" type="button" id="serbest-basla">Bilgisayara karşı başla</button>
+              <h2>👥 Aynı cihazda</h2>
+              <div class="kb-secenek" role="radiogroup" aria-label="Kişi sayısı">
+                <label><input type="radio" name="yerel-kisi" value="2" checked> 2 kişi</label>
+                <label><input type="radio" name="yerel-kisi" value="3"> 3 kişi</label>
+                <label><input type="radio" name="yerel-kisi" value="4"> 4 kişi</label>
+              </div>
+              <button class="btn btn-ghost" type="button" id="yerel-basla">Arkadaşlarla başla</button>
+              <h2>📋 Günlük görevler</h2>
+              <ul class="kb-gorevler" id="gorevler"></ul>
+              <h2>🎨 Tahta ve piyon</h2>
+              <div class="kb-secenek" id="temalar" aria-label="Tahta teması"></div>
+              <div class="kb-secenek" id="piyonlar" aria-label="Piyon görünümü"></div>
+              <div class="kb-secenek"><label><input type="checkbox" id="otomatik"> Tek seçenek varsa piyonu otomatik oynat</label></div>
+              <p class="kb-ist" id="istatistik"></p>
+            </div>
+          </div>
+          <div id="oyun" hidden>
+            <div class="kb-ust"><span id="mac-ad"></span><button class="btn btn-ghost" type="button" id="menuye-don">☰ Menü</button></div>
+            <div class="kb-oyuncular" id="oyuncular"></div>
+            <div class="kb-tahta" id="tahta" aria-label="Kızma Birader tahtası"></div>
+            <div class="kb-alt">
+              <div class="kb-zarlar">
+                <div class="kb-zar" id="zar1" aria-label="Zar"></div>
+                <div class="kb-zar" id="zar2" aria-label="İkinci zar" hidden></div>
+              </div>
+              <button class="btn" id="zar-at" type="button">🎲 Zar at</button>
+              <p class="kb-bilgi" id="bilgi" aria-live="polite"></p>
+            </div>
+            <p class="kb-balon" id="balon" aria-live="polite" hidden></p>
+          </div>
+        </div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Kızma Birader nasıl oynanır?</h2>
+      <p>Kızma Birader, 2-4 kişiyle oynanan klasik bir zar ve piyon oyunudur. Sıran geldiğinde zarı at ve piyonlarından birini zar kadar ilerlet. Başlangıçtaki bir piyonu tahtaya çıkarmak için 6 atman gerekir; 6 attığında bir kez daha zar atarsın, ama üst üste üç kez 6 atarsan sıran yanar. Tahtada hiç piyonun yokken 6 gelene kadar üç kez deneme hakkın vardır. Bir rakibin piyonunun durduğu kareye gelirsen onu kırar ve başlangıcına geri yollarsın. Kendi piyonunun üstüne konamazsın. Tahtayı tam tur dolaşan piyon kendi renkli ev yoluna girer; eve tam sayıyla girmelisin ve evdeki piyonlarının üstünden atlayamazsın. Oynatılabilecek piyonun yoksa sıra geçer. Dört piyonunu ilk eve sokan oyuncu kazanır.</p>
+      <p>Zarı "Zar at" düğmesiyle, zara dokunarak ya da Boşluk veya Enter tuşuyla atarsın. Oynatılabilir piyonlar parlar; birine dokun ya da ←/→ ile seçip Enter'a bas, 1-4 rakam tuşları da piyonu doğrudan seçer. Çift zar kuralında D tuşu veya zara dokunmak kullanılacak zarı değiştirir. P tuşu oyunu duraklatır.</p>
+      <h2>Turnuva, yıldızlar ve açılan içerik</h2>
+      <p>Mahalle Kahvesi'nden başlayıp Semt Turnuvası, Şehir Kupası ve Usta Masası'na uzanan 24 maçlık turnuvada her ligin kendine özgü bir rakibi var: Temkinli Tülay kırmaktan çok kaçmayı sever, Saldırgan Selim her fırsatta kırar, Hesapçı Hikmet riskleri tartar, Usta Ümran ise piyonlarını birlikte ilerletir. Maçı kazanmak 1 yıldız, en az iki rakip piyonu kırmak ikinci yıldızı, hiç piyonun kırılmadan kazanmak üçüncü yıldızı verir; 4 kişilik finallerde üçüncü yıldız için maçı 30 turda bitirmelisin. Topladığın yıldızlarla Gece, Ahşap, Deniz, Bahçe ve Altın tahta temaları ile kedi, araba, yıldız ve taç piyonları açılır. Lig bitirdikçe serbest oyunda Hızlı oyun, Güvenli kareler ve Çift zar kuralları da açılır. Her gün yenilenen üç günlük görev de birer bonus yıldız kazandırır.</p>
+      <h2>İpuçları</h2>
+      <p>Piyonlarını tek tek değil dengeli ilerlet; tek bir piyonu öne sürmek onu rakiplerin hedefi yapar. Bir rakibin 1-6 kare önünde durmak tehlikelidir, mümkünse kırılabileceğin karelerden uzak dur. 6 attığında yeni piyon çıkarmak mı yoksa öndeki piyonu kaçırmak mı daha iyi, rakiplerin konumuna bakarak karar ver. Saldırgan rakiplere karşı temkinli, temkinli rakiplere karşı cesur oyna. Eve yaklaşan piyonu boşuna bekletme; ev yolundaki piyon kırılamaz.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Üst üste üç 6 atarsam ne olur?</strong> Üçüncü 6 oynanmaz ve sıra bir sonraki oyuncuya geçer. <strong>Kırılan piyon nereye gider?</strong> Sahibinin köşedeki başlangıç alanına döner ve yeniden çıkmak için 6 gerekir. <strong>Günlük görevler ne zaman yenilenir?</strong> Her gün gece yarısı; o gün bitirmediğin görevler silinir, yerine üç yeni görev gelir. <strong>İlerlemem kaydediliyor mu?</strong> Evet, yıldızların, temaların ve görevlerin bu tarayıcıda otomatik saklanır.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/kule-savunmasi/" data-title="kule savunması" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f59f00;--c2:#e8590c"><span class="thumb-icon" aria-hidden="true">🏰</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kule Savunması</h3>
+          <p>Kuleleri kur ve yükselt, 10 bölümde kaleni düşman dalgalarına karşı koru.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/dort-baglanti/" data-title="dört bağlantı" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#be185d"><span class="thumb-icon" aria-hidden="true">🔴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Dört Bağlantı</h3>
+          <p>Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/meyve-patlat/" data-title="meyve patlat" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#fb7185;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🍓</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Meyve Patlat</h3>
+          <p>Aynı meyveleri üçlü dizip patlat; 60 bölüm, roket ve bomba gibi özel meyveler, günlük görevler.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/olta-ustasi/" data-title="olta ustası" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#0ea5e9;--c2:#1e3a8a"><span class="thumb-icon" aria-hidden="true">🎣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Olta Ustası</h3>
+          <p>Oltanı at, balıklardan kaçarak derine in, dönüşte topla; 5 deniz, yükseltmeler ve akvaryum.</p>
+          <span class="tag" style="--c1:#fde047">⚡ Refleks</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/strateji/">Tüm strateji oyunları →</a></p>
+      </section>
+      <script type="application/json" id="oyun-listesi">[{"slug":"kizma-birader","ad":"Kızma Birader","kategori":"Strateji","ikon":"🎲","metin":false,"renk":["#ef4444","#3b82f6"]},{"slug":"meyve-patlat","ad":"Meyve Patlat","kategori":"Bulmaca","ikon":"🍓","metin":false,"renk":["#fb7185","#f59e0b"]},{"slug":"olta-ustasi","ad":"Olta Ustası","kategori":"Refleks","ikon":"🎣","metin":false,"renk":["#0ea5e9","#1e3a8a"]},{"slug":"blok-bulmaca","ad":"Blok Bulmaca","kategori":"Bulmaca","ikon":"🟦","metin":false,"renk":["#3b82f6","#6366f1"]},{"slug":"top-siralama","ad":"Top Sıralama","kategori":"Bulmaca","ikon":"🧪","metin":false,"renk":["#34d399","#7c3aed"]},{"slug":"harf-carki","ad":"Harf Çarkı","kategori":"Kelime","ikon":"🔠","metin":false,"renk":["#fbbf24","#db2777"]},{"slug":"tugla-kirma","ad":"Tuğla Kırma","kategori":"Arcade","ikon":"🧱","metin":false,"renk":["#fb923c","#dc2626"]},{"slug":"penalti-ligi","ad":"Penaltı Ligi","kategori":"Spor","ikon":"⚽","metin":false,"renk":["#16a34a","#facc15"]},{"slug":"renk-tuzagi","ad":"Renk Tuzağı","kategori":"Refleks","ikon":"🎨","metin":false,"renk":["#f472b6","#f59e0b"]},{"slug":"kule-savunmasi","ad":"Kule Savunması","kategori":"Strateji","ikon":"🏰","metin":false,"renk":["#f59f00","#e8590c"]},{"slug":"kelime-tahmin","ad":"Kelime Tahmin","kategori":"Kelime","ikon":"🔤","metin":false,"renk":["#34d399","#0e7490"]},{"slug":"dort-baglanti","ad":"Dört Bağlantı","kategori":"Strateji","ikon":"🔴","metin":false,"renk":["#f472b6","#be185d"]},{"slug":"sudoku","ad":"Sudoku","kategori":"Bulmaca","ikon":"🔢","metin":false,"renk":["#5aa9ff","#3b5bdb"]},{"slug":"mayin-tarlasi","ad":"Mayın Tarlası","kategori":"Bulmaca","ikon":"💣","metin":false,"renk":["#94a3d6","#4b5480"]},{"slug":"hafiza","ad":"Hafıza Kartları","kategori":"Hafıza","ikon":"🃏","metin":false,"renk":["#a78bfa","#6d28d9"]},{"slug":"yilan","ad":"Yılan","kategori":"Arcade","ikon":"🐍","metin":false,"renk":["#5ee0b8","#2a9d8f"]},{"slug":"2048","ad":"2048","kategori":"Bulmaca","ikon":"2048","metin":true,"renk":["#ffb547","#ff7a59"]}]</script>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>
