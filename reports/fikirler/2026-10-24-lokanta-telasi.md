@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: lokanta-telasi
 baslik: Lokanta Telaşı
 kategori: Arcade
