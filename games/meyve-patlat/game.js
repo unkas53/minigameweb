@@ -189,6 +189,7 @@
     }
     ciz();
     ipucuKur();
+    if (gucEl.scrollIntoView) gucEl.scrollIntoView({ block: 'nearest' });
     if (tahtaEl.scrollIntoView) tahtaEl.scrollIntoView({ block: 'nearest' });
   }
   function seviye() {
