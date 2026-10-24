@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tuğla Kırma Oyunu - Online Oyna, 30 Bölüm | MiniOyun</title>
+  <meta name="description" content="Raketle topu sektir, tuğlaları kır! Ücretsiz tuğla kırma oyunu: 30 bölüm, yıldızlar, güçlendirmeler, yükseltmeler ve sonsuz mod. Telefonda da oynanır.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/tugla-kirma/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .tk-ust { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .tk-ust .stat { padding: 4px 12px; }
+    .tk-ust .btn { padding: 8px 14px; }
+    .tk-sahne { width: min(100%, 440px); }
+    #alan { display: block; width: 100%; aspect-ratio: 3 / 4; border-radius: 14px; touch-action: none; outline: none; box-shadow: inset 0 0 0 2px rgba(0,0,0,.25); cursor: none; }
+    #alan:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+    .tk-harita { width: min(100%, 560px); padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .tk-harita h2 { margin: 14px 0 6px; font-size: 1.1rem; }
+    .tk-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .tk-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .tk-ozet { display: flex; justify-content: center; gap: 18px; font-weight: 800; font-size: 1.05rem; }
+    .tk-bolumler { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .tk-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #fb923c, #dc2626); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .tk-bolum b { font-size: 1.05rem; line-height: 1.2; }
+    .tk-bolum span { font-size: .72rem; color: #ffe066; }
+    .tk-bolum.patron { background: linear-gradient(135deg, #a855f7, #6d28d9); }
+    .tk-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .tk-sonsuz { margin-top: 12px; }
+    .tk-yukseltmeler { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; text-align: left; }
+    .tk-yuk { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; text-align: left; min-width: 0; }
+    .tk-yuk:disabled { opacity: .55; cursor: default; }
+    .tk-yuk small { display: block; color: var(--muted); font-size: .72rem; }
+    .tk-y-ikon { font-size: 1.3rem; }
+    .tk-y-bedel { margin-left: auto; font-weight: 800; white-space: nowrap; }
+    .tk-gorunum { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .tk-skin { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 12px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+    .tk-skin i { width: 26px; height: 8px; border-radius: 4px; background: linear-gradient(var(--s1), var(--s2)); }
+    .tk-skin.secili { border-color: var(--accent); }
+    .tk-skin:disabled { opacity: .5; cursor: not-allowed; }
+    .tk-gorevler { list-style: none; margin: 0; padding: 0; text-align: left; display: grid; gap: 4px; }
+    .tk-gorev { padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; }
+    .tk-gorev small { color: var(--muted); }
+    .tk-gorev.tamam { opacity: .65; }
+    @media (max-width: 480px) { .tk-ust .stat { padding: 3px 8px; font-size: .9rem; } .tk-ust .btn { padding: 6px 10px; font-size: .9rem; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Tuğla Kırma","url":"https://unkas53.github.io/minigameweb/games/tugla-kirma/","genre":"Arcade","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip active" href="../../kategori/arcade/" aria-current="page" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/arcade/">Arcade Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Tuğla Kırma</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Arcade Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/arcade/"},{"@type":"ListItem","position":3,"name":"Tuğla Kırma","item":"https://unkas53.github.io/minigameweb/games/tugla-kirma/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Tuğla Kırma</h1>
+        <div class="tk-ust" id="ust" hidden>
+          <div class="stat"><small>Bölüm</small><span id="bolum">-</span></div>
+          <div class="stat"><small>Puan</small><span id="puan">0</span></div>
+          <div class="stat"><small>Can</small><span id="can">-</span></div>
+          <div class="stat"><small>Rekor</small><span id="rekor">0</span></div>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="tk-sahne">
+          <canvas id="alan" width="480" height="640" tabindex="0" aria-label="Tuğla kırma oyun alanı. Ok tuşlarıyla raketi yönet, Boşluk ile topu fırlat." hidden></canvas>
+        </div>
+        <div class="tk-harita" id="harita"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Tuğla Kırma nasıl oynanır?</h2>
+      <p>Tuğla Kırma'da ekranın altındaki raketi sağa sola hareket ettirerek topu havada tutar ve üstteki tuğlaları kırarsın. Bilgisayarda ok tuşları veya A/D ile, telefonda parmağını oyun alanında kaydırarak raketi yönetirsin; parmağın raketin altında da olabilir, böylece raketi kapatmaz. Topu fırlatmak için Boşluk tuşuna bas veya ekrana dokun. Top raketin ortasına çarparsa dik, kenarlarına çarparsa daha yatay bir açıyla geri döner. Metal tuğlalar dışındaki bütün tuğlaları kırınca bölüm biter. Topu alttan kaçırırsan bir can kaybedersin; tüm canlar biterse bölümü yeniden denersin. P veya Esc tuşuyla oyunu duraklatabilirsin.</p>
+      <h2>Tuğlalar ve kapsüller</h2>
+      <p>Normal tuğla tek vuruşta kırılır. Sağlam tuğlalar iki üç vuruş ister ve her vuruşta çatlayıp solar. Gri metal tuğlalar kırılmaz, bölümün bitmesi için kırılmaları gerekmez. 💥 patlayan tuğla çevresindeki tuğlaları da yok eder, ❓ sürpriz tuğla ise bir kapsül düşürür. Kapsülü raketinle yakala: ↔️ Geniş Raket, ⚪ Çoklu Top (iki top daha), 🐢 Yavaş Top, 🔫 Lazer (Boşluk ile ateş, dokunmatikte kendiliğinden) ve 🍯 Yapışkan Raket (top rakete yapışır, istediğin anda fırlatırsın). İleri bölümlerde çıkan gri 🤏 Dar Raket kapsülünden ise kaç. Çoklu Top açıkken son top düşmeden can gitmez.</p>
+      <h2>Dünyalar, yıldızlar ve yükseltmeler</h2>
+      <p>Orman, Çöl ve Uzay dünyalarında toplam 30 bölüm var; her dünyanın son bölümünde can çubuklu bir patron kalesi seni bekler. Bölümü bitirmek 1, en fazla bir can kaybetmek 2, hiç can kaybetmeden hedef süre içinde bitirmek 3 yıldız verir. Yeni dünyaya geçmek için önceki dünyada 15 yıldız toplaman gerekir. Her yeni yıldız 1 elmas, ilk patron zaferi 5 elmas kazandırır; günlük görevler de elmas verir. Elmaslarla raket genişliği, başlangıç canı, kapsül süresi, kapsül şansı ve lazer gücü kalıcı olarak artar. Patronları yendikçe yeni raket görünümleri ve top izleri açılır, 30. bölümden sonra ise rekor kovalayabileceğin Sonsuz Mod gelir.</p>
+      <h2>İpuçları</h2>
+      <p>Topu raketin kenarıyla karşılamak sert açılar verir; bu açıyla topu tuğla dizilerinin arkasına sokarsan üst duvarla tuğlalar arasında seken top tek başına çok sayıda tuğla kırar ve kombo yapar. Raket topa dokunmadan kırılan her tuğla kombo çarpanını büyütür. Çoklu Top kapsülünü alınca raketi en alttaki topa göre konumla. İlk elmaslarını Raket Genişliği'ne yatırmak erken bölümleri kolaylaştırır, üç yıldız için ise Başlangıç Canı çok işe yarar.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>İlerlemem kaydediliyor mu?</strong> Evet, yıldızların, elmasların ve yükseltmelerin bu tarayıcıda otomatik saklanır. <strong>Günlük meydan okuma nedir?</strong> Günlük modda herkes aynı üç bölümü yükseltmesiz oynar ve puanlar karşılaştırılır. <strong>Ücretli mi?</strong> Hayır, oyun tamamen ücretsizdir ve indirme gerektirmez.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/yilan/" data-title="yılan" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5ee0b8;--c2:#2a9d8f"><span class="thumb-icon" aria-hidden="true">🐍</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Yılan</h3>
+          <p>Yemleri topla, uzadıkça kendine çarpma.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/penalti-ligi/" data-title="penaltı ligi" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#16a34a;--c2:#facc15"><span class="thumb-icon" aria-hidden="true">⚽</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Penaltı Ligi</h3>
+          <p>Penaltı at, kaleyi koru; 4 ligde 24 maçlık kariyerle Kupa Finali'ne yüksel.</p>
+          <span class="tag" style="--c1:#4ade80">⚽ Spor</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/renk-tuzagi/" data-title="renk tuzağı" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🎨</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Renk Tuzağı</h3>
+          <p>Kelimeyi değil yazının rengini seç; 60 saniyede refleksini ve dikkatini sına.</p>
+          <span class="tag" style="--c1:#fde047">⚡ Refleks</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kule-savunmasi/" data-title="kule savunması" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f59f00;--c2:#e8590c"><span class="thumb-icon" aria-hidden="true">🏰</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kule Savunması</h3>
+          <p>Kuleleri kur ve yükselt, 10 bölümde kaleni düşman dalgalarına karşı koru.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/arcade/">Tüm arcade oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>
