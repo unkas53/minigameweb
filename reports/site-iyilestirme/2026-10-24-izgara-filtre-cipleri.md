@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 baslik: Ana sayfa ızgarasında hızlı filtre çipleri ve anlamlı "YENİ" rozeti
 oncelik: 4
 boyut: orta
