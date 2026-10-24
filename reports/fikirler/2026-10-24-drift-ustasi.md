@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: drift-ustasi
 baslik: Drift Ustası
 kategori: Spor
