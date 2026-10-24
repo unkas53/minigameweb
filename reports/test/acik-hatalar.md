@@ -48,7 +48,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 
 ## H-5 | Tuğla Kırma: 1280x900 ve 1366x768 ekranda bölüm başlayınca raket ve top görünmüyor
 - durum: duzeltildi
-- not: 262b35f ile düzeltildi; startLevel() tuvali scrollIntoView({block:'nearest'}) ile görünür alana kaydırıyor (1280x900'de raket ~859 px, 1366x768'de ~727 px).
+- not: 68306d4 ile düzeltildi; startLevel() tuvali scrollIntoView({block:'nearest'}) ile görünür alana kaydırıyor (1280x900'de raket ~859 px, 1366x768'de ~727 px).
 - onem: orta
 - sayfa: games/tugla-kirma/
 - adimlar: 1280x900 (veya 1366x768) pencerede sayfayı aç (kaydırma yapmadan), haritada 1. bölüme tıkla.
@@ -58,7 +58,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 
 ## H-6 | Renk Tuzağı oynanış testi rastgele başarısız oluyor (tuzak oranı eşiği)
 - durum: duzeltildi
-- not: 8b67da5 ile düzeltildi; test eşiği %60'a çekildi (%75 oranla 100 soruda 60'ın altı ~%0,05 olasılık). Oyun kodu değişmedi.
+- not: 8f6cfbf ile düzeltildi; test eşiği %60'a çekildi (%75 oranla 100 soruda 60'ın altı ~%0,05 olasılık). Oyun kodu değişmedi.
 - onem: orta
 - sayfa: tools/tests/renk-tuzagi.js
 - adimlar: `node tools/smoke-test.js --oyun renk-tuzagi` komutunu birkaç kez çalıştır.
