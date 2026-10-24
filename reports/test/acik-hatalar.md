@@ -132,3 +132,12 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Bölüm başlayınca tahta (ve mümkünse altındaki uyarı/eğitim satırı ile araç düğmeleri) görünür alana kaydırılır (H-4, H-5, H-8, H-9, H-10, H-11 ile aynı tür sorun; onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
 - gerceklesen: `basla()` haritayı gizleyip oyunu gösteriyor ama sayfayı kaydırmıyor (scrollY 0). 360x740'ta tahta 537-962 px (425 px'in yalnızca üst 203 px'i görünür), 1. bölümün eğitim mesajı (`#uyari`, 974-1042) ve araçlar (İpucu/Karıştır/Geri al, 1050-1083) ekran dışında. 1366x768'de tahta 376-801 px (alt 33 px dışarıda), uyarı 813-858 ve araçlar 866-899 px ekran dışında. 1280x900'de hepsi görünür (araçlar 866-899). Sıra tabanlı olduğu için oyuncu kaydırarak oynayabiliyor ama süre işlerken ilk saniyeler kayboluyor.
 - bulunma: 2026-10-24 14:15
+
+## H-13 | Olta Ustası: oynanış testi tam `npm test` çalışmasında ara sıra başarısız
+- durum: acik
+- onem: dusuk
+- sayfa: tools/tests/olta-ustasi.js
+- adimlar: `npm test` (tüm oyunlar) çalıştır.
+- beklenen: Olta Ustası testi her çalışmada geçer.
+- gerceklesen: 2026-10-24'te bir tam çalışmada "Turda altın kazanılmalı" ile başarısız oldu; hemen ardından tek başına (`--oyun olta-ustasi`) ve ikinci tam çalışmada geçti. Zamanlamaya bağlı kararsız test (H-7 Harf Çarkı ile benzer). Geliştirici ajan (Drift Ustası eklenirken) fark etti, Olta koduna dokunulmadı.
+- bulunma: 2026-10-24

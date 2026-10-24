@@ -515,7 +515,8 @@
     { id: 'meyve-ustasi', ikon: '🍓', ad: 'Meyve ustası', aciklama: 'Meyve Patlat\'ta 60 yıldız topla.', kosul: function () { var b = load('mo_meyve', {}).bolumler || {}, n = 0; for (var k in b) n += (b[k] && b[k].yildiz) || 0; return n >= 60; } },
     { id: 'masa-ustasi', ikon: '🎲', ad: 'Masanın Ustası', aciklama: 'Kızma Birader turnuvasının 24 maçının hepsini kazan.', kosul: function () { var y = load('mo_kizma', {}).yildiz || {}, n = 0; for (var i = 1; i <= 24; i++) if (y[i] > 0) n++; return n >= 24; } },
     { id: 'mahjong-ustasi', ikon: '🎴', ad: 'Mahjong ustası', aciklama: 'Mahjong\'da 100 yıldız topla.', kosul: function () { var b = load('mo_mahjong', {}).bolumler || {}, n = 0; for (var k in b) n += (b[k] && b[k].yildiz) || 0; return n >= 100; } },
-    { id: 'derin-efendisi', ikon: '🎣', ad: 'Derinlerin Efendisi', aciklama: 'Olta Ustası\'nda Derin Uçurum\'da 800 m\'ye in.', kosul: function () { var y = load('mo_olta', {}).yildizlar || {}; return !!(y.ucurum && y.ucurum[0]); } }
+    { id: 'derin-efendisi', ikon: '🎣', ad: 'Derinlerin Efendisi', aciklama: 'Olta Ustası\'nda Derin Uçurum\'da 800 m\'ye in.', kosul: function () { var y = load('mo_olta', {}).yildizlar || {}; return !!(y.ucurum && y.ucurum[0]); } },
+    { id: 'drift-krali', ikon: '🏎️', ad: 'Drift Kralı', aciklama: 'Drift Ustası\'nda Gece Şehri\'nin son bölümünü bitir.', kosul: function () { var b = load('mo_drift', {}).bolumler || {}; return !!(b[40] && b[40].yildiz); } }
   ];
 
   function checkBadges() {

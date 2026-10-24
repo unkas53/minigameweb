@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drift Ustası - Ücretsiz Online Drift Oyunu Oyna | MiniOyun</title>
+  <meta name="description" content="Tek tuşla drift yap, virajlarda yoldan çıkma! 40 bölümde yıldız topla, yeni arabalar aç, motor ve lastik yükselt. İndirmeden, telefonda hemen oyna.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/drift-ustasi/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <script src="../../js/dil.js" data-diller="en" data-sayfa="oyun/drift-ustasi" data-var=""></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .du-ust { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .du-ust .stat { padding: 4px 12px; min-width: 64px; }
+    .du-ust .btn { padding: 8px 14px; }
+    .du-sahne { width: min(100%, 480px); margin: 0 auto; }
+    #alan { display: block; width: 100%; aspect-ratio: 3 / 4; border-radius: 14px; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; outline: none; box-shadow: inset 0 0 0 2px rgba(0,0,0,.25); }
+    #alan:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+    .du-harita { width: min(100%, 560px); margin: 0 auto; padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .du-harita h2 { margin: 14px 0 6px; font-size: 1.1rem; }
+    .du-harita h3 { margin: 12px 0 6px; font-size: .98rem; }
+    .du-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .du-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .du-ozet { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; font-weight: 800; font-size: 1.05rem; }
+    .du-bolumler { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .du-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #f97316, #b91c1c); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .du-bolum.d1 { background: linear-gradient(135deg, #f59e0b, #b45309); }
+    .du-bolum.d2 { background: linear-gradient(135deg, #38bdf8, #1d4ed8); }
+    .du-bolum.d3 { background: linear-gradient(135deg, #a855f7, #4338ca); }
+    .du-bolum b { font-size: 1.05rem; line-height: 1.2; }
+    .du-bolum span { font-size: .72rem; color: #ffe066; }
+    .du-bolum small { font-size: .64rem; opacity: .85; }
+    .du-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .du-arabalar, .du-yukseltmeler { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; text-align: left; }
+    .du-araba, .du-yuk { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 12px; border: 2px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; text-align: left; min-width: 0; }
+    .du-araba.secili { border-color: var(--accent); }
+    .du-araba:disabled, .du-yuk:disabled { opacity: .55; cursor: default; }
+    .du-araba small, .du-yuk small { display: block; color: var(--muted); font-size: .72rem; }
+    .du-a-ikon { font-size: 1.4rem; }
+    .du-bedel { margin-left: auto; font-weight: 800; white-space: nowrap; }
+    .du-renkler { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .du-renk { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 12px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+    .du-renk i { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); }
+    .du-renk.secili { border-color: var(--accent); }
+    .du-renk:disabled { opacity: .5; cursor: not-allowed; }
+    .du-gorevler { list-style: none; margin: 0; padding: 0; text-align: left; display: grid; gap: 4px; }
+    .du-gorev { padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; }
+    .du-gorev small { color: var(--muted); }
+    .du-gorev.tamam { opacity: .65; }
+    @media (max-width: 480px) { .du-ust .stat { padding: 3px 8px; font-size: .9rem; min-width: 0; } .du-ust .btn { padding: 6px 10px; font-size: .9rem; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Drift Ustası","url":"https://unkas53.github.io/minigameweb/games/drift-ustasi/","genre":"Spor","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text" translate="no">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+      <details class="dil-menu" translate="no">
+        <summary aria-label="Dil / Language"><span aria-hidden="true">🌐</span> <span class="dil-kod">TR</span></summary>
+        <div class="dil-liste"><a href="?lang=tr" hreflang="tr" lang="tr">Türkçe</a><a href="?lang=en" hreflang="en" lang="en">English</a></div>
+      </details>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip active" href="../../kategori/spor/" aria-current="page" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/spor/">Spor Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Drift Ustası</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Spor Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/spor/"},{"@type":"ListItem","position":3,"name":"Drift Ustası","item":"https://unkas53.github.io/minigameweb/games/drift-ustasi/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Drift Ustası</h1>
+        <div class="du-ust" id="ust" hidden>
+          <div class="stat"><small>Bölüm</small><span id="bolum">-</span></div>
+          <div class="stat"><small>Süre</small><span id="sure">0,0</span></div>
+          <div class="stat"><small>Altın</small><span id="altin">0</span></div>
+          <div class="stat"><small>Drift</small><span id="carpan">-</span></div>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="du-sahne">
+          <canvas id="alan" width="480" height="640" tabindex="0" aria-label="Drift Ustası oyun alanı. Basılı tut: drift, bırak: düzel. Boşluk veya ok tuşları ile de oynanır." hidden></canvas>
+        </div>
+        <div class="du-harita" id="harita"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Drift Ustası nasıl oynanır?</h2>
+      <p>Drift Ustası'nda araban kendiliğinden ilerler, sen yalnızca tek bir tuş kullanırsın. Ekrana basılı tuttuğun sürece araba ekranın üstündeki okun gösterdiği yöne doğru kayarak döner; parmağını kaldırınca düzelir ve dümdüz gider. Amaç yoldan çıkmadan bitiş çizgisine ulaşmaktır. Yoldaki altınları topla, virajları uzun ve kesintisiz drift ederek geç; kesintisiz drift puan çarpanını x2 ve x3'e büyütür, bordüre çok yakın geçmek ise Kılpayı bonusu verir. Bölümü bitirmek bir yıldız, hedef sürenin altında bitirmek iki yıldız, ayrıca altınların en az %80'ini toplayıp kurtarma hakkı kullanmamak üç yıldız kazandırır. Bilgisayarda Boşluk, yukarı ok veya sağ/sol ok tuşlarından birini basılı tutarak drift edersin; P veya Esc oyunu duraklatır, R bölümü yeniden başlatır.</p>
+      <h2>Dünyalar, garaj ve açılan arabalar</h2>
+      <p>Orman Yolu, Çöl Kanyonu, Karlı Dağ ve Gece Şehri dünyalarında toplam 40 bölüm var. Çölde yağ lekeleri ve bariyerler, Karlı Dağ'da kaygan buz ve dar köprüler, Gece Şehri'nde ise açıkken geçince hız veren kapılar seni bekler. İlk iki dünyada her bölümde bir kurtarma hakkın vardır. Topladığın altınlarla garajda her arabanın motorunu, lastiklerini ve direksiyonunu beş seviyeye kadar yükseltebilirsin. Yıldız biriktirdikçe tutuşu yüksek Kaya ve hızlı Şimşek açılır, Taksi altınla alınır, Gece Kuşu ise son bölümün ödülüdür. Boya ve lastik izi renkleri de yıldızlarla ve günlük görev serisiyle açılır.</p>
+      <h2>İpuçları</h2>
+      <p>Virajın başında değil, virajın hemen öncesinde basmaya başla; araba kayarken biraz dışa açılır. Keskin virajlarda kısa kısa basıp bırakmak, tek uzun basıştan daha güvenlidir. Yağ lekelerinden ve buzlu zeminden önce yönünü düzelt, çünkü orada araba daha çok kayar. Bariyerler yolun bir kenarındadır, yolun ortasında kalırsan çarpmazsın. İlk önce lastik yükseltmesi almak çoğu oyuncu için en büyük farkı yaratır. Gece Şehri'nde ekranın üstündeki ok yön değiştirdiğinde parlar; gözünü bir an ona çevir.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Sağa nasıl dönerim?</strong> Bazı pist parçaları ayna yöndedir; o parçalarda aynı tuş arabayı sağa drift ettirir, üstteki ok bunu gösterir. <strong>İlerlemem kaydediliyor mu?</strong> Evet, yıldızların, altınların ve arabaların bu tarayıcıda otomatik kaydedilir. <strong>Günlük pist nedir?</strong> Her gün herkese aynı pist ve aynı yükseltmesiz araba verilir, süreni liderlik tablosunda karşılaştırırsın.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/penalti-ligi/" data-title="penaltı ligi" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#16a34a;--c2:#facc15"><span class="thumb-icon" aria-hidden="true">⚽</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Penaltı Ligi</h3>
+          <p>Penaltı at, kaleyi koru; 4 ligde 24 maçlık kariyerle Kupa Finali'ne yüksel.</p>
+          <span class="tag" style="--c1:#4ade80">⚽ Spor</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/mahjong/" data-title="mahjong" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#14b8a6;--c2:#0f766e"><span class="thumb-icon" aria-hidden="true">🎴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mahjong</h3>
+          <p>Serbest ve aynı desenli taşları eşleştir; 48 bölüm, 16 dizilim, kilitli taşlar ve açılan taş setleri.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kizma-birader/" data-title="kızma birader" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#ef4444;--c2:#3b82f6"><span class="thumb-icon" aria-hidden="true">🎲</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kızma Birader</h3>
+          <p>Zar at, rakip piyonları kır, 4 piyonunu eve ilk sen sok; 24 maçlık turnuva, temalar ve günlük görevler.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/meyve-patlat/" data-title="meyve patlat" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#fb7185;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🍓</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Meyve Patlat</h3>
+          <p>Aynı meyveleri üçlü dizip patlat; 60 bölüm, roket ve bomba gibi özel meyveler, günlük görevler.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/spor/">Tüm spor oyunları →</a></p>
+      </section>
+      <script type="application/json" id="oyun-listesi">[{"slug":"drift-ustasi","ad":"Drift Ustası","kategori":"Spor","ikon":"🏎️","metin":false,"renk":["#f97316","#b91c1c"]},{"slug":"mahjong","ad":"Mahjong","kategori":"Hafıza","ikon":"🎴","metin":false,"renk":["#14b8a6","#0f766e"]},{"slug":"kizma-birader","ad":"Kızma Birader","kategori":"Strateji","ikon":"🎲","metin":false,"renk":["#ef4444","#3b82f6"]},{"slug":"meyve-patlat","ad":"Meyve Patlat","kategori":"Bulmaca","ikon":"🍓","metin":false,"renk":["#fb7185","#f59e0b"]},{"slug":"olta-ustasi","ad":"Olta Ustası","kategori":"Refleks","ikon":"🎣","metin":false,"renk":["#0ea5e9","#1e3a8a"]},{"slug":"blok-bulmaca","ad":"Blok Bulmaca","kategori":"Bulmaca","ikon":"🟦","metin":false,"renk":["#3b82f6","#6366f1"]},{"slug":"top-siralama","ad":"Top Sıralama","kategori":"Bulmaca","ikon":"🧪","metin":false,"renk":["#34d399","#7c3aed"]},{"slug":"harf-carki","ad":"Harf Çarkı","kategori":"Kelime","ikon":"🔠","metin":false,"renk":["#fbbf24","#db2777"]},{"slug":"tugla-kirma","ad":"Tuğla Kırma","kategori":"Arcade","ikon":"🧱","metin":false,"renk":["#fb923c","#dc2626"]},{"slug":"penalti-ligi","ad":"Penaltı Ligi","kategori":"Spor","ikon":"⚽","metin":false,"renk":["#16a34a","#facc15"]},{"slug":"renk-tuzagi","ad":"Renk Tuzağı","kategori":"Refleks","ikon":"🎨","metin":false,"renk":["#f472b6","#f59e0b"]},{"slug":"kule-savunmasi","ad":"Kule Savunması","kategori":"Strateji","ikon":"🏰","metin":false,"renk":["#f59f00","#e8590c"]},{"slug":"kelime-tahmin","ad":"Kelime Tahmin","kategori":"Kelime","ikon":"🔤","metin":false,"renk":["#34d399","#0e7490"]},{"slug":"dort-baglanti","ad":"Dört Bağlantı","kategori":"Strateji","ikon":"🔴","metin":false,"renk":["#f472b6","#be185d"]},{"slug":"sudoku","ad":"Sudoku","kategori":"Bulmaca","ikon":"🔢","metin":false,"renk":["#5aa9ff","#3b5bdb"]},{"slug":"mayin-tarlasi","ad":"Mayın Tarlası","kategori":"Bulmaca","ikon":"💣","metin":false,"renk":["#94a3d6","#4b5480"]},{"slug":"hafiza","ad":"Hafıza Kartları","kategori":"Hafıza","ikon":"🃏","metin":false,"renk":["#a78bfa","#6d28d9"]},{"slug":"yilan","ad":"Yılan","kategori":"Arcade","ikon":"🐍","metin":false,"renk":["#5ee0b8","#2a9d8f"]},{"slug":"2048","ad":"2048","kategori":"Bulmaca","ikon":"2048","metin":true,"renk":["#ffb547","#ff7a59"]}]</script>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text" translate="no">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="sn"></script>
+  <script src="game.js"></script>
+</body>
+</html>
