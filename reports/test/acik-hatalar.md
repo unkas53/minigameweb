@@ -69,7 +69,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-24 03:47
 
 ## H-7 | Harf Çarkı oynanış testi tam `npm test` koşusunda "Duraklatınca süre durmalı" ile başarısız
-- durum: duzeltildi
+- durum: dogrulandi
 - not: 35358f1 ile düzeltildi; test `page.clock` gerçek zamanla da aktığı için `s1` okuması ile Duraklat tıklaması arasında bir saniye tiki işleyebiliyordu (yük altındaki tam koşuda). Süre artık duraklattıktan sonra okunuyor; oyun kodu değişmedi. Bu çalışmada tam koşu düzeltmeden sonra 3 kez geçti, düzeltmeden önceki 1 tam koşuda hata çıkmadı.
 - onem: orta
 - sayfa: tools/tests/harf-carki.js (152-158. satırlar), games/harf-carki/game.js
@@ -78,9 +78,10 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - gerceklesen: 2026-10-24'te tam koşu 3 denemenin 3'ünde (Blok Bulmaca eklenmeden önceki main'de de) "Duraklatınca süre durmalı" ile kırmızı; tek oyun koşusu her seferinde geçiyor. `s1` okunduktan sonra Duraklat tıklanana kadar bir saniye tiki daha işliyor olabilir (sayaç `page.clock` dışında bir zamanlayıcıya ya da tıklama anındaki gecikmeye bağlı). Tüm `npm test` başarısız sayıldığı için diğer ajanların push'unu engelliyor.
 - bulunma: 2026-10-24 (4. ajan, Blok Bulmaca çalışması)
 - not: 2026-10-24 07:05 test ajanı tam `node tools/smoke-test.js` koşusunu çalıştırdı, Harf Çarkı dahil 14 oyun testi geçti (1 deneme). Hata aralıklı görünüyor; kayıt açık kalıyor.
+- not: 2026-10-24 09:20 test ajanı tam `node tools/smoke-test.js` koşusunu çalıştırdı, 15 oyun testi (Harf Çarkı dahil) geçti. Doğrulandı.
 
 ## H-8 | Blok Bulmaca: 1366x768 ekranda bölüm başlayınca parça yuvaları görünmüyor
-- durum: duzeltildi
+- durum: dogrulandi
 - not: 7e5071a ile düzeltildi; `basla()` sonunda `#yuvalar` `scrollIntoView({block:'nearest'})` ile görünür alana kaydırılıyor. 1366x768: ızgara 219, yuvaların altı 768 px; 1280x900: kaydırma 57 px; 360x740 etkilenmedi.
 - onem: orta
 - sayfa: games/blok-bulmaca/
@@ -88,9 +89,10 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Bölüm başlayınca ızgara ve altındaki üç parça yuvası ekranda görünür; gerekirse oyun alanı görünür alana kaydırılır (H-4 ve H-5 ile aynı tür sorun, onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
 - gerceklesen: Harita gizleniyor, sayfa kaymıyor (scrollY 0). Izgara 408-828 px, parça yuvaları 838-957 px, Yenile/Sil düğmeleri 1022-1055 px. 1366x768'de yuvaların tamamı ve ızgaranın alt 60 px'i görünür alanın dışında; oyuncu yerleştireceği parçaları görmek için fareyle kaydırmak zorunda. 1280x900'de yuvaların yalnızca üst 62 px'i görünüyor. 360x740'ta sorun yok (dokunurken sayfa kayıyor, ızgara 45-367, yuvalar 377-467 px). `games/blok-bulmaca/game.js` içinde `scrollIntoView` yok.
 - bulunma: 2026-10-24 07:05
+- not: 2026-10-24 09:20 tekrar test edildi. 1366x768: yuvalar 649-768 px (scrollY 189); 1280x900: 781-900 px; 360x740: 377-467 px. Doğrulandı.
 
 ## H-9 | 2048 Görev Yolu: bölüm başlayınca tahta mobilde ve 1366x768'de büyük ölçüde ekran dışında
-- durum: duzeltildi
+- durum: dogrulandi
 - not: 58ff5dc ile düzeltildi; `bolumBaslat()` sonunda tahta `scrollIntoView({block:'nearest'})` ile görünür alana kaydırılıyor. 360x740: tahta 437-740 px; 1366x768: 368-768 px.
 - onem: dusuk
 - sayfa: games/2048/
@@ -98,3 +100,13 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Bölüm başlayınca tahta ekranda görünür; gerekirse görünür alana kaydırılır.
 - gerceklesen: Sayfa kaymıyor (scrollY 0). Görev Yolu'nda ipucu satırı (600-643 px) ve iki satıra kayan istatistik çubuğu tahtayı aşağı itiyor: 360x740'ta tahta 653-956 px (yalnızca üst 87 px görünür), 1366x768'de 475-875 px. Klasik modda da tahta kısmen aşağıda (360x740'ta 546-848, 1366x768'de 422-822), ama Görev Yolu ~107 px daha kötü. Sıra tabanlı oyun olduğu için oyuncu kaydırarak oynayabiliyor; kaydırma hareketleri tahtada yakalandığı için mobilde kaydırmak tahtanın dışından yapılmalı.
 - bulunma: 2026-10-24 07:05
+- not: 2026-10-24 09:20 tekrar test edildi. 1366x768: tahta 368-768 px; 1280x900: 475-875 px; 360x740: 437-740 px. Doğrulandı.
+
+## H-10 | Olta Ustası: "Oltayı At" ile tur başlayınca oyun alanı görünür alana getirilmiyor
+- durum: acik
+- onem: orta
+- sayfa: games/olta-ustasi/
+- adimlar: 1280x900, 1366x768 veya 360x740 ekranda sayfayı aç. "Oltayı At" düğmesi menü panelinde, oyun alanının (canvas) altında ve ilk ekranın dışında (1280x900'de y≈1186). Düğmeye kaydırıp tıkla/dokun.
+- beklenen: Tur başlayınca oyun alanı görünür alana kaydırılır; kanca ve yüzey ekranda görünür (H-4, H-5, H-8, H-9 ile aynı tür sorun, onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
+- gerceklesen: `startRound()` panel gizleyip `canvas.focus({preventScroll:true})` çağırıyor, sayfayı kaydırmıyor. Düğme ortalanacak şekilde kaydırılınca (tarayıcının "görünüre kaydır" davranışı) oyun alanının yalnızca bir kısmı görünüyor: 1280x900'de canvas -396..252 px (%39 görünür, iniş sırasında kanca y≈-150, ekran dışı), 1366x768'de -367..186 (%34), 360x740'ta -453..69 (%13). Düğme ekranın en altına gelecek kadar az kaydırınca masaüstünde sorun yok, 360x740'ta canvas'ın üst 106 px'i (balıkların yüzeyde havaya fırladığı bölge) yine ekran dışında. Oyuncu tur sırasında elle yukarı kaydırmak zorunda; iniş kısa sürdüğü için turun bir kısmını göremeden kaçırıyor.
+- bulunma: 2026-10-24 09:20
