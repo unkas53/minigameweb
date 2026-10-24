@@ -111,3 +111,12 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Tur başlayınca oyun alanı görünür alana kaydırılır; kanca ve yüzey ekranda görünür (H-4, H-5, H-8, H-9 ile aynı tür sorun, onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
 - gerceklesen: `startRound()` panel gizleyip `canvas.focus({preventScroll:true})` çağırıyor, sayfayı kaydırmıyor. Düğme ortalanacak şekilde kaydırılınca (tarayıcının "görünüre kaydır" davranışı) oyun alanının yalnızca bir kısmı görünüyor: 1280x900'de canvas -396..252 px (%39 görünür, iniş sırasında kanca y≈-150, ekran dışı), 1366x768'de -367..186 (%34), 360x740'ta -453..69 (%13). Düğme ekranın en altına gelecek kadar az kaydırınca masaüstünde sorun yok, 360x740'ta canvas'ın üst 106 px'i (balıkların yüzeyde havaya fırladığı bölge) yine ekran dışında. Oyuncu tur sırasında elle yukarı kaydırmak zorunda; iniş kısa sürdüğü için turun bir kısmını göremeden kaçırıyor.
 - bulunma: 2026-10-24 09:20
+
+## H-11 | Meyve Patlat: 1280x900 ekranda bölüm başlayınca güçlendirici düğmeleri ekran dışında
+- durum: acik
+- onem: dusuk
+- sayfa: games/meyve-patlat/
+- adimlar: 1280x900 ekranda sayfayı aç (çerez onaylı), haritada 1. bölüme tıkla.
+- beklenen: Tahta ile birlikte altındaki güçlendirici satırı (`#guclar`: çekiç, karıştır, +5 hamle) da ekranda görünür.
+- gerceklesen: Sayfa kaymıyor (scrollY 0); tahta 430-870 px'te tamamen görünüyor, ama `#guclar` 870-964 px'te, ekranın (900 px) altında kalıyor. `scrollIntoView({block:'nearest'})` yalnızca `#tahta` için çağrıldığından tahta sığınca kaydırma yapılmıyor. 1366x768 (tahta 12-452, güçler ≤546) ve 360x740'ta (0-322, ≤414) sorun yok. Oyun oynanabiliyor; güçlendiriciyi kullanmak için elle kaydırmak gerekiyor.
+- bulunma: 2026-10-24 10:15
