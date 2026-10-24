@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mahjong Oyna - Ücretsiz Online Taş Eşleştirme | MiniOyun</title>
+  <meta name="description" content="Ücretsiz online Mahjong: aynı iki taşı eşleştir, 48 bölümde yıldız topla, yeni taş setleri aç. İndirme yok, telefonda ve bilgisayarda hemen oyna.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/mahjong/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .mj-ust[hidden], .mj-oyun[hidden], .mj-harita[hidden], .mj-band[hidden] { display: none; }
+    .mj-ust { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .mj-ust .stat { padding: 4px 10px; }
+    .mj-ust .btn { padding: 8px 12px; }
+    .mj-sure.iyi { color: #86efac; }
+    .mj-sure.gec { color: #fb923c; }
+    .mj-oyun { --t1: #86efac; --t2: #166534; width: min(100%, 680px); max-width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 6px; border-radius: 18px; background: linear-gradient(160deg, color-mix(in srgb, var(--t1) 30%, #0d0b1f), color-mix(in srgb, var(--t2) 55%, #0d0b1f)); box-sizing: border-box; }
+    .mj-oyun.dunya-1 { --t1: #fca5a5; --t2: #991b1b; }
+    .mj-oyun.dunya-2 { --t1: #a7f3d0; --t2: #0f766e; }
+    .mj-oyun.dunya-3 { --t1: #a5b4fc; --t2: #1e1b4b; }
+    .mj-sahne { width: 100%; max-width: 100%; min-width: 0; contain: inline-size; overflow: auto; display: flex; justify-content: safe center; touch-action: manipulation; }
+    .mj-tahta { position: relative; flex: none; margin: 4px auto; }
+    .mj-tas { position: absolute; display: flex; align-items: center; justify-content: center; padding: 0; border: 1px solid #d6cdb4; border-radius: calc(var(--tw) * .14); background: linear-gradient(145deg, #fffdf5, #fbf6e9 60%, #efe6cf); box-shadow: 2px 3px 0 #2f6f6a, 3px 5px 6px rgba(0, 0, 0, .35); color: #1f2937; font: inherit; font-size: calc(var(--tw) * .6); line-height: 1; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; transition: transform .1s, filter .15s; }
+    .mj-tas.kapali { filter: brightness(.55); cursor: default; }
+    .mj-tas.secili { border-color: #facc15; box-shadow: 0 0 0 2px #facc15, 2px 3px 0 #2f6f6a, 0 0 12px #facc15; transform: translateY(-3px); }
+    .mj-tas.imlec { outline: 3px solid #38bdf8; outline-offset: 1px; }
+    .mj-tas.ipucu { animation: mj-nabiz .5s 3; border-color: #22c55e; box-shadow: 0 0 0 2px #22c55e, 2px 3px 0 #2f6f6a; }
+    @keyframes mj-nabiz { 50% { box-shadow: 0 0 0 3px #22c55e, 0 0 14px #22c55e; } }
+    .mj-tas.salla { animation: mj-salla .3s; }
+    @keyframes mj-salla { 25%, 75% { transform: translateX(-3px); } 50% { transform: translateX(3px); } }
+    .mj-tas .kilit { position: absolute; top: -2px; right: -2px; font-size: calc(var(--tw) * .36); filter: drop-shadow(0 1px 1px #000); }
+    .mj-tas.gidiyor { pointer-events: none; animation: mj-git .22s forwards; }
+    @keyframes mj-git { to { opacity: 0; transform: scale(.7) translateY(-6px); } }
+    .mj-tahta.altin .mj-tas { border: 2px solid #facc15; }
+    .mj-nokta, .mj-cubuk { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; width: 76%; place-items: center; }
+    .mj-nokta i { width: calc(var(--tw) * .17); height: calc(var(--tw) * .17); border-radius: 50%; background: var(--r, #0f766e); }
+    .mj-cubuk i { width: calc(var(--tw) * .11); height: calc(var(--tw) * .3); border-radius: 2px; background: var(--r, #15803d); }
+    .mj-rakam { font-weight: 900; font-size: calc(var(--tw) * .55); color: #b91c1c; }
+    .mj-sembol { font-weight: 900; color: #1e3a8a; }
+    .mj-uyari { min-height: 1.2rem; font-size: .88rem; font-weight: 700; color: var(--accent); text-align: center; overflow-wrap: anywhere; }
+    .mj-band { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; padding: 8px 10px; border-radius: 12px; background: #7f1d1d; font-weight: 800; }
+    .mj-araclar { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .mj-araclar .btn { padding: 7px 10px; font-size: .88rem; }
+    .mj-harita { width: min(100%, 560px); padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .mj-harita h2 { margin: 14px 0 6px; font-size: 1.1rem; }
+    .mj-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .mj-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .mj-ozet { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-weight: 800; font-size: 1rem; }
+    .mj-dunyalar, .mj-setler, .mj-ekstra { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+    .mj-dunya, .mj-set { padding: 6px 10px; border-radius: 999px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+    .mj-dunya.secili, .mj-set.secili { border-color: var(--accent); }
+    .mj-dunya.kilitli, .mj-set.kilitli { opacity: .55; }
+    .mj-set small { font-weight: 600; color: var(--muted); }
+    .mj-bolumler { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    .mj-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #14b8a6, #0f766e); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .mj-bolum b { font-size: 1rem; line-height: 1.2; }
+    .mj-bolum span { font-size: .62rem; color: #ffe066; white-space: nowrap; }
+    .mj-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .mj-gorevler { list-style: none; margin: 0; padding: 0; text-align: left; display: grid; gap: 4px; }
+    .mj-gorev { padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; }
+    .mj-gorev small { color: var(--muted); }
+    .mj-gorev.tamam { opacity: .65; }
+    .mj-ayar { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font-size: .9rem; }
+    .mj-ayar label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) { .mj-tas, .mj-tas.ipucu, .mj-tas.salla, .mj-tas.gidiyor { animation: none; transition: none; } }
+    @media (max-width: 480px) {
+      main.container { padding: 0 8px; }
+      .game-box { padding: 12px 4px; }
+      .mj-ust .stat { padding: 3px 7px; font-size: .88rem; }
+      .mj-ust .btn { padding: 6px 9px; font-size: .88rem; }
+      .mj-oyun { padding: 8px 2px; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Mahjong","url":"https://unkas53.github.io/minigameweb/games/mahjong/","genre":"Hafıza","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip active" href="../../kategori/hafiza/" aria-current="page" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/hafiza/">Hafıza Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Mahjong</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Hafıza Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/hafiza/"},{"@type":"ListItem","position":3,"name":"Mahjong","item":"https://unkas53.github.io/minigameweb/games/mahjong/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Mahjong</h1>
+        <div class="mj-ust" id="ust" hidden>
+          <div class="stat"><small>Bölüm</small><span id="bolum">-</span></div>
+          <div class="stat"><small>Süre / hedef</small><span id="sure" class="mj-sure">0:00</span></div>
+          <div class="stat"><small>Kalan taş</small><span id="kalan">0</span></div>
+          <div class="stat" id="olasi-kutu"><small>Olası eşleşme</small><span id="olasi">0</span></div>
+          <div class="stat"><small>Puan</small><span id="puan">0</span></div>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="mj-oyun" id="oyun" hidden>
+          <div class="mj-sahne" id="sahne"><div class="mj-tahta" id="tahta" aria-label="Mahjong tahtası. Serbest bir taşa, sonra aynı desenli başka bir serbest taşa dokun."></div></div>
+          <div class="mj-uyari" id="uyari" role="status" aria-live="polite"></div>
+          <div class="mj-band" id="band" hidden><span>Hamle kalmadı!</span><button class="btn" id="band-karistir" type="button">🔀 Karıştır</button><button class="btn btn-ghost" id="band-geri" type="button">↩️ Geri al</button><button class="btn btn-ghost" id="band-bastan" type="button">🔄 Baştan</button></div>
+          <div class="mj-araclar">
+            <button class="btn btn-ghost" id="ipucu" type="button">💡 İpucu</button>
+            <button class="btn btn-ghost" id="karistir" type="button">🔀 Karıştır</button>
+            <button class="btn btn-ghost" id="geri" type="button">↩️ Geri al</button>
+            <button class="btn btn-ghost" id="kucult" type="button" aria-label="Tahtayı küçült">⊖</button>
+            <button class="btn btn-ghost" id="buyut" type="button" aria-label="Tahtayı büyüt">⊕</button>
+            <button class="btn btn-ghost" id="karartma" type="button">🌓 Karartma</button>
+          </div>
+        </div>
+        <div class="mj-harita" id="harita"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Mahjong nasıl oynanır?</h2>
+      <p>Mahjong'da amaç tahtadaki tüm taşları ikişer ikişer kaldırmaktır. Yalnızca serbest taşları seçebilirsin: bir taşın üstünde onu kısmen bile örten başka bir taş olmamalı ve sol ya da sağ yanından en az biri boş olmalı. Serbest bir taşa dokun, ardından aynı desenli başka bir serbest taşa dokun; iki taş birlikte kalkar. Farklı desene dokunursan seçim o taşa geçer, aynı taşa yeniden dokunursan seçim kalkar. Mevsim taşları (🌸 🌞 🍂 ❄️) kendi aralarında, çiçek taşları (🌷 🌻 🌹 🌼) da kendi aralarında desen farkına bakmadan eşleşir. Tüm taşları kaldırınca bölüm biter. Serbest olmayan taşlar koyu görünür; Karartma düğmesiyle bunu kapatabilirsin, o zaman hafızan daha çok çalışır. Eşleşecek serbest çift kalmazsa "Hamle kalmadı" bandı çıkar: Karıştır, Geri al ya da Baştan ile devam edersin. Hiç karıştırma ve geri alma hakkın kalmamışsa bölüm kaybedilir.</p>
+      <p><strong>Klavye:</strong> ok tuşları imleci yalnızca serbest taşlar arasında en yakın yöne taşır, Boşluk veya Enter imleçteki taşı seçer. H ipucu verir, S karıştırır, Z (veya Ctrl+Z) son eşleşmeyi geri alır, P oyunu duraklatır. Büyük tahtalarda ⊕ ve ⊖ düğmeleriyle tahtayı büyütüp küçültebilirsin.</p>
+      <h2>Dünyalar, yıldızlar ve taş setleri</h2>
+      <p>Çay Bahçesi, Kale, Ejder Dağı ve Gece Pazarı dünyalarında onikişer, toplam 48 bölüm ve 16 farklı dizilim var. Tahtalar 36 taştan 142 taşa, tek katmandan beş katmana büyür; desen çeşidi de artar. Ejder Dağı'ndan itibaren 🔒 kilitli taşlar gelir: kilitli taş, yanındaki ya da üstündeki bir taş kalkana kadar seçilemez. Gece Pazarı'nda karartma kapalı başlar. Bölümü bitirmek 1 yıldız, hedef sürenin altında bitirmek 2 yıldız, hedef sürenin altında ve hiç ipucu, karıştırma ya da geri alma kullanmadan bitirmek 3 yıldız verir. Kale için 20, Ejder Dağı için 45, Gece Pazarı için 75 yıldız ve önceki dünyanın son bölümü gerekir. İpucu, Karıştır ve Geri al araçların kalıcı bir stoktan düşer; bir bölümü ilk kez 3 yıldızla bitirmek +1 ipucu, her dünyanın sonu her araçtan +2, günlük görevlerin üçünü bitirmek bir araç daha verir. Karıştırınca kilitler açılır ve o ana kadarki eşleşmeler geri alınamaz. Yıldız topladıkça Hayvan, Rakam ve Nokta, Dünya setleri ve altın taş kenarı açılır; 7 günlük görev serisi Ürkünç seti getirir. Bitirdiğin bölümlerin dizilimleri Serbest oyunda sınırsız oynanır ve her dizilim için en iyi süren saklanır.</p>
+      <h2>İpuçları</h2>
+      <p>Önce uzun sıraların uçlarındaki ve en üst katmandaki taşları kaldır; bunlar altındaki birçok taşı serbest bırakır. Bir desenin dört taşından ikisi serbestse hemen eşleştirmeden önce diğer ikisinin nerede durduğuna bak; yanlış ikiliyi seçmek bir taşı uzun süre kilitleyebilir. Kombo puanı için hazır eşleşmeleri arka arkaya, üç saniye içinde yap; çarpan x5'e kadar çıkar. Kilitli taşların yanındaki taşları erken kaldırırsan kilitler zamanında açılır. Araçlarını usta dizilimlere sakla.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Her bölüm çözülebilir mi?</strong> Evet, tahta her zaman en az bir çözüm yolu olacak şekilde tersten kurulur; Karıştır da kalan taşları yine çözülebilir biçimde dağıtır. <strong>İlerlemem kaydediliyor mu?</strong> Evet, yıldızların, araç stoğun ve açtığın setler bu tarayıcıda otomatik kaydedilir. <strong>Günlük Mahjong nedir?</strong> Her gün herkese aynı tahta verilir; ipucu sınırsızdır ama her biri 15 saniye, tek karıştırma hakkı 30 saniye ekler ve süreni liderlik tablosunda karşılaştırırsın.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/hafiza/" data-title="hafıza kartları" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#a78bfa;--c2:#6d28d9"><span class="thumb-icon" aria-hidden="true">🃏</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Hafıza Kartları</h3>
+          <p>Kartları çevir, eşleri en az hamlede bul.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kizma-birader/" data-title="kızma birader" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#ef4444;--c2:#3b82f6"><span class="thumb-icon" aria-hidden="true">🎲</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kızma Birader</h3>
+          <p>Zar at, rakip piyonları kır, 4 piyonunu eve ilk sen sok; 24 maçlık turnuva, temalar ve günlük görevler.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/meyve-patlat/" data-title="meyve patlat" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#fb7185;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🍓</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Meyve Patlat</h3>
+          <p>Aynı meyveleri üçlü dizip patlat; 60 bölüm, roket ve bomba gibi özel meyveler, günlük görevler.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/olta-ustasi/" data-title="olta ustası" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#0ea5e9;--c2:#1e3a8a"><span class="thumb-icon" aria-hidden="true">🎣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Olta Ustası</h3>
+          <p>Oltanı at, balıklardan kaçarak derine in, dönüşte topla; 5 deniz, yükseltmeler ve akvaryum.</p>
+          <span class="tag" style="--c1:#fde047">⚡ Refleks</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/hafiza/">Tüm hafıza oyunları →</a></p>
+      </section>
+      <script type="application/json" id="oyun-listesi">[{"slug":"mahjong","ad":"Mahjong","kategori":"Hafıza","ikon":"🎴","metin":false,"renk":["#14b8a6","#0f766e"]},{"slug":"kizma-birader","ad":"Kızma Birader","kategori":"Strateji","ikon":"🎲","metin":false,"renk":["#ef4444","#3b82f6"]},{"slug":"meyve-patlat","ad":"Meyve Patlat","kategori":"Bulmaca","ikon":"🍓","metin":false,"renk":["#fb7185","#f59e0b"]},{"slug":"olta-ustasi","ad":"Olta Ustası","kategori":"Refleks","ikon":"🎣","metin":false,"renk":["#0ea5e9","#1e3a8a"]},{"slug":"blok-bulmaca","ad":"Blok Bulmaca","kategori":"Bulmaca","ikon":"🟦","metin":false,"renk":["#3b82f6","#6366f1"]},{"slug":"top-siralama","ad":"Top Sıralama","kategori":"Bulmaca","ikon":"🧪","metin":false,"renk":["#34d399","#7c3aed"]},{"slug":"harf-carki","ad":"Harf Çarkı","kategori":"Kelime","ikon":"🔠","metin":false,"renk":["#fbbf24","#db2777"]},{"slug":"tugla-kirma","ad":"Tuğla Kırma","kategori":"Arcade","ikon":"🧱","metin":false,"renk":["#fb923c","#dc2626"]},{"slug":"penalti-ligi","ad":"Penaltı Ligi","kategori":"Spor","ikon":"⚽","metin":false,"renk":["#16a34a","#facc15"]},{"slug":"renk-tuzagi","ad":"Renk Tuzağı","kategori":"Refleks","ikon":"🎨","metin":false,"renk":["#f472b6","#f59e0b"]},{"slug":"kule-savunmasi","ad":"Kule Savunması","kategori":"Strateji","ikon":"🏰","metin":false,"renk":["#f59f00","#e8590c"]},{"slug":"kelime-tahmin","ad":"Kelime Tahmin","kategori":"Kelime","ikon":"🔤","metin":false,"renk":["#34d399","#0e7490"]},{"slug":"dort-baglanti","ad":"Dört Bağlantı","kategori":"Strateji","ikon":"🔴","metin":false,"renk":["#f472b6","#be185d"]},{"slug":"sudoku","ad":"Sudoku","kategori":"Bulmaca","ikon":"🔢","metin":false,"renk":["#5aa9ff","#3b5bdb"]},{"slug":"mayin-tarlasi","ad":"Mayın Tarlası","kategori":"Bulmaca","ikon":"💣","metin":false,"renk":["#94a3d6","#4b5480"]},{"slug":"hafiza","ad":"Hafıza Kartları","kategori":"Hafıza","ikon":"🃏","metin":false,"renk":["#a78bfa","#6d28d9"]},{"slug":"yilan","ad":"Yılan","kategori":"Arcade","ikon":"🐍","metin":false,"renk":["#5ee0b8","#2a9d8f"]},{"slug":"2048","ad":"2048","kategori":"Bulmaca","ikon":"2048","metin":true,"renk":["#ffb547","#ff7a59"]}]</script>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="sn"></script>
+  <script src="game.js"></script>
+</body>
+</html>
