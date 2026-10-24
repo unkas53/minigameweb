@@ -510,7 +510,8 @@
     { id: 'renk-ustasi', ikon: '🎨', ad: 'Renk ustası', aciklama: 'Renk Tuzağı bölümlerinde 24 yıldız topla.', kosul: function () { var y = load('mo_renk', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 24; } },
     { id: 'kupa-sahibi', ikon: '🏆', ad: 'Kupa sahibi', aciklama: 'Penaltı Ligi\'nde Kupa Finali\'ni kazan.', kosul: function () { var m = load('mo_penalti', {}).maclar || {}; return (m.final || 0) > 0; } },
     { id: 'tugla-ustasi', ikon: '🧱', ad: 'Tuğla ustası', aciklama: 'Tuğla Kırma\'da 30 bölümün hepsini bitir.', kosul: function () { var b = load('mo_tugla', {}).bolumler || {}, n = 0; for (var i = 1; i <= 30; i++) if (b[i] > 0) n++; return n >= 30; } },
-    { id: 'kelime-ustasi', ikon: '🔠', ad: 'Kelime ustası', aciklama: 'Harf Çarkı\'nda 60 bölümün hepsini bitir.', kosul: function () { var b = load('mo_harf', {}).bolumler || {}, n = 0; for (var i = 1; i <= 60; i++) if (b[i] > 0) n++; return n >= 60; } }
+    { id: 'kelime-ustasi', ikon: '🔠', ad: 'Kelime ustası', aciklama: 'Harf Çarkı\'nda 60 bölümün hepsini bitir.', kosul: function () { var b = load('mo_harf', {}).bolumler || {}, n = 0; for (var i = 1; i <= 60; i++) if (b[i] > 0) n++; return n >= 60; } },
+    { id: 'siralama-ustasi', ikon: '🧪', ad: 'Sıralama ustası', aciklama: 'Top Sıralama\'da 60 bölümün hepsini bitir.', kosul: function () { var b = load('mo_top', {}).bolumler || {}, n = 0; for (var i = 1; i <= 60; i++) if (b[i] > 0) n++; return n >= 60; } }
   ];
 
   function checkBadges() {

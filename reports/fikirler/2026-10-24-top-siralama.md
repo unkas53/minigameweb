@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: top-siralama
 baslik: Top Sıralama
 kategori: Bulmaca

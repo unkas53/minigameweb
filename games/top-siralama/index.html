@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Top Sıralama Oyunu - Renk Sırala, 60 Bölüm | MiniOyun</title>
+  <meta name="description" content="Renkli topları tüplere sırala! Ücretsiz top sıralama bulmacası: 60 bölüm, yıldızlar, açılan temalar ve günlük bulmaca. İndirmeden, telefonda da oyna.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/top-siralama/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .ts-ust[hidden], .ts-oyun[hidden], .ts-harita[hidden] { display: none; }
+    .ts-ust { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .ts-ust .stat { padding: 4px 10px; }
+    .ts-ust .btn { padding: 8px 12px; }
+    .ts-oyun { --t1: #34d399; --t2: #7c3aed; width: min(100%, 560px); display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px 8px; border-radius: 18px; background: linear-gradient(160deg, color-mix(in srgb, var(--t1) 22%, #0d0b1f), color-mix(in srgb, var(--t2) 26%, #0d0b1f)); container-type: inline-size; }
+    .ts-oyun.dunya-1 { --t1: #06b6d4; --t2: #1e3a8a; }
+    .ts-oyun.dunya-2 { --t1: #94a3b8; --t2: #4d7c0f; }
+    .ts-oyun.dunya-3 { --t1: #a855f7; --t2: #be185d; }
+    .ts-oyun.dunya-4 { --t1: #6366f1; --t2: #0f172a; }
+    .ts-tupler { --gap: 6px; --top: min(40px, calc((100cqw - 16px - (var(--cols) - 1) * var(--gap)) / var(--cols) - 8px)); display: grid; grid-template-columns: repeat(var(--cols), calc(var(--top) + 8px)); gap: 22px var(--gap); justify-content: center; padding-top: 18px; }
+    .ts-tup { position: relative; display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; color: var(--muted); touch-action: manipulation; }
+    .ts-ic { display: flex; flex-direction: column-reverse; justify-content: flex-start; gap: 2px; width: 100%; height: calc(var(--top) * 4 + 16px); padding: 3px 2px 5px; box-sizing: border-box; border: 2px solid rgba(255, 255, 255, .35); border-top: 0; border-radius: 0 0 calc(var(--top) * .6) calc(var(--top) * .6); background: rgba(255, 255, 255, .07); align-items: center; }
+    .ts-tup.kisa .ts-ic { height: calc(var(--top) * 3 + 14px); margin-top: calc(var(--top) + 2px); }
+    .ts-tup small { margin-top: 3px; font-size: .7rem; font-weight: 800; line-height: 1; }
+    .ts-top { display: flex; align-items: center; justify-content: center; flex: none; width: var(--top); height: var(--top); border-radius: 50%; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--r) 55%, #fff), var(--r) 55%, color-mix(in srgb, var(--r) 70%, #000)); color: rgba(255, 255, 255, .92); font-size: calc(var(--top) * .5); line-height: 1; text-shadow: 0 1px 2px rgba(0, 0, 0, .55); transition: transform .15s; }
+    .ts-top.gizli { --r: #3f3d56; color: #d4d2ec; }
+    .ts-top.kalk { transform: translateY(calc(var(--top) * -.55)); }
+    .ts-top.gel { animation: ts-gel .2s ease-out; }
+    @keyframes ts-gel { from { transform: translateY(calc(var(--top) * -1.2)); } }
+    .top-meyve .ts-top, .top-hayvan .ts-top, .top-gezegen .ts-top, .top-tas .ts-top { font-size: calc(var(--top) * .58); }
+    .ts-tup.secili .ts-ic, .ts-tup.imlec .ts-ic { border-color: var(--accent); }
+    .ts-tup.imlec small { color: var(--accent); }
+    .ts-tup.oner .ts-ic { border-color: #86efac; box-shadow: 0 0 10px #86efac88; }
+    .ts-tup.tamam .ts-ic { border-color: #86efac; animation: ts-parla .5s; }
+    @keyframes ts-parla { 50% { box-shadow: 0 0 18px #86efac; } }
+    .ts-kapak { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: calc(100% + 4px); border-radius: 6px 6px 2px 2px; background: #86efac; color: #064e3b; font-weight: 900; font-size: .8rem; line-height: 14px; text-align: center; }
+    .ts-kilit { position: absolute; inset: 0 0 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 0 0 12px 12px; background: rgba(13, 11, 31, .55); font-size: 1.3rem; }
+    .ts-kilit i { width: 14px; height: 14px; border-radius: 50%; background: var(--r); border: 2px solid #fff; }
+    .ts-tup.salla .ts-ic { animation: ts-salla .35s; border-color: #fca5a5; }
+    @keyframes ts-salla { 25%, 75% { transform: translateX(-5px); } 50% { transform: translateX(5px); } }
+    .tup-ahsap .ts-ic { border-color: #b45309; background: rgba(180, 83, 9, .18); }
+    .tup-neon .ts-ic { border-color: #e879f9; box-shadow: 0 0 8px #e879f988, inset 0 0 8px #22d3ee55; }
+    .tup-altin .ts-ic { border-color: #facc15; background: linear-gradient(180deg, rgba(250, 204, 21, .05), rgba(250, 204, 21, .2)); }
+    .ts-uyari { min-height: 1.2rem; font-size: .88rem; font-weight: 700; color: var(--accent); text-align: center; overflow-wrap: anywhere; }
+    .ts-araclar { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .ts-araclar .btn { padding: 7px 10px; font-size: .88rem; }
+    .ts-harita { width: min(100%, 560px); padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .ts-harita h2 { margin: 14px 0 6px; font-size: 1.1rem; }
+    .ts-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .ts-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .ts-ozet { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-weight: 800; font-size: 1rem; }
+    .ts-dunyalar, .ts-temalar { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px; }
+    .ts-dunya, .ts-tema { padding: 6px 10px; border-radius: 999px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+    .ts-dunya.secili, .ts-tema.secili { border-color: var(--accent); }
+    .ts-dunya.kilitli, .ts-tema.kilitli { opacity: .55; }
+    .ts-tema small { font-weight: 600; color: var(--muted); }
+    .ts-bolumler { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    .ts-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #34d399, #7c3aed); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .ts-bolum.usta { background: linear-gradient(135deg, #f59e0b, #b91c1c); }
+    .ts-bolum b { font-size: 1rem; line-height: 1.2; }
+    .ts-bolum span { font-size: .62rem; color: #ffe066; white-space: nowrap; }
+    .ts-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .ts-ekstra { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px; }
+    .ts-gorevler { list-style: none; margin: 0; padding: 0; text-align: left; display: grid; gap: 4px; }
+    .ts-gorev { padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; }
+    .ts-gorev small { color: var(--muted); }
+    .ts-gorev.tamam { opacity: .65; }
+    @media (prefers-reduced-motion: reduce) { .ts-top, .ts-top.gel, .ts-tup.salla .ts-ic, .ts-tup.tamam .ts-ic { animation: none; transition: none; } }
+    @media (max-width: 480px) {
+      main.container { padding: 0 8px; }
+      .game-box { padding: 12px 6px; }
+      .ts-ust .stat { padding: 3px 7px; font-size: .88rem; }
+      .ts-ust .btn { padding: 6px 9px; font-size: .88rem; }
+      .ts-oyun { padding: 10px 2px; }
+      .ts-tupler { --gap: 4px; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Top Sıralama","url":"https://unkas53.github.io/minigameweb/games/top-siralama/","genre":"Bulmaca","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip active" href="../../kategori/bulmaca/" aria-current="page" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/bulmaca/">Bulmaca Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Top Sıralama</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Bulmaca Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/bulmaca/"},{"@type":"ListItem","position":3,"name":"Top Sıralama","item":"https://unkas53.github.io/minigameweb/games/top-siralama/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Top Sıralama</h1>
+        <div class="ts-ust" id="ust" hidden>
+          <div class="stat"><small>Bölüm</small><span id="bolum">-</span></div>
+          <div class="stat"><small>Hamle / hedef</small><span id="hamle">0</span></div>
+          <div class="stat"><small>Jeton</small><span id="jeton">🪙 0</span></div>
+          <div class="stat"><small>Rekor</small><span id="rekor">-</span></div>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="ts-oyun" id="oyun" hidden>
+          <div class="ts-tupler" id="tupler" aria-label="Tüpler. Bir tüpe dokunup sonra başka bir tüpe dokunarak üstteki topu taşı."></div>
+          <div class="ts-uyari" id="uyari" role="status" aria-live="polite"></div>
+          <div class="ts-araclar">
+            <button class="btn btn-ghost" id="geri" type="button">↶ Geri Al</button>
+            <button class="btn btn-ghost" id="tup-ekle" type="button">➕ Tüp (5 🪙)</button>
+            <button class="btn btn-ghost" id="bastan" type="button">🔄 Baştan</button>
+          </div>
+        </div>
+        <div class="ts-harita" id="harita"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Top Sıralama nasıl oynanır?</h2>
+      <p>Top Sıralama'da amacın karışık duran renkli topları tüplere ayırmak ve her tüpü tek renkle doldurmaktır. Bir tüpe dokunduğunda en üstteki top yukarı kalkar; sonra başka bir tüpe dokunarak onu oraya taşırsın. Bir topu yalnızca boş bir tüpe ya da en üstünde aynı renk top bulunan ve yeri olan bir tüpe koyabilirsin. Üst üste duran aynı renk toplar yer olduğu sürece birlikte taşınır. Her tüp dört top alır; bütün dolu tüpler tek renk olunca bölüm biter ve tamamlanan tüpün üstüne yeşil bir kapak oturur. Geçersiz bir hamlede tüp sallanır ve hamle sayılmaz. Hiç hamle kalmazsa Geri Al, +1 Tüp ya da Baştan düğmesiyle devam edersin; bölüm kaybedilmez.</p>
+      <p><strong>Klavye:</strong> tüplerin altındaki 1-9, 0, Q, W, E, T, Y tuşlarıyla tüp seçersin. Sol ve sağ ok tuşlarıyla tüpler arasında gezip Enter ile de seçebilirsin. Z (veya Ctrl+Z) son hamleyi geri alır, R bölümü baştan başlatır.</p>
+      <h2>Dünyalar, yıldızlar ve jetonlar</h2>
+      <p>Bahçe, Deniz, Dağ, Şehir ve Uzay dünyalarında onikişer, toplam 60 bölüm var. Bahçe'de 3-5 renkle başlarsın; ilk üç bölümde yeşil parlayan tüpler sana iyi bir hamleyi gösterir. Deniz'de alttaki toplar ❔ ile gizlidir ve üstleri kalkınca açılır. Dağ'da yalnızca üç top alan kısa tüpler çıkar. Şehir'de 🔒 kilitli bir tüp vardır; üstündeki renkteki tüpü tamamladığında kilit açılır. Uzay'da 11-12 renkle gizli toplar ve kilitli tüp birlikte gelir. Her dünyanın 12. bölümü usta bölümüdür ve orada Geri Al kullanılamaz. Bölümü bitirmek 1 yıldız, hedef hamlenin en fazla yüzde 30 fazlasında bitirmek 2 yıldız, hedef hamlede veya altında ve Geri Al kullanmadan bitirmek 3 yıldız verir. +1 Tüp kullanılan bölümde en fazla 1 yıldız alınır. Yeni dünyaya geçmek için önceki dünyada en az 24 yıldız gerekir. İlk kez kazandığın her yıldız 1 jeton, usta bölümü 5 jeton, günlük bulmaca 3 jeton, her günlük görev 2 jeton verir. Jetonla 5 ek Geri Al (3 jeton) ya da boş bir tüp (5 jeton) alırsın. Bitirdiğin her dünya yeni bir top teması veya tüp görünümü açar; renk körü dostu Şekilli tema baştan açıktır. 60 bölümün sonunda Sonsuz mod açılır.</p>
+      <h2>İpuçları</h2>
+      <p>Boş tüpleri değerli bir alan olarak gör ve oyunun başında hemen doldurma; önce en üstte aynı renk olan topları birleştirmeye çalış. Bir tüpü tamamen bitirmeye odaklanmak çoğu zaman tüm renklerle aynı anda uğraşmaktan daha az hamle tutar. Gizli toplu bölümlerde önce üstü açılabilecek tüpleri boşalt ki alttaki renkleri erken gör. Kilitli tüplü bölümlerde kilidi açan rengi öncelikle topla, açılan tüp sana büyük rahatlık verir. Takıldığında Geri Al ile birkaç hamle geri dön ve farklı bir boş tüp kullanmayı dene. Kazandığın jetonları usta bölümlerinde işine yarayacak +1 Tüp için sakla.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Her bölüm çözülebilir mi?</strong> Evet. Her bölüm oyunun kendi çözücüsüyle denenir ve yalnızca çözülebilen dizilimler gelir; hedef hamle de bu çözümden hesaplanır. Aynı bölüm numarası herkese aynı dizilimi verir. <strong>Yıldızlarımı nasıl artırırım?</strong> Bölümü tekrar oyna; daha iyi sonuç eskisinin yerine geçer, daha kötüsü yıldızlarını silmez. <strong>İlerlemem kaybolur mu?</strong> Hayır, yıldızların, jetonların ve temaların bu tarayıcıda otomatik kaydedilir. <strong>Günlük bulmaca nasıl puanlanır?</strong> Herkes aynı gizli toplu bulmacayı çözer, jetonlu yardımlar kapalıdır ve en az hamle yapan öne geçer.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/sudoku/" data-title="sudoku" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5aa9ff;--c2:#3b5bdb"><span class="thumb-icon" aria-hidden="true">🔢</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Sudoku</h3>
+          <p>Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mayın Tarlası</h3>
+          <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/2048/" data-title="2048" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#ffb547;--c2:#ff7a59"><span class="thumb-icon text" aria-hidden="true">2048</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>2048</h3>
+          <p>Aynı sayıları birleştir, 2048 karesine ulaş.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/harf-carki/" data-title="harf çarkı" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#fbbf24;--c2:#db2777"><span class="thumb-icon" aria-hidden="true">🔠</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Harf Çarkı</h3>
+          <p>Çarktaki harfleri birleştir, kelimeleri bul; 60 bölümlük Türkçe kelime bulmaca.</p>
+          <span class="tag" style="--c1:#60a5fa">🔤 Kelime</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/bulmaca/">Tüm bulmaca oyunları →</a></p>
+      </section>
+      <script type="application/json" id="oyun-listesi">[{"slug":"top-siralama","ad":"Top Sıralama","kategori":"Bulmaca","ikon":"🧪","metin":false,"renk":["#34d399","#7c3aed"]},{"slug":"harf-carki","ad":"Harf Çarkı","kategori":"Kelime","ikon":"🔠","metin":false,"renk":["#fbbf24","#db2777"]},{"slug":"tugla-kirma","ad":"Tuğla Kırma","kategori":"Arcade","ikon":"🧱","metin":false,"renk":["#fb923c","#dc2626"]},{"slug":"penalti-ligi","ad":"Penaltı Ligi","kategori":"Spor","ikon":"⚽","metin":false,"renk":["#16a34a","#facc15"]},{"slug":"renk-tuzagi","ad":"Renk Tuzağı","kategori":"Refleks","ikon":"🎨","metin":false,"renk":["#f472b6","#f59e0b"]},{"slug":"kule-savunmasi","ad":"Kule Savunması","kategori":"Strateji","ikon":"🏰","metin":false,"renk":["#f59f00","#e8590c"]},{"slug":"kelime-tahmin","ad":"Kelime Tahmin","kategori":"Kelime","ikon":"🔤","metin":false,"renk":["#34d399","#0e7490"]},{"slug":"dort-baglanti","ad":"Dört Bağlantı","kategori":"Strateji","ikon":"🔴","metin":false,"renk":["#f472b6","#be185d"]},{"slug":"sudoku","ad":"Sudoku","kategori":"Bulmaca","ikon":"🔢","metin":false,"renk":["#5aa9ff","#3b5bdb"]},{"slug":"mayin-tarlasi","ad":"Mayın Tarlası","kategori":"Bulmaca","ikon":"💣","metin":false,"renk":["#94a3d6","#4b5480"]},{"slug":"hafiza","ad":"Hafıza Kartları","kategori":"Hafıza","ikon":"🃏","metin":false,"renk":["#a78bfa","#6d28d9"]},{"slug":"yilan","ad":"Yılan","kategori":"Arcade","ikon":"🐍","metin":false,"renk":["#5ee0b8","#2a9d8f"]},{"slug":"2048","ad":"2048","kategori":"Bulmaca","ikon":"2048","metin":true,"renk":["#ffb547","#ff7a59"]}]</script>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="hamle"></script>
+  <script src="game.js"></script>
+</body>
+</html>
