@@ -5,7 +5,7 @@ oncelik: 4
 boyut: orta
 
 ## Sorun / fırsat
-Oyun Playwright ile 1280x800 ve 360x740 genişlikte oynandı. Her iki boyutta da oyun tek bir sonsuz mod: 21x21 boş tahta, tek tür yem (+10 puan), her 50 puanda biraz hızlanma. Kayıtlı tek şey `getBest('yilan')` rekoru; `game.js` içinde hiç `mo_` anahtarı yok, yani oyuncunun birikttirdiği hiçbir ilerleme yok.
+Oyun Playwright ile 1280x800 ve 360x740 genişlikte oynandı. Her iki boyutta da oyun tek bir sonsuz mod: 21x21 boş tahta, tek tür yem (+10 puan), her 50 puanda biraz hızlanma. Kayıtlı tek şey `getBest('yilan')` rekoru; `game.js` içinde hiç `mo_` anahtarı yok, yani oyuncunun biriktirdiği hiçbir ilerleme yok.
 
 Gözlenenler:
 
