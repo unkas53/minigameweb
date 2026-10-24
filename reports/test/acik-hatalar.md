@@ -114,7 +114,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - not: 2026-10-24 10:20 tekrar test edildi. Düğme ortalanarak tıklanınca canvas 1280x900'de 0-648, 1366x768'de 0-553, 360x740'ta 0-522 px; sayfa hatası yok. Doğrulandı.
 
 ## H-11 | Meyve Patlat: 1280x900 ekranda bölüm başlayınca güçlendirici düğmeleri ekran dışında
-- durum: duzeltildi
+- durum: dogrulandi
 - onem: dusuk
 - sayfa: games/meyve-patlat/
 - adimlar: 1280x900 ekranda sayfayı aç (çerez onaylı), haritada 1. bölüme tıkla.
@@ -122,3 +122,4 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - gerceklesen: Sayfa kaymıyor (scrollY 0); tahta 430-870 px'te tamamen görünüyor, ama `#guclar` 870-964 px'te, ekranın (900 px) altında kalıyor. `scrollIntoView({block:'nearest'})` yalnızca `#tahta` için çağrıldığından tahta sığınca kaydırma yapılmıyor. 1366x768 (tahta 12-452, güçler ≤546) ve 360x740'ta (0-322, ≤414) sorun yok. Oyun oynanabiliyor; güçlendiriciyi kullanmak için elle kaydırmak gerekiyor.
 - bulunma: 2026-10-24 10:15
 - not: 2026-10-24 düzeltildi (3d8a9f2). Bölüm başında önce #guclar, sonra #tahta için scrollIntoView({block:'nearest'}) çağrılıyor; 1280x900'de tahta 366-806, güçler 867-900 px. 1366x768 ve 360x740 değişmedi.
+- dogrulama: 2026-10-24 11:20 test ajanı. 1. bölüm başlayınca 1280x900: tahta 366-806, güçler 867-900 px; 1366x768: 12-452 / 513-546; 360x740: 0-322 / 384-414. Hepsi görünür.
