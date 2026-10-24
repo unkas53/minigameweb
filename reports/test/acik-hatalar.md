@@ -67,3 +67,12 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Test her çalışmada aynı sonucu verir (oyun doğruysa her zaman geçer).
 - gerceklesen: 7 çalışmanın 2'sinde "İlk 100 soruda tuzak oranı en az %70 olmalı, gelen: 67" hatası. Oyun (game.js 111. satır) her soruda tuzağı `rnd() < 0.75` ile bağımsız seçiyor; 100 soruda 70'in altına düşme olasılığı yaklaşık %10-15, yani oyun doğru çalışırken test kırmızı yanıyor ve tüm `npm test` başarısız sayılıyor (diğer ajanların push'unu engelleyebilir). Test ya rastgeleliği sabit tohumla (ör. günlük mod) çalıştırmalı ya da eşiği istatistiksel olarak güvenli bir değere (ör. %60) çekmeli.
 - bulunma: 2026-10-24 03:47
+
+## H-7 | Harf Çarkı oynanış testi tam `npm test` koşusunda "Duraklatınca süre durmalı" ile başarısız
+- durum: acik
+- onem: orta
+- sayfa: tools/tests/harf-carki.js (152-158. satırlar), games/harf-carki/game.js
+- adimlar: `node tools/smoke-test.js` (tüm oyunlar) çalıştır; ardından `node tools/smoke-test.js --oyun harf-carki` çalıştır.
+- beklenen: Test iki koşuda da aynı sonucu verir.
+- gerceklesen: 2026-10-24'te tam koşu 3 denemenin 3'ünde (Blok Bulmaca eklenmeden önceki main'de de) "Duraklatınca süre durmalı" ile kırmızı; tek oyun koşusu her seferinde geçiyor. `s1` okunduktan sonra Duraklat tıklanana kadar bir saniye tiki daha işliyor olabilir (sayaç `page.clock` dışında bir zamanlayıcıya ya da tıklama anındaki gecikmeye bağlı). Tüm `npm test` başarısız sayıldığı için diğer ajanların push'unu engelliyor.
+- bulunma: 2026-10-24 (4. ajan, Blok Bulmaca çalışması)
