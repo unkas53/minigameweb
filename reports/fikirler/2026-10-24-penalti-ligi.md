@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: penalti-ligi
 baslik: Penaltı Ligi
 kategori: Spor
