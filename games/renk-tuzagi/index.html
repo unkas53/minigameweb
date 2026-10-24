@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Renk Tuzağı - Online Refleks ve Dikkat Oyunu | MiniOyun</title>
+  <meta name="description" content="Kelimeyi değil rengini seç! 60 saniyede refleksini ve dikkatini ölçen ücretsiz renk oyunu. Üç zorluk, günlük meydan okuma ve liderlik tablosu.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/renk-tuzagi/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .rt-alan { position: relative; width: min(100%, 480px); margin: 0 auto; }
+    .rt-ust { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-bottom: 8px; }
+    .rt-ust .stat { padding: 4px 12px; }
+    .rt-sure { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin-bottom: 10px; }
+    .rt-sure-dolu { height: 100%; width: 100%; background: linear-gradient(90deg, #4be3c1, #ffc23d); transition: width .1s linear; }
+    .rt-sure.az .rt-sure-dolu { background: #ef4444; }
+    .rt-soru { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; padding: 10px; border-radius: 16px; background: var(--surface-2); margin-bottom: 12px; transition: box-shadow .15s; }
+    .rt-kural { min-height: 1.6em; padding: 2px 14px; border-radius: 999px; font-weight: 900; font-size: .85rem; letter-spacing: .08em; }
+    .rt-kural.renk { background: rgba(255,255,255,.08); color: var(--muted); }
+    .rt-kural.kelime { background: #7c3aed; color: #fff; }
+    .rt-kelime { font-size: clamp(2.6rem, 13vw, 4.4rem); font-weight: 900; line-height: 1.1; letter-spacing: .02em; text-shadow: 0 2px 0 rgba(0,0,0,.35); }
+    .rt-kelime.pop { animation: rt-pop .12s ease-out; }
+    .rt-soru.dogru { box-shadow: 0 0 0 3px #22c55e, 0 0 24px rgba(34,197,94,.5); }
+    .rt-soru.yanlis { box-shadow: 0 0 0 3px #ef4444; animation: rt-titre .25s; }
+    .rt-soru.gizli .rt-kelime, .rt-soru.gizli .rt-sekil { visibility: hidden; }
+    .rt-sekil { font-size: 1.4rem; min-height: 1.6em; color: #fff; }
+    .rt-dugmeler { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .rt-dugmeler.iki { grid-template-columns: repeat(2, 1fr); }
+    .rt-dugme { position: relative; min-height: 60px; min-width: 0; padding: 6px 4px; border-radius: 14px; border: 2px solid var(--border); background: var(--surface); color: #fff; font: inherit; font-weight: 900; font-size: 1rem; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .rt-dugme:focus-visible { outline: 3px solid var(--accent); }
+    .rt-dugme .nokta { width: 18px; height: 18px; border-radius: 50%; flex: none; }
+    .rt-dugme .kisa { position: absolute; top: 3px; right: 6px; font-size: .62rem; font-weight: 700; color: var(--muted); }
+    .rt-dugme.yanlis { animation: rt-titre .25s; border-color: #ef4444; }
+    .rt-menu { padding: 12px; border-radius: 16px; background: var(--surface); text-align: center; }
+    .rt-menu h2 { margin: 6px 0; font-size: 1.1rem; }
+    .rt-menu p { margin: 0 0 8px; color: var(--muted); font-size: .9rem; }
+    .rt-hizli { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+    .rt-hizli .btn { padding: 10px 4px; min-width: 0; }
+    .rt-hizli small { display: block; font-size: .7rem; font-weight: 600; opacity: .85; }
+    .rt-bolumler { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+    .rt-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #f472b6, #f59e0b); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .rt-bolum b { font-size: 1.1rem; line-height: 1.2; }
+    .rt-bolum .y { font-size: .78rem; color: #fff3b0; letter-spacing: .05em; }
+    .rt-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .rt-ayar { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--muted); cursor: pointer; }
+    @keyframes rt-pop { from { transform: scale(.82); } to { transform: scale(1); } }
+    @keyframes rt-titre { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+    @media (prefers-reduced-motion: reduce) { .rt-kelime.pop, .rt-soru.yanlis, .rt-dugme.yanlis { animation: none; } .rt-sure-dolu { transition: none; } }
+    @media (max-width: 400px) { .rt-ust .stat { padding: 3px 8px; font-size: .9rem; } .rt-dugme { font-size: .88rem; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Renk Tuzağı","url":"https://unkas53.github.io/minigameweb/games/renk-tuzagi/","genre":"Refleks","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip active" href="../../kategori/refleks/" aria-current="page" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+      </div>
+    </nav>
+  </header>
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/refleks/">Refleks Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Renk Tuzağı</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Refleks Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/refleks/"},{"@type":"ListItem","position":3,"name":"Renk Tuzağı","item":"https://unkas53.github.io/minigameweb/games/renk-tuzagi/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Renk Tuzağı</h1>
+        <div class="rt-alan">
+          <div class="rt-menu" id="menu">
+            <h2>⚡ Hızlı oyun (60 sn)</h2>
+            <div class="rt-hizli" id="hizli">
+              <button class="btn" type="button" data-seviye="kolay">Kolay<small>4 renk</small></button>
+              <button class="btn" type="button" data-seviye="normal">Normal<small>6 renk</small></button>
+              <button class="btn" type="button" data-seviye="zor">Zor<small>tuzaklı</small></button>
+            </div>
+            <h2>🗺️ Bölümler</h2>
+            <p id="yildiz-ozet"></p>
+            <div class="rt-bolumler" id="bolumler"></div>
+            <label class="rt-ayar"><input type="checkbox" id="desen"> Desen (renk körü desteği: ● ■ ▲ ◆ ★ ✚)</label>
+          </div>
+          <div id="oyun" hidden>
+            <div class="rt-ust">
+              <div class="stat"><small>Puan</small><span id="puan">0</span></div>
+              <div class="stat"><small>Seri</small><span id="seri">🔥 x0</span></div>
+              <div class="stat"><small id="hedef-ad">Rekor</small><span id="rekor">0</span></div>
+              <div class="stat"><small>Süre</small><span id="sure">60</span></div>
+            </div>
+            <div class="rt-sure" id="sure-cubuk"><div class="rt-sure-dolu" id="sure-dolu"></div></div>
+            <div class="rt-soru" id="soru">
+              <span class="rt-kural" id="kural"></span>
+              <span class="rt-kelime" id="kelime" aria-live="polite"></span>
+              <span class="rt-sekil" id="sekil"></span>
+            </div>
+            <div class="rt-dugmeler" id="dugmeler" aria-label="Renk seçimi"></div>
+          </div>
+        </div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Renk Tuzağı nasıl oynanır?</h2>
+      <p>Ekranın ortasında bir renk adı belirir, ama bu kelime çoğu zaman başka bir renkle yazılmıştır. Örneğin kırmızı renkle yazılmış "MAVİ" kelimesini görürsen doğru cevap Kırmızı'dır. Kelimeyi okumaya değil, harflerin rengine bak ve alttaki düğmelerden o rengi seç. Her doğru cevap 10 puan kazandırır; art arda beşten fazla doğru yaptığında her doğru 15, ondan fazla yaptığında 20 puan olur. Yanlış cevap serini sıfırlar ve süreden iki saniye götürür. Hızlı oyun 60 saniye sürer; süre bitince puanın, isabet oranın ve ortalama tepki süren gösterilir.</p>
+      <p>Kolay seviyede 4 renk vardır ve düğmelerde renkli bir daire bulunur. Normal seviyede 6 renk vardır ve düğmelerde yalnızca beyaz yazıyla renk adı yazar. Zor seviyede düğme yazıları da tuzaklıdır: "YEŞİL" yazan düğme mor renkte olabilir, sen düğmenin adına bakarsın. Düğmelerin yeri her beş soruda bir karışır ve bazı turlarda kural değişir: üstte mor "KELİME" etiketi çıktığında bu kez yazının rengini değil kelimenin anlamını seçmen gerekir.</p>
+      <p>Bilgisayarda 1-6 rakam tuşları düğmeleri soldan sağa, yukarıdan aşağıya seçer. Ayrıca baş harfleri kullanabilirsin: K kırmızı, M mavi, Y yeşil, S sarı, T turuncu. P tuşu oyunu duraklattığı için mor yalnızca rakam tuşuyla seçilir. Oyun bitince Boşluk tuşu yeni bir tur başlatır. Telefonda düğmelere dokunman yeterli.</p>
+      <h2>Bölümler ve yıldızlar</h2>
+      <p>Bölüm haritasında 12 bölüm var. İlk bölümler 4 renkle başlar, sonra 6 renk, beyaz düğmeler, tuzaklı düğmeler, karışan düğmeler ve "KELİME" turları sırayla eklenir; son bölümlerde süre de kısalır. Her bölümün bir hedef puanı vardır: hedefe ulaşırsan 1 yıldız alır ve sonraki bölümü açarsın, hedefin 1,5 katında 2 yıldız, 2 katında 3 yıldız kazanırsın. Yıldızların ve rekorların bu cihazda otomatik kaydedilir, istediğin bölüme dönüp yıldızlarını artırabilirsin.</p>
+      <h2>İpuçları</h2>
+      <p>Beynimiz okumayı otomatik yapar, bu yüzden kelimeye odaklanmak seni yavaşlatır. Gözlerini harflerin tamamına değil, ortadaki bir harfin rengine kilitlemeyi dene. Acele edip yanlış yapmak iki saniye kaybettirdiği için ilk saniyelerde ritmini bulmaya odaklan, sonra hızlan. Klavyede oynuyorsan parmaklarını 1-6 rakam tuşlarının üzerinde tut. Zor seviyede her yeni soruda önce üstteki etikete bak: "RENK" mi, "KELİME" mi?</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Bu oyun neyi ölçer?</strong> Seçici dikkat ve tepki hızını; psikolojide renk-kelime çelişkisi testi olarak bilinen etkiden yararlanır. <strong>Renk körüyüm, oynayabilir miyim?</strong> Evet, oyun menüsündeki Desen seçeneği her renge bir şekil ekler ve tercihin saklanır. <strong>Günlük modda ne değişir?</strong> O gün herkes Normal seviyede aynı soru dizisini alır, puanlar karşılaştırılabilir.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/kule-savunmasi/" data-title="kule savunması" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f59f00;--c2:#e8590c"><span class="thumb-icon" aria-hidden="true">🏰</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kule Savunması</h3>
+          <p>Kuleleri kur ve yükselt, 10 bölümde kaleni düşman dalgalarına karşı koru.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kelime-tahmin/" data-title="kelime tahmin" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#34d399;--c2:#0e7490"><span class="thumb-icon" aria-hidden="true">🔤</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kelime Tahmin</h3>
+          <p>Gizli 5 harfli Türkçe kelimeyi 6 denemede renkli ipuçlarıyla bul.</p>
+          <span class="tag" style="--c1:#60a5fa">🔤 Kelime</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/dort-baglanti/" data-title="dört bağlantı" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#be185d"><span class="thumb-icon" aria-hidden="true">🔴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Dört Bağlantı</h3>
+          <p>Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/sudoku/" data-title="sudoku" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5aa9ff;--c2:#3b5bdb"><span class="thumb-icon" aria-hidden="true">🔢</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Sudoku</h3>
+          <p>Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/refleks/">Tüm refleks oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>

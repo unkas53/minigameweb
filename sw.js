@@ -1,6 +1,6 @@
 // Bu dosya tools/build-pages.js ile üretilir. Elle değiştirmeyin.
 // Sayfalar önce ağdan, yoksa önbellekten; diğer dosyalar önbellekten gelir ve arka planda güncellenir.
-const SURUM = 'mo-8cd80a8b50';
+const SURUM = 'mo-dc4a394dc5';
 const DOSYALAR = [
   "./",
   "./manifest.webmanifest",
@@ -21,7 +21,10 @@ const DOSYALAR = [
   "./kategori/arcade/",
   "./kategori/hafiza/",
   "./kategori/kelime/",
+  "./kategori/refleks/",
   "./kategori/strateji/",
+  "./games/renk-tuzagi/",
+  "./games/renk-tuzagi/game.js",
   "./games/kule-savunmasi/",
   "./games/kule-savunmasi/game.js",
   "./games/kelime-tahmin/",

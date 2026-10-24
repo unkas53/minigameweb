@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: renk-tuzagi
 baslik: Renk Tuzağı
 kategori: Refleks

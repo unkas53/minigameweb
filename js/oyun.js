@@ -447,7 +447,8 @@
     { id: 'gunluk-ilk', ikon: '📅', ad: 'Günlükçü', aciklama: 'İlk günlük meydan okumanı tamamla.', kosul: function () { return Object.keys(load(DAILY_KEY, {})).length >= 1; } },
     { id: 'gunluk-seri', ikon: '🏅', ad: 'Günlük seri', aciklama: 'Günlük meydan okumayı 5 gün üst üste tamamla.', kosul: function () { return dailyStreak(load(DAILY_KEY, {})) >= 5; } },
     { id: 'mayin-avcisi', ikon: '🚩', ad: 'Mayın avcısı', aciklama: 'Mayın Tarlası\'nda bir oyun kazan.', kosul: function (s) { return (s.kazanma['mayin-tarlasi'] || 0) >= 1; } },
-    { id: 'kale-komutani', ikon: '🏰', ad: 'Kale komutanı', aciklama: 'Kule Savunması\'nda 15 yıldız topla.', kosul: function () { var y = load('mo_kule', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 15; } }
+    { id: 'kale-komutani', ikon: '🏰', ad: 'Kale komutanı', aciklama: 'Kule Savunması\'nda 15 yıldız topla.', kosul: function () { var y = load('mo_kule', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 15; } },
+    { id: 'renk-ustasi', ikon: '🎨', ad: 'Renk ustası', aciklama: 'Renk Tuzağı bölümlerinde 24 yıldız topla.', kosul: function () { var y = load('mo_renk', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 24; } }
   ];
 
   function checkBadges() {
