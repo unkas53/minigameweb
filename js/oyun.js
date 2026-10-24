@@ -512,6 +512,7 @@
     { id: 'tugla-ustasi', ikon: '🧱', ad: 'Tuğla ustası', aciklama: 'Tuğla Kırma\'da 30 bölümün hepsini bitir.', kosul: function () { var b = load('mo_tugla', {}).bolumler || {}, n = 0; for (var i = 1; i <= 30; i++) if (b[i] > 0) n++; return n >= 30; } },
     { id: 'kelime-ustasi', ikon: '🔠', ad: 'Kelime ustası', aciklama: 'Harf Çarkı\'nda 60 bölümün hepsini bitir.', kosul: function () { var b = load('mo_harf', {}).bolumler || {}, n = 0; for (var i = 1; i <= 60; i++) if (b[i] > 0) n++; return n >= 60; } },
     { id: 'siralama-ustasi', ikon: '🧪', ad: 'Sıralama ustası', aciklama: 'Top Sıralama\'da 60 bölümün hepsini bitir.', kosul: function () { var b = load('mo_top', {}).bolumler || {}, n = 0; for (var i = 1; i <= 60; i++) if (b[i] > 0) n++; return n >= 60; } },
+    { id: 'meyve-ustasi', ikon: '🍓', ad: 'Meyve ustası', aciklama: 'Meyve Patlat\'ta 60 yıldız topla.', kosul: function () { var b = load('mo_meyve', {}).bolumler || {}, n = 0; for (var k in b) n += (b[k] && b[k].yildiz) || 0; return n >= 60; } },
     { id: 'derin-efendisi', ikon: '🎣', ad: 'Derinlerin Efendisi', aciklama: 'Olta Ustası\'nda Derin Uçurum\'da 800 m\'ye in.', kosul: function () { var y = load('mo_olta', {}).yildizlar || {}; return !!(y.ucurum && y.ucurum[0]); } }
   ];
 

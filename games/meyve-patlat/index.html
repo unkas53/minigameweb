@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meyve Patlat - Ücretsiz Eşleştirme Oyunu Oyna | MiniOyun</title>
+  <meta name="description" content="Aynı meyveleri üçlü dizip patlat! 60 bölüm, yıldızlar, roket ve bomba gibi özel meyveler. Ücretsiz, indirmeden telefonda ve bilgisayarda oyna.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/meyve-patlat/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .mp-ust[hidden], .mp-oyun[hidden], .mp-harita[hidden], .mp-guclar[hidden], .mp-cubuk[hidden] { display: none; }
+    .mp-ust { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .mp-ust .stat { padding: 4px 10px; }
+    .mp-ust .stat.az span { color: #f87171; }
+    .mp-ust .btn { padding: 8px 12px; }
+    .mp-oyun { --d1: #4ade80; --d2: #15803d; position: relative; width: min(100%, 470px); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 8px; border-radius: 18px; background: linear-gradient(160deg, color-mix(in srgb, var(--d1) 35%, #1b2440), color-mix(in srgb, var(--d2) 45%, #141b33)); box-sizing: border-box; }
+    .mp-oyun.dunya-1 { --d1: #7dd3fc; --d2: #2563eb; }
+    .mp-oyun.dunya-2 { --d1: #fcd34d; --d2: #d97706; }
+    .mp-oyun.dunya-3 { --d1: #f87171; --d2: #7f1d1d; }
+    .mp-oyun.altin { box-shadow: 0 0 0 3px #fbbf24, 0 0 18px #fbbf2466; }
+    .mp-hedefler { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .mp-hedef { padding: 4px 10px; border-radius: 999px; background: rgba(0, 0, 0, .3); font-weight: 800; font-size: .95rem; }
+    .mp-hedef.tamam { background: rgba(34, 197, 94, .35); }
+    .mp-cubuk { position: relative; width: min(92vw, 420px, 100%); height: 10px; border-radius: 999px; background: rgba(0, 0, 0, .35); }
+    .mp-cubuk i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: linear-gradient(90deg, #fb7185, #f59e0b); }
+    .mp-cubuk em { position: absolute; top: -6px; font-style: normal; font-size: .8rem; transform: translateX(-50%); }
+    .mp-tahta { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; width: min(92vw, 440px, 100%); aspect-ratio: 1; padding: 4px; box-sizing: border-box; border-radius: 12px; background: rgba(10, 12, 30, .55); touch-action: none; user-select: none; -webkit-user-select: none; }
+    .mp-h { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; border-radius: 8px; background: rgba(255, 255, 255, .1); font-size: clamp(1rem, 6vw, 2.1rem); line-height: 1; cursor: pointer; }
+    .mp-h.koyu { background: rgba(255, 255, 255, .05); }
+    .mp-h.yok { background: transparent; cursor: default; }
+    .mp-h span { display: block; transform: scale(.92); transition: transform .12s; }
+    .mp-h.secili { box-shadow: 0 0 0 3px #fff inset; }
+    .mp-h.secili span { transform: scale(1.1); }
+    .mp-h.imlec { outline: 2px dashed #fde68a; outline-offset: -3px; }
+    .mp-h.buz { background: rgba(186, 230, 253, .45); }
+    .mp-h.buz2 { background: rgba(186, 230, 253, .75); box-shadow: inset 0 0 0 2px #e0f2fe; }
+    .mp-h.kutu { background: #92400e; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .3); font-size: clamp(.9rem, 5vw, 1.7rem); }
+    .mp-h.kutu small { position: absolute; right: 3px; bottom: 1px; font-size: .55rem; font-weight: 900; color: #fde68a; }
+    .mp-h.zin { box-shadow: inset 0 0 0 2px #94a3b8; }
+    .mp-h .zn { position: absolute; right: 0; bottom: 0; font-size: .45em; }
+    .mp-h .oz { position: absolute; right: 1px; top: 0; font-size: .42em; font-weight: 900; color: #fff; text-shadow: 0 0 3px #000; }
+    .mp-h.roket { box-shadow: inset 0 0 0 2px #fde68a; }
+    .mp-h.bomba span { animation: mp-nabiz 1s infinite; }
+    .mp-h.gok { background: conic-gradient(#f87171, #fbbf24, #4ade80, #60a5fa, #c084fc, #f87171); }
+    .mp-h.patla span { animation: mp-patla .2s ease-out forwards; }
+    .mp-h.yeni span { animation: mp-dus .17s ease-out; }
+    .mp-h.parla { box-shadow: 0 0 0 3px #fde68a inset; }
+    .mp-h.gecersiz span { animation: mp-salla .25s; }
+    .mp-h.ipucu span { animation: mp-salla .6s infinite; }
+    .cekic-modu .mp-h:not(.yok) { cursor: crosshair; }
+    @keyframes mp-patla { to { transform: scale(1.5); opacity: 0; } }
+    @keyframes mp-dus { from { transform: translateY(-60%); opacity: .3; } }
+    @keyframes mp-salla { 25% { transform: translateX(-12%); } 75% { transform: translateX(12%); } }
+    @keyframes mp-nabiz { 50% { transform: scale(1.08); } }
+    .mp-yazi { position: absolute; top: 40%; left: 0; right: 0; text-align: center; font-size: 1.8rem; font-weight: 900; color: #fde68a; text-shadow: 0 2px 6px #000; pointer-events: none; opacity: 0; }
+    .mp-yazi.goster { animation: mp-yazi 1s ease-out; }
+    @keyframes mp-yazi { 0% { opacity: 0; transform: scale(.7); } 20% { opacity: 1; transform: scale(1.1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); } }
+    .mp-uyari { min-height: 1.2rem; font-size: .88rem; font-weight: 700; color: var(--accent); text-align: center; overflow-wrap: anywhere; }
+    .mp-guclar { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .mp-guc { padding: 7px 10px; font-size: .88rem; }
+    .mp-guc.aktif { border-color: var(--accent); }
+    .mp-guc small { font-weight: 800; color: #fde68a; }
+    .mp-harita { width: min(100%, 560px); padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; box-sizing: border-box; }
+    .mp-harita h2 { margin: 16px 0 6px; font-size: 1.1rem; }
+    .mp-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .mp-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .mp-ozet { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-weight: 800; font-size: 1rem; }
+    .mp-altin { color: #fbbf24; }
+    .mp-gorevler { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; text-align: left; }
+    .mp-gorevler li { display: flex; justify-content: space-between; gap: 8px; padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; }
+    .mp-gorevler li.tamam { color: #86efac; }
+    .mp-ekstra, .mp-dunyalar, .mp-temalar { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+    .mp-ekstra small { font-weight: 600; }
+    .mp-dunya, .mp-tema { padding: 6px 10px; border-radius: 999px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+    .mp-dunya.secili, .mp-tema.secili { border-color: var(--accent); }
+    .mp-dunya.kilitli, .mp-tema.kilitli { opacity: .55; }
+    .mp-tema small { font-weight: 600; color: var(--muted); }
+    .mp-bolumler { --b1: #4ade80; --b2: #15803d; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .mp-bolumler.mp-d1 { --b1: #7dd3fc; --b2: #2563eb; }
+    .mp-bolumler.mp-d2 { --b1: #fcd34d; --b2: #d97706; }
+    .mp-bolumler.mp-d3 { --b1: #f87171; --b2: #7f1d1d; }
+    .mp-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, var(--b1), var(--b2)); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .mp-bolum.son { box-shadow: 0 0 0 2px #fde68a inset; }
+    .mp-bolum b { font-size: 1rem; line-height: 1.2; }
+    .mp-bolum em { font-style: normal; font-size: .8rem; line-height: 1.2; min-height: .9rem; }
+    .mp-bolum span { font-size: .62rem; color: #ffe066; white-space: nowrap; }
+    .mp-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    @media (prefers-reduced-motion: reduce) { .mp-h span, .mp-yazi.goster { animation: none !important; } }
+    @media (max-width: 480px) {
+      main.container { padding: 0 8px; }
+      .game-box { padding: 12px 6px; }
+      .mp-ust .stat { padding: 3px 7px; font-size: .88rem; }
+      .mp-ust .btn { padding: 6px 9px; font-size: .88rem; }
+      .mp-oyun { padding: 8px 4px; }
+      .mp-guc { padding: 6px 8px; font-size: .82rem; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Meyve Patlat","url":"https://unkas53.github.io/minigameweb/games/meyve-patlat/","genre":"Bulmaca","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip active" href="../../kategori/bulmaca/" aria-current="page" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/bulmaca/">Bulmaca Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Meyve Patlat</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Bulmaca Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/bulmaca/"},{"@type":"ListItem","position":3,"name":"Meyve Patlat","item":"https://unkas53.github.io/minigameweb/games/meyve-patlat/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Meyve Patlat</h1>
+        <div class="mp-ust" id="ust" hidden>
+          <div class="stat"><small>Bölüm</small><span id="bolum">1</span></div>
+          <div class="stat"><small>Hamle</small><span id="hamle">0</span></div>
+          <div class="stat"><small>Puan</small><span id="puan">0</span></div>
+          <div class="stat"><small>En iyi</small><span id="rekor">-</span></div>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="mp-oyun" id="oyun" hidden>
+          <div class="mp-hedefler" id="hedefler" aria-label="Bölüm hedefleri"></div>
+          <div class="mp-cubuk" id="cubuk" aria-hidden="true"></div>
+          <div class="mp-tahta" id="tahta" aria-label="8x8 meyve tahtası. Bir meyveyi komşusuna kaydır ya da iki meyveye sırayla dokun."></div>
+          <div class="mp-yazi" id="yazi" aria-hidden="true"></div>
+          <div class="mp-uyari" id="uyari" role="status" aria-live="polite"></div>
+          <div class="mp-guclar" id="guclar"></div>
+        </div>
+        <div class="mp-harita" id="harita"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Meyve Patlat nasıl oynanır?</h2>
+      <p>Yan yana duran iki meyveyi parmağınla kaydırarak yer değiştir. Aynı türden en az üç meyveyi yatay veya dikey bir sıraya dizdiğinde patlarlar, yukarıdaki meyveler düşer ve yenileri gelir. Değiştirme yeni bir dizi oluşturmuyorsa meyveler yerine döner ve hamlen harcanmaz. Her bölümün üstünde hedefler yazar: belirli bir puana ulaşmak, bir meyveden belli sayıda toplamak, buzları ya da kutuları kırmak veya cevizleri en alt satıra indirmek. Hedefi hamlelerin bitmeden tamamlarsan bölümü geçersin; kalan her hamlen bir rokete dönüşüp patlar ve puanına bonus olarak eklenir. Dörtlü dizi 🚀 roket (bulunduğu satırı ya da sütunu temizler), L ya da T şekli 💣 bomba (çevresindeki 3x3 alanı patlatır), beşli dizi 🌈 gökkuşağı (değiştirdiğin meyvenin tahtadaki tamamını patlatır) oluşturur. İki özel meyveyi birbiriyle değiştirirsen çok daha büyük patlamalar olur. Zincirleme patlamalar puan çarpanını x2, x3 diye artırır.</p>
+      <p><strong>Kontroller:</strong> Telefonda meyveyi komşusuna doğru kaydır ya da iki meyveye sırayla dokun. Bilgisayarda fareyle sürükle veya iki kez tıkla. Klavyede ok tuşlarıyla imleci gezdir, Boşluk veya Enter ile meyveyi seç, sonra ok tuşuyla değiştirme yönünü ver. Esc seçimi bırakır, P oyunu duraklatır, H ipucu gösterir, 1, 2 ve 3 tuşları güçlendiricileri kullanır.</p>
+      <h2>Harita, yıldızlar ve engeller</h2>
+      <p>Harita dört dünyada toplam 60 bölümden oluşur. 🌳 Bahçe'de temel kuralları ve özel meyveleri öğrenirsin. ❄️ Buzul'da 🧊 buzlu hücreler gelir: üstündeki meyveyi patlatınca buz bir kat kırılır. 🏜️ Çöl Pazarı'nda 📦 kutular yanlarındaki eşleşmelerle kırılır, ⛓️ zincirli meyveler yer değiştiremez ve 🌰 cevizleri en alt satıra indirerek toplarsın; ceviz, altındaki meyveyle eşleşme olmadan da yer değiştirebilir. 🌋 Volkan'da hepsi bir arada ve iki hedefli bölümler var. Hedefi tamamlamak 1 yıldız, puan çubuğundaki eşikleri geçmek 2 ve 3 yıldız verir. Yeni dünya, önceki dünyanın son bölümünü bitirip yeterli toplam yıldızı toplayınca açılır (Buzul 25, Çöl 55, Volkan 90 yıldız). Yıldızlarla Şeker ve Mücevher meyve temaları açılır; tüm 180 yıldız altın çerçeve rozetini kazandırır.</p>
+      <h2>Güçlendiriciler ve günlük görevler</h2>
+      <p>🔨 Çekiç tek bir meyveyi, kutuyu ya da zinciri kırar. 🔀 Karıştır tahtayı karıştırır. ➕5 hamle sınırını beş artırır, hamlelerin bitince de kullanabilirsin. Güçlendiricileri bir bölümü ilk kez 3 yıldızla bitirerek, dünya sonlarını geçerek ve günlük görevleri tamamlayarak kazanırsın. Her gün herkese aynı üç görev gelir; hepsini bitirirsen bir güçlendirici ve seri kazanırsın, 7 günlük seri 🎃 Ürkünç temasını açar.</p>
+      <h2>İpuçları</h2>
+      <p>Hamlelerini tahtanın alt kısmında yapmaya çalış; alttaki patlamalar yukarıdaki meyveleri düşürüp zincirleme patlamalar başlatır. Bir roketle bir bombayı yan yana getirip birbirleriyle değiştirmek tek hamlede koca bir alanı temizler. Gökkuşağını tahtada en çok bulunan meyveyle değiştir. Buzlu ve kutulu hücrelerin yanında eşleşme yapmayı öncelikle düşün, çünkü hedef çoğu zaman onlardır. Cevizin altındaki sütunu dikey roketle temizlemek onu bir anda en alta indirir. 3 yıldız için hedefi erken bitir; kalan hamleler bonus patlamaya döner.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Hamlem bitti, ne olur?</strong> Bölümü tekrar deneyebilir ya da stoğun varsa ➕5 hamle güçlendiricisiyle devam edebilirsin. <strong>Yeni dünya nasıl açılır?</strong> Önceki dünyanın son bölümünü bitir ve yeterli toplam yıldızı topla. <strong>İlerlemem kaybolur mu?</strong> Yıldızların, güçlendiricilerin, temaların ve serin bu tarayıcıda saklanır; tarayıcı verisi silinirse sıfırlanır. <strong>Günlük görevler ne zaman yenilenir?</strong> Her gün gece yarısı. <strong>Günlük meydan okuma nedir?</strong> O gün herkes aynı tahta ve aynı düşen meyve dizisiyle 25 hamle oynar, en yüksek puan kazanır.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/blok-bulmaca/" data-title="blok bulmaca" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#3b82f6;--c2:#6366f1"><span class="thumb-icon" aria-hidden="true">🟦</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Blok Bulmaca</h3>
+          <p>Blokları 8x8 ızgaraya yerleştir, satır ve sütunları patlat; 45 bölümlük macera ve temalar.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/top-siralama/" data-title="top sıralama" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#34d399;--c2:#7c3aed"><span class="thumb-icon" aria-hidden="true">🧪</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Top Sıralama</h3>
+          <p>Renkli topları tüplere sırala; 60 bölüm, gizli toplar, kilitli tüpler ve açılan temalar.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/sudoku/" data-title="sudoku" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5aa9ff;--c2:#3b5bdb"><span class="thumb-icon" aria-hidden="true">🔢</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Sudoku</h3>
+          <p>Her satır, sütun ve kutuya 1-9 rakamlarını bir kez yerleştir.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/mayin-tarlasi/" data-title="mayın tarlası" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#94a3d6;--c2:#4b5480"><span class="thumb-icon" aria-hidden="true">💣</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mayın Tarlası</h3>
+          <p>Sayı ipuçlarıyla mayınlara basmadan tüm kareleri aç.</p>
+          <span class="tag" style="--c1:#ffb547">🧩 Bulmaca</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/bulmaca/">Tüm bulmaca oyunları →</a></p>
+      </section>
+      <script type="application/json" id="oyun-listesi">[{"slug":"meyve-patlat","ad":"Meyve Patlat","kategori":"Bulmaca","ikon":"🍓","metin":false,"renk":["#fb7185","#f59e0b"]},{"slug":"olta-ustasi","ad":"Olta Ustası","kategori":"Refleks","ikon":"🎣","metin":false,"renk":["#0ea5e9","#1e3a8a"]},{"slug":"blok-bulmaca","ad":"Blok Bulmaca","kategori":"Bulmaca","ikon":"🟦","metin":false,"renk":["#3b82f6","#6366f1"]},{"slug":"top-siralama","ad":"Top Sıralama","kategori":"Bulmaca","ikon":"🧪","metin":false,"renk":["#34d399","#7c3aed"]},{"slug":"harf-carki","ad":"Harf Çarkı","kategori":"Kelime","ikon":"🔠","metin":false,"renk":["#fbbf24","#db2777"]},{"slug":"tugla-kirma","ad":"Tuğla Kırma","kategori":"Arcade","ikon":"🧱","metin":false,"renk":["#fb923c","#dc2626"]},{"slug":"penalti-ligi","ad":"Penaltı Ligi","kategori":"Spor","ikon":"⚽","metin":false,"renk":["#16a34a","#facc15"]},{"slug":"renk-tuzagi","ad":"Renk Tuzağı","kategori":"Refleks","ikon":"🎨","metin":false,"renk":["#f472b6","#f59e0b"]},{"slug":"kule-savunmasi","ad":"Kule Savunması","kategori":"Strateji","ikon":"🏰","metin":false,"renk":["#f59f00","#e8590c"]},{"slug":"kelime-tahmin","ad":"Kelime Tahmin","kategori":"Kelime","ikon":"🔤","metin":false,"renk":["#34d399","#0e7490"]},{"slug":"dort-baglanti","ad":"Dört Bağlantı","kategori":"Strateji","ikon":"🔴","metin":false,"renk":["#f472b6","#be185d"]},{"slug":"sudoku","ad":"Sudoku","kategori":"Bulmaca","ikon":"🔢","metin":false,"renk":["#5aa9ff","#3b5bdb"]},{"slug":"mayin-tarlasi","ad":"Mayın Tarlası","kategori":"Bulmaca","ikon":"💣","metin":false,"renk":["#94a3d6","#4b5480"]},{"slug":"hafiza","ad":"Hafıza Kartları","kategori":"Hafıza","ikon":"🃏","metin":false,"renk":["#a78bfa","#6d28d9"]},{"slug":"yilan","ad":"Yılan","kategori":"Arcade","ikon":"🐍","metin":false,"renk":["#5ee0b8","#2a9d8f"]},{"slug":"2048","ad":"2048","kategori":"Bulmaca","ikon":"2048","metin":true,"renk":["#ffb547","#ff7a59"]}]</script>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>

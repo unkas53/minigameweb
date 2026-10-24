@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: meyve-patlat
 baslik: Meyve Patlat
 kategori: Bulmaca
