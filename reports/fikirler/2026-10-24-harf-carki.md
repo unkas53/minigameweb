@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: harf-carki
 baslik: Harf Çarkı
 kategori: Kelime

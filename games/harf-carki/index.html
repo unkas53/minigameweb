@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harf Çarkı - Kelime Bulmaca Oyunu Oyna | MiniOyun</title>
+  <meta name="description" content="Harfleri birleştir, kelimeleri bul, bulmacayı doldur! Ücretsiz Türkçe kelime bulmaca oyunu: 60 bölüm, yıldızlar, günlük bulmaca. Telefonda da oynanır.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/harf-carki/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .hc-ust[hidden], .hc-oyun[hidden], .hc-harita[hidden] { display: none; }
+    .hc-ust { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .hc-ust .stat { padding: 4px 10px; }
+    .hc-ust .btn { padding: 8px 12px; }
+    .hc-oyun { --t1: #fb923c; --t2: #ec4899; width: min(100%, 460px); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 8px; border-radius: 18px; background: linear-gradient(160deg, color-mix(in srgb, var(--t1) 28%, #0d0b1f), color-mix(in srgb, var(--t2) 22%, #0d0b1f)); position: relative; }
+    .hc-izgara { display: grid; grid-template-columns: repeat(var(--c), 1fr); gap: 3px; width: min(100%, calc(var(--c) * 38px)); container-type: inline-size; }
+    .hc-kare, .hc-yok { aspect-ratio: 1; }
+    .hc-kare { display: flex; align-items: center; justify-content: center; border-radius: 6px; background: rgba(0, 0, 0, .35); border: 1px solid rgba(255, 255, 255, .12); font-weight: 900; font-size: calc(100cqw / var(--c) * .55); color: #fff; cursor: pointer; user-select: none; -webkit-user-select: none; }
+    .hc-kare.dolu { background: linear-gradient(135deg, var(--t1), var(--t2)); border-color: transparent; animation: hc-pop .25s; }
+    .hc-kare.ipucu { background: color-mix(in srgb, var(--t1) 45%, #1a1736); animation: hc-pop .25s; }
+    .hc-kare.secili { outline: 2px solid var(--accent); outline-offset: -2px; }
+    @keyframes hc-pop { 50% { transform: scale(1.18); } }
+    .hc-kelime { min-height: 2.2rem; font-size: 1.6rem; font-weight: 900; letter-spacing: .12em; color: #fff; text-align: center; }
+    .hc-kelime.salla { animation: hc-salla .4s; color: #fca5a5; }
+    .hc-kelime.iyi { color: #86efac; }
+    @keyframes hc-salla { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+    .hc-uyari { min-height: 1.2rem; font-size: .88rem; font-weight: 700; color: var(--accent); text-align: center; }
+    .hc-cark { --s1: var(--t1); --s2: var(--t2); position: relative; width: min(240px, 70vw); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(255, 255, 255, .14), rgba(255, 255, 255, .04) 70%); border: 3px solid color-mix(in srgb, var(--s1) 60%, transparent); touch-action: none; user-select: none; -webkit-user-select: none; }
+    .hc-cark svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .hc-cark polyline { fill: none; stroke: var(--s1); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
+    .hc-harf { position: absolute; width: 23%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 0; background: #f4f2ff; color: #1a1736; font: inherit; font-size: 1.45rem; font-weight: 900; cursor: pointer; touch-action: none; padding: 0; box-shadow: 0 3px 0 rgba(0, 0, 0, .3); }
+    .hc-harf.secili { background: linear-gradient(135deg, var(--s1), var(--s2)); color: #fff; }
+    .hc-karistir { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 22%; aspect-ratio: 1; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .12); color: #fff; font-size: 1.3rem; cursor: pointer; padding: 0; }
+    .hc-cark.g-gunes { --s1: #facc15; --s2: #f97316; }
+    .hc-cark.g-mercan { --s1: #fb7185; --s2: #22d3ee; }
+    .hc-cark.g-zumrut { --s1: #34d399; --s2: #065f46; }
+    .hc-cark.g-neon { --s1: #e879f9; --s2: #22d3ee; }
+    .hc-cark.g-yildiz { --s1: #fde68a; --s2: #6366f1; }
+    .hc-cark.g-galaksi { --s1: #c084fc; --s2: #0f172a; }
+    .hc-araclar { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .hc-araclar .btn { padding: 7px 10px; font-size: .88rem; }
+    .hc-bilgi { margin: 0; font-size: .82rem; color: var(--muted); text-align: center; max-width: 100%; overflow-wrap: anywhere; }
+    .hc-harita { width: min(100%, 560px); padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .hc-harita h2 { margin: 14px 0 6px; font-size: 1.1rem; }
+    .hc-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .hc-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .hc-ozet { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-weight: 800; font-size: 1rem; }
+    .hc-temalar { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px; }
+    .hc-tema { padding: 6px 10px; border-radius: 999px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+    .hc-tema.secili { border-color: var(--accent); }
+    .hc-tema.kilitli { opacity: .55; }
+    .hc-bolumler { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .hc-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, var(--b1), var(--b2)); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .hc-bolum b { font-size: 1.05rem; line-height: 1.2; }
+    .hc-bolum span { font-size: .72rem; color: #ffe066; }
+    .hc-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .hc-ekstra { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+    .hc-gorunumler { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .hc-gorunum { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 12px; border: 2px solid transparent; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+    .hc-gorunum i { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, var(--s1), var(--s2)); }
+    .hc-gorunum.secili { border-color: var(--accent); }
+    .hc-gorunum:disabled { opacity: .5; cursor: not-allowed; }
+    .hc-gorevler { list-style: none; margin: 0; padding: 0; text-align: left; display: grid; gap: 4px; }
+    .hc-gorev { padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; }
+    .hc-gorev small { color: var(--muted); }
+    .hc-gorev.tamam { opacity: .65; }
+    @media (prefers-reduced-motion: reduce) { .hc-kare.dolu, .hc-kare.ipucu, .hc-kelime.salla { animation: none; } }
+    @media (max-width: 480px) {
+      main.container { padding: 0 8px; }
+      .game-box { padding: 12px 6px; }
+      .hc-ust .stat { padding: 3px 7px; font-size: .88rem; }
+      .hc-ust .btn { padding: 6px 9px; font-size: .88rem; }
+      .hc-oyun { padding: 10px 4px; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Harf Çarkı","url":"https://unkas53.github.io/minigameweb/games/harf-carki/","genre":"Kelime","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip active" href="../../kategori/kelime/" aria-current="page" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/kelime/">Kelime Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Harf Çarkı</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Kelime Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/kelime/"},{"@type":"ListItem","position":3,"name":"Harf Çarkı","item":"https://unkas53.github.io/minigameweb/games/harf-carki/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Harf Çarkı</h1>
+        <div class="hc-ust" id="ust" hidden>
+          <div class="stat"><small>Bölüm</small><span id="bolum">-</span></div>
+          <div class="stat"><small>Jeton</small><span id="jeton">🪙 0</span></div>
+          <div class="stat"><small>Süre</small><span id="sure">0</span></div>
+          <div class="stat"><small>Bonus</small><span id="kumbara">0/10</span></div>
+          <div class="stat"><small>Rekor</small><span id="rekor">0</span></div>
+          <button class="btn btn-ghost" id="harita-btn" type="button">🗺️ Harita</button>
+        </div>
+        <div class="hc-oyun" id="oyun" hidden>
+          <div class="hc-izgara" id="izgara" aria-label="Bulmaca ızgarası"></div>
+          <div class="hc-kelime" id="kelime" aria-live="polite"></div>
+          <div class="hc-uyari" id="uyari" role="status" aria-live="polite"></div>
+          <div class="hc-cark" id="cark" aria-label="Harf çarkı. Harflere dokunup kaydırarak veya klavyeden yazarak kelime kur.">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><polyline id="cizgi" points=""></polyline></svg>
+            <button class="hc-karistir" id="karistir" type="button" aria-label="Harfleri karıştır" title="Karıştır (Boşluk)">🔀</button>
+          </div>
+          <div class="hc-araclar">
+            <button class="btn btn-ghost" id="sil" type="button" aria-label="Son harfi sil">⌫ Sil</button>
+            <button class="btn" id="gonder" type="button">✔ Gönder</button>
+            <button class="btn btn-ghost" id="ipucu-harf" type="button">💡 Harf aç</button>
+            <button class="btn btn-ghost" id="ipucu-kelime" type="button">🔎 Kelime aç</button>
+          </div>
+          <p class="hc-bilgi" id="bilgi"></p>
+        </div>
+        <div class="hc-harita" id="harita"></div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Harf Çarkı nasıl oynanır?</h2>
+      <p>Harf Çarkı'nda ekranın altındaki çarkta karışık duran harflerden anlamlı Türkçe kelimeler türetirsin. Bir harfe dokun ve parmağını diğer harflerin üzerinden kaydırarak kelimeyi oluştur, parmağını kaldırınca kelime kontrol edilir. Kaydırmak zor geliyorsa harflere tek tek dokunup Gönder düğmesine basabilirsin; yanlış seçtiğin son harfe tekrar dokunmak onu siler. Bilgisayarda harfleri klavyeden yazıp Enter tuşuna basman da yeterli. Bulduğun kelime üstteki bulmacada varsa yerine yerleşir; kesişen kelimelerin ortak harfleri de açılır. Bulmacada olmayan ama doğru yazılmış kelimeler bonus kelime sayılır ve jeton kumbaranı doldurur. Bulmacadaki tüm kelimeleri bulunca bölüm biter. Takıldığında jeton harcayarak bir harfi veya bütün bir kelimeyi açabilirsin. Altı temadaki 60 bölümü geç, ipucu kullanmadan ve hızlı bitirerek her bölümde üç yıldız topla.</p>
+      <p><strong>Klavye:</strong> harf tuşlarıyla yaz (Ç, Ğ, I, İ, Ö, Ş, Ü dahil; küçük i büyük İ olur), Enter ile gönder, Backspace ile son harfi sil, Boşluk ile harfleri karıştır. Çarkta H harfi yoksa H tuşu harf ipucu kullanır. Esc ile oyunu duraklatabilirsin.</p>
+      <h2>Yıldızlar, jetonlar ve temalar</h2>
+      <p>Bölümü bitirmek 1, ipucu kullanmadan bitirmek 2, ipucu kullanmadan ve hedef sürenin altında bitirmek 3 yıldız verir. Hedef süre bulmacadaki kelime başına 20 saniyedir. Sabah, Deniz, Dağ, Şehir, Gece ve Uzay temalarında onar bölüm var; yeni temaya geçmek için önceki temada 20 yıldız toplaman gerekir. Oyuna 5 jetonla başlarsın. Her bölümü ilk kez bitirmek 1, bir temayı tamamlamak 5, her on bonus kelime 1 jeton kazandırır. Harf açmak 1, kelime açmak 3 jeton ister. Tamamladığın her tema yeni bir çark görünümü açar, 30 bölümden sonra ise yedi harfli gizli kelimeyi bulana kadar en çok kelimeyi toplamaya çalıştığın Uzun Kelime modu gelir. Her gün değişen üç görev ve bulduğun kelimeleri saklayan Sözlüğüm de ekstra jeton verir.</p>
+      <h2>İpuçları</h2>
+      <p>Önce kısa kelimeleri bul; açılan harfler uzun kelimeleri tahmin etmeyi kolaylaştırır. Karıştır düğmesi harflerin yerini değiştirir, bu da gözünün yeni kelimeleri görmesine yardım eder. Kelimenin sonuna -LI, -CI, -LIK gibi ekler gelebilir mi diye düşün; çarkta bu harfler varsa çoğu zaman uzun bir kelimenin anahtarıdır. Jetonlarını zor bölümlere sakla, bonus kelimeleri boşa sanma: her on bonus kelime bir jeton demektir. Kelime açmadan önce ızgarada bir kareye dokunarak hangi kelimeyi açacağını seçebilirsin. Her gün günlük bulmacayı çözerek ekstra jeton kazan.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>Hangi kelimeler kabul ediliyor?</strong> Yaygın Türkçe kelimelerin yalın halleri; özel isimler, kısaltmalar ve çekimli biçimler sayılmaz. <strong>İlerlemem kaybolur mu?</strong> Hayır, yıldızların, jetonların ve yarım kalan bölümün bu tarayıcıda otomatik kaydedilir. <strong>Günlük bulmaca nasıl puanlanır?</strong> Herkes aynı bulmacayı çözer, jetonlar kullanılmaz; her ipucu süreye 30 saniye ekler ve ne kadar hızlı bitirirsen puanın o kadar yüksek olur.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/kelime-tahmin/" data-title="kelime tahmin" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#34d399;--c2:#0e7490"><span class="thumb-icon" aria-hidden="true">🔤</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kelime Tahmin</h3>
+          <p>Gizli 5 harfli Türkçe kelimeyi 6 denemede renkli ipuçlarıyla bul.</p>
+          <span class="tag" style="--c1:#60a5fa">🔤 Kelime</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/tugla-kirma/" data-title="tuğla kırma" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#fb923c;--c2:#dc2626"><span class="thumb-icon" aria-hidden="true">🧱</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Tuğla Kırma</h3>
+          <p>Raketle topu sektir, tuğlaları kır; 30 bölüm, patronlar, güçlendirmeler ve sonsuz mod.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/penalti-ligi/" data-title="penaltı ligi" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#16a34a;--c2:#facc15"><span class="thumb-icon" aria-hidden="true">⚽</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Penaltı Ligi</h3>
+          <p>Penaltı at, kaleyi koru; 4 ligde 24 maçlık kariyerle Kupa Finali'ne yüksel.</p>
+          <span class="tag" style="--c1:#4ade80">⚽ Spor</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/renk-tuzagi/" data-title="renk tuzağı" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🎨</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Renk Tuzağı</h3>
+          <p>Kelimeyi değil yazının rengini seç; 60 saniyede refleksini ve dikkatini sına.</p>
+          <span class="tag" style="--c1:#fde047">⚡ Refleks</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/kelime/">Tüm kelime oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="veri.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>
