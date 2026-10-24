@@ -104,7 +104,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 
 ## H-10 | Olta Ustası: "Oltayı At" ile tur başlayınca oyun alanı görünür alana getirilmiyor
 - durum: duzeltildi
-- not: ddcba89 ile düzeltildi; `startRound()` panel gizlendikten sonra canvas'ı `scrollIntoView({block:'nearest'})` ile görünür alana kaydırıyor. Düğme ortalanarak tıklandığında canvas 1280x900'de 0-648 px, 1366x768'de 0-553 px, 360x740'ta 0-522 px (tamamı görünür); sayfa hatası yok.
+- not: 25e2b9d ile düzeltildi; `startRound()` panel gizlendikten sonra canvas'ı `scrollIntoView({block:'nearest'})` ile görünür alana kaydırıyor. Düğme ortalanarak tıklandığında canvas 1280x900'de 0-648 px, 1366x768'de 0-553 px, 360x740'ta 0-522 px (tamamı görünür); sayfa hatası yok.
 - onem: orta
 - sayfa: games/olta-ustasi/
 - adimlar: 1280x900, 1366x768 veya 360x740 ekranda sayfayı aç. "Oltayı At" düğmesi menü panelinde, oyun alanının (canvas) altında ve ilk ekranın dışında (1280x900'de y≈1186). Düğmeye kaydırıp tıkla/dokun.
