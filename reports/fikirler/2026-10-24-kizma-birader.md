@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: kizma-birader
 baslik: Kızma Birader
 kategori: Strateji
