@@ -45,7 +45,7 @@ Sonra http://localhost:8000 adresini açın.
 
 ## Ajanlar
 
-Siteyi 10 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her ajan önce `agents/ORTAK.md` dosyasını okur.
+Siteyi 11 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her ajan önce `agents/ORTAK.md` dosyasını okur.
 
 | Ajan | Dosya | Sıklık | Çıktı |
 |---|---|---|---|
@@ -59,8 +59,9 @@ Siteyi 10 ajan geliştirir. Görev tanımları `agents/` klasöründedir; her aj
 | 8. Oyun iyileştirme uygulayıcısı | `agents/8-oyun-uygulayici.md` | saatlik | `games/<slug>/` |
 | 9. Site iyileştirme önericisi | `agents/9-site-oneri.md` | 6 saatte bir | `reports/site-iyilestirme/` |
 | 10. Site iyileştirme uygulayıcısı | `agents/10-site-uygulayici.md` | saatlik | site CSS/JS ve build |
+| 11. Çeviri (çoklu dil) | `agents/11-ceviri.md` | saatlik | `diller/` + `reports/ceviri/` |
 
-Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO ajanı bağımsız çalışır. İyileştirme hatları: oyun önericisi → oyun uygulayıcısı, site önericisi → site uygulayıcısı.
+Akış: rakip analizi → fikir → geliştirici → test → düzeltici. SEO ajanı bağımsız çalışır. Çeviri ajanı yeni ve değişen metinleri `diller/` sözlüklerine ekler (`node tools/dil-kontrol.js en` eksikleri listeler). İyileştirme hatları: oyun önericisi → oyun uygulayıcısı, site önericisi → site uygulayıcısı.
 
 ## Test
 

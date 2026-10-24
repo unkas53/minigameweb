@@ -1,10 +1,11 @@
 // Bu dosya tools/build-pages.js ile üretilir. Elle değiştirmeyin.
 // Sayfalar önce ağdan, yoksa önbellekten; diğer dosyalar önbellekten gelir ve arka planda güncellenir.
-const SURUM = 'mo-3b1c79915e';
+const SURUM = 'mo-de467a22fb';
 const DOSYALAR = [
   "./",
   "./manifest.webmanifest",
   "./css/style.css",
+  "./js/dil.js",
   "./js/gunluk.js",
   "./js/main.js",
   "./js/oyun.js",
@@ -63,7 +64,18 @@ const DOSYALAR = [
   "./hakkinda.html",
   "./iletisim.html",
   "./gizlilik.html",
-  "./cerezler.html"
+  "./cerezler.html",
+  "./diller/diller.json",
+  "./diller/en/ortak.json",
+  "./diller/en/oyun/2048.json",
+  "./diller/en/sayfa/cerezler.json",
+  "./diller/en/sayfa/gizlilik.json",
+  "./diller/en/sayfa/gunluk.json",
+  "./diller/en/sayfa/hakkinda.json",
+  "./diller/en/sayfa/iletisim.json",
+  "./diller/en/sayfa/index.json",
+  "./diller/en/sayfa/kategori.json",
+  "./diller/en/sayfa/profil.json"
 ];
 
 self.addEventListener('install', e => {

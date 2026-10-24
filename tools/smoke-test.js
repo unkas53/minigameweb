@@ -1,51 +1,18 @@
 // Tüm sayfaları gerçek tarayıcıda açar; JS hatası, kırık bağlantı ve yatay taşma arar.
 // Ardından her oyunun tools/tests/<slug>.js oynanış testini çalıştırır (yalnızca bir oyun için: --oyun <slug>).
 // Kullanım: npm install && node tools/smoke-test.js
-const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { chromium } = require('playwright');
+const { ROOT, BASE, serve: serveAt, chromePath, sayfalar } = require('./yerel');
 
-const ROOT = path.resolve(__dirname, '..');
-const BASE = '/minigameweb/'; // GitHub Pages alt klasörünü taklit eder
 const PORT = 8790;
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json' };
-
-function serve() {
-  return http.createServer((req, res) => {
-    let url = decodeURIComponent(req.url.split('?')[0]);
-    if (!url.startsWith(BASE)) { res.writeHead(404); return res.end(); }
-    let file = path.join(ROOT, url.slice(BASE.length));
-    if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
-    if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, 'index.html');
-    if (!fs.existsSync(file)) { res.writeHead(404); return res.end('404'); }
-    res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
-    fs.createReadStream(file).pipe(res);
-  }).listen(PORT);
-}
-
-function chromePath() {
-  // Bulut ortamında önceden kurulu Chromium varsa onu kullan
-  const dir = '/opt/pw-browsers';
-  if (!fs.existsSync(dir)) return undefined;
-  for (const d of fs.readdirSync(dir).filter(d => /^chromium-\d+$/.test(d))) {
-    for (const sub of ['chrome-linux64', 'chrome-linux']) {
-      const p = path.join(dir, d, sub, 'chrome');
-      if (fs.existsSync(p)) return p;
-    }
-  }
-  return undefined;
-}
+const serve = () => serveAt(PORT);
 
 (async () => {
   const server = serve();
-  const games = JSON.parse(fs.readFileSync(path.join(ROOT, 'games.json'), 'utf8'));
-  const katDir = path.join(ROOT, 'kategori');
-  const cats = fs.existsSync(katDir) ? fs.readdirSync(katDir).filter(d => fs.statSync(path.join(katDir, d)).isDirectory()) : [];
-  const pages = ['', 'hakkinda.html', 'iletisim.html', 'gizlilik.html', 'cerezler.html', 'profil.html', 'gunluk.html', 'kategori/']
-    .concat(cats.map(c => 'kategori/' + c + '/'))
-    .concat(games.map(g => 'games/' + g.slug + '/'));
+  const { games, cats, pages } = sayfalar();
   const origin = `http://localhost:${PORT}${BASE}`;
   const errors = [];
   // Ana sayfa, kategori sayfaları, menüler ve sitemap games.json ile uyumlu mu?
@@ -58,7 +25,7 @@ function chromePath() {
 
   const browser = await chromium.launch({ executablePath: chromePath() });
   for (const vp of [{ name: 'masaustu', width: 1280, height: 900 }, { name: 'mobil', width: 360, height: 740 }]) {
-    const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+    const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height }, locale: 'tr-TR' });
     await page.addInitScript(() => { window.MO_SUNUCU_KAPALI = true; });
     await page.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
     await page.route('https://*.supabase.co/**', r => r.abort());
@@ -118,7 +85,7 @@ function chromePath() {
   for (const g of games.filter(x => !only || x.slug === only)) {
     const file = path.join(__dirname, 'tests', g.slug + '.js');
     if (!fs.existsSync(file)) { errors.push(`${g.slug}: oynanış testi yok (tools/tests/${g.slug}.js)`); continue; }
-    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'tr-TR' });
     await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} window.MO_SUNUCU_KAPALI = true; });
     await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
     await ctx.route('https://*.supabase.co/**', r => r.abort());
@@ -139,7 +106,7 @@ function chromePath() {
 
   // Oyun sonu "Sıradaki oyun" kartları: seçim sırası, günlük kartı, bağlantılar, 360 px
   if (!only) {
-    const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, serviceWorkers: 'block' });
+    const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, serviceWorkers: 'block', locale: 'tr-TR' });
     await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} window.MO_SUNUCU_KAPALI = true; });
     await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
     await ctx.route('https://*.supabase.co/**', r => r.abort());
@@ -177,10 +144,62 @@ function chromePath() {
     await ctx.close();
   }
 
+  // Çoklu dil (js/dil.js): tarayıcı diliyle otomatik seçim, ?lang ile kalıcı seçim, çeviri, bağlantılar, 360 px taşma
+  if (!only && fs.existsSync(path.join(ROOT, 'diller', 'en', 'ortak.json'))) {
+    const yeni = async (opts) => {
+      const ctx = await browser.newContext(Object.assign({ viewport: { width: 360, height: 740 }, serviceWorkers: 'block' }, opts));
+      await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} window.MO_SUNUCU_KAPALI = true; });
+      await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+      await ctx.route('https://*.supabase.co/**', r => r.abort());
+      const page = await ctx.newPage();
+      page.on('pageerror', e => errors.push(`[dil] JS hatası ${page.url()}: ${e.message}`));
+      page.on('console', m => { if (m.type() === 'error') errors.push(`[dil] konsol ${page.url()}: ${m.text()}`); });
+      page.on('response', r => { if (r.status() >= 400) errors.push(`[dil] ${r.status()} ${r.url()}`); });
+      const git = async q => { await page.goto(origin + q); await page.evaluate(() => new Promise(r => MO_DIL.hazir(r))); };
+      return { ctx, page, git };
+    };
+    const beklenen = (ok, msg) => { if (!ok) errors.push('[dil] ' + msg); };
+    try {
+      const { ctx, page, git } = await yeni({ locale: 'en-US', timezoneId: 'America/New_York' });
+      const durum = () => page.evaluate(() => ({ dil: document.documentElement.lang, menu: document.querySelector('.nav a').textContent.trim(), kod: (document.querySelector('.dil-kod') || {}).textContent, kayit: localStorage.getItem('mo_dil'), gizli: document.documentElement.classList.contains('dil-bekle') }));
+      await git('');
+      let d = await durum();
+      beklenen(d.dil === 'en' && d.menu === 'Games' && d.kod === 'EN' && !d.kayit && !d.gizli, `İngilizce tarayıcıda ana sayfa İngilizce açılmalı (seçim kaydedilmeden): ${JSON.stringify(d)}`);
+      await page.click('.dil-menu summary');
+      await Promise.all([page.waitForURL(/\?lang=tr$/), page.click('.dil-liste a[hreflang="tr"]')]);
+      await page.evaluate(() => new Promise(r => MO_DIL.hazir(r)));
+      d = await durum();
+      beklenen(d.dil === 'tr' && d.menu === 'Oyunlar' && d.kayit === 'tr', `Dil menüsünden Türkçe seçilince kaydedilmeli: ${JSON.stringify(d)}`);
+      await git('games/2048/');
+      beklenen((await durum()).dil === 'tr', 'Kayıtlı Türkçe seçimi diğer sayfalarda da geçerli olmalı');
+      await git('games/2048/?lang=en');
+      const o = await page.evaluate(() => ({ yeni: document.getElementById('restart').textContent, can: document.querySelector('link[rel="canonical"]').href, link: document.querySelector('.breadcrumb a').getAttribute('href'), t: MO_DIL.t('Bölüm {0}', 3), baslik: document.title }));
+      beklenen(o.yeni === 'New game' && o.can.endsWith('/games/2048/?lang=en') && o.link === '../../?lang=en' && o.t === 'Level 3' && !/Oyna/.test(o.baslik), `2048 İngilizce çevrilmeli (düğme, canonical, bağlantı, MO_DIL.t, başlık): ${JSON.stringify(o)}`);
+      beklenen((await durum()).kayit === 'en', '?lang=en seçimi kaydedilmeli');
+      // Çevirisi tam olan (hreflang taşıyan) sayfalar İngilizcede 360 px'e sığmalı
+      for (const p of pages) {
+        const f = path.join(ROOT, p.endsWith('/') || !p ? p + 'index.html' : p);
+        if (!fs.readFileSync(f, 'utf8').includes('hreflang="en"')) continue;
+        await git(p + '?lang=en');
+        const w = await page.evaluate(() => document.documentElement.scrollWidth);
+        if (w > 360) errors.push(`[dil] İngilizce ${p || '/'} sayfasında yatay taşma: ${w}px`);
+      }
+      await ctx.close();
+      // Türkiye saat dilimindeki İngilizce tarayıcı Türkçe görür
+      const ist = await yeni({ locale: 'en-US', timezoneId: 'Europe/Istanbul' });
+      await ist.git('');
+      beklenen(await ist.page.evaluate(() => MO_DIL.dil) === 'tr', 'Türkiye saat diliminde site Türkçe açılmalı');
+      await ist.ctx.close();
+    } catch (e) {
+      errors.push(`[dil] ${e.message.split('\n')[0]}`);
+    }
+    if (!fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes('hreflang="en"')) errors.push('[dil] ana sayfada hreflang="en" etiketi yok');
+  }
+
   // Sunucu arayüzü (sahte istemciyle): liderlik tablosu, skor gönderme, hesap
   if (!only) {
     const sv = require(path.join(__dirname, 'tests', '_sunucu.js'));
-    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'tr-TR' });
     await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} });
     await ctx.addInitScript(sv.sahte);
     await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));

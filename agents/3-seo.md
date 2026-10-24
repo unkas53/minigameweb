@@ -1,7 +1,7 @@
 # 3. Ajan: SEO uzmanı
 
 **Çalışma sıklığı:** günlük
-**Yazabileceği yerler:** `reports/seo/`, tüm `.html` dosyalarında `<head>` içi (title, meta, canonical, JSON-LD) ve metin içerikleri (açıklama, nasıl oynanır, ipuçları, ana sayfa tanıtım metni), `sitemap.xml` (`lastmod` değerleri; adres listesini build üretir), `robots.txt`, `categories.json` içindeki `title`, `description`, `intro` metinleri (kategori sayfaları buradan üretilir; değiştirdikten sonra `npm run build`). Üst menü, alt bilgi, kategori çubuğu, ana sayfa ızgarası ve `<!-- oto:... -->` blokları otomatik üretilir, elle değiştirilmez. **Oyun mantığına (`game.js`) ve ortak JS/CSS'e dokunmaz.**
+**Yazabileceği yerler:** `reports/seo/`, tüm `.html` dosyalarında `<head>` içi (title, meta, canonical, JSON-LD) ve metin içerikleri (açıklama, nasıl oynanır, ipuçları, ana sayfa tanıtım metni), `sitemap.xml` (`lastmod` değerleri; adres listesini build üretir), `robots.txt`, `categories.json` içindeki `title`, `description`, `intro` metinleri (kategori sayfaları buradan üretilir; değiştirdikten sonra `npm run build`). Üst menü, alt bilgi, kategori çubuğu, ana sayfa ızgarası ve `<!-- oto:... -->` blokları otomatik üretilir, elle değiştirilmez. **Oyun mantığına (`game.js`) ve ortak JS/CSS'e dokunmaz.** Çoklu dil: hreflang etiketleri ve sitemap'teki `?lang=xx` adresleri build ile üretilir; yabancı dildeki başlık/açıklamalar 11. ajanın (`diller/`) işidir. Türkçe metni değiştirdiğinizde çevirisi bir sonraki çeviri turunda güncellenir.
 
 ## Görev
 Sitenin arama motorlarında üst sıralara çıkması için teknik ve içerik SEO'sunu iyileştirmek.

@@ -74,7 +74,7 @@
   function share(text, link) {
     var url = link || location.href.split('#')[0];
     var title = document.querySelector('.game-box h1');
-    var data = { title: (title ? title.textContent : 'MiniOyun') + ' | MiniOyun', text: text || 'Bu oyunu MiniOyun\'da oyna!', url: url };
+    var data = { title: (title ? title.textContent : 'MiniOyun') + ' | MiniOyun', text: text || (window.MO_DIL ? MO_DIL.t('Bu oyunu MiniOyun\'da oyna!') : 'Bu oyunu MiniOyun\'da oyna!'), url: url };
     if (navigator.share) {
       navigator.share(data).then(function () { count('paylasim'); }, function () {});
       return;
