@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: blok-bulmaca
 baslik: Blok Bulmaca
 kategori: Bulmaca
