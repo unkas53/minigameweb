@@ -195,6 +195,14 @@ a { color: var(--accent); }
 /* Profil sayfası */
 .nav a.nav-profil { color: var(--text); background: var(--surface-2); }
 .nav-avatar { margin-right: 4px; }
+/* Dil seçici (js/dil.js): menünün sağında; menü eskisi gibi sağa yaslı kalır */
+.header-row .nav { margin-left: auto; }
+.dil-menu { position: relative; }
+.dil-menu summary { list-style: none; cursor: pointer; color: var(--text); background: var(--surface-2); font-weight: 700; padding: 6px 12px; border-radius: 999px; user-select: none; }
+.dil-menu summary::-webkit-details-marker { display: none; }
+.dil-liste { position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; min-width: 150px; display: flex; flex-direction: column; padding: 6px; background: var(--surface, #17142e); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); }
+.dil-liste a { color: var(--text); text-decoration: none; font-weight: 700; padding: 8px 12px; border-radius: 10px; }
+.dil-liste a:hover, .dil-liste a[aria-current] { background: var(--surface-2); }
 .profil-kart { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 24px; padding: 24px; border-radius: 24px; background: linear-gradient(135deg, var(--violet), var(--pink)); box-shadow: var(--shadow); }
 .profil-avatar { flex: none; width: 96px; height: 96px; display: grid; place-items: center; padding: 0; border: 4px solid rgba(255, 255, 255, .5); border-radius: 50%; background: rgba(0, 0, 0, .2); font-size: 3.2rem; line-height: 1; cursor: pointer; transition: transform .15s; }
 .profil-avatar:hover { transform: scale(1.05) rotate(-4deg); }
@@ -311,6 +319,8 @@ a { color: var(--accent); }
 
 @media (max-width: 520px) {
   .nav a { padding: 4px 8px; font-size: .9rem; }
+  .dil-menu summary { padding: 4px 8px; font-size: .9rem; }
+  .header-row .nav { margin-left: 0; }
   .header-row { justify-content: center; }
   .game-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .game-card .info { padding: 10px 12px 12px; }
