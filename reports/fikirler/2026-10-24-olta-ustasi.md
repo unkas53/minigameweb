@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: olta-ustasi
 baslik: Olta Ustası
 kategori: Refleks
