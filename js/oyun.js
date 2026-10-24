@@ -304,11 +304,70 @@
       rank.className = 'oyun-sonu-sira';
       note.insertAdjacentElement('afterend', rank);
     }
+    nextGames();
     submitScore(opts, rank);
     note.hidden = !daily;
     if (daily) note.textContent = daily.yeni ? '📅 Günlük sonucun kaydedildi: ' + daily.sonuc.sonuc : '📅 Bugünkü sonucun zaten kayıtlı: ' + daily.sonuc.sonuc;
     // Oyuncunun son hamleyi görmesi için kısa bir gecikme
     setTimeout(function () { if (!endDlg.open) endDlg.showModal(); }, 600);
+  }
+
+  // ---------- Sıradaki oyun ----------
+  // Oyun listesi build ile oyun sayfasına yazılır (#oyun-listesi); okunamazsa satır gizlenir.
+  function gameList() {
+    try { var l = JSON.parse(document.getElementById('oyun-listesi').textContent); return Array.isArray(l) ? l : []; } catch (e) { return []; }
+  }
+
+  // Sıra: aynı kategoride hiç oynanmamış, başka kategoride hiç oynanmamış, en uzun süredir oynanmamış.
+  function pickNext(n) {
+    var all = gameList(), recent = load(RECENT_KEY, []), cur = null;
+    if (!Array.isArray(recent)) recent = [];
+    all.forEach(function (g) { if (g.slug === slug) cur = g; });
+    function rank(g) {
+      var i = recent.indexOf(g.slug);
+      if (i === -1) return cur && g.kategori === cur.kategori ? -2000 : -1000;
+      return -i;
+    }
+    return all.filter(function (g) { return g && g.slug && g.slug !== slug; })
+      .map(function (g, i) { return { g: g, r: rank(g), i: i }; })
+      .sort(function (a, b) { return a.r - b.r || a.i - b.i; })
+      .slice(0, n).map(function (x) { return x.g; });
+  }
+
+  function nextCard(href, ikon, ad, alt, hedef, metin, renk) {
+    var a = document.createElement('a');
+    a.className = 'siradaki-kart';
+    a.href = href;
+    a.setAttribute('aria-label', 'Sıradaki oyun: ' + ad);
+    if (renk) a.style.cssText = '--c1:' + renk[0] + ';--c2:' + renk[1];
+    a.innerHTML = '<span class="siradaki-ikon' + (metin ? ' text' : '') + '" aria-hidden="true"></span><span class="siradaki-yazi"><b></b><small></small></span>';
+    a.querySelector('.siradaki-ikon').textContent = ikon;
+    a.querySelector('b').textContent = ad;
+    a.querySelector('small').textContent = alt;
+    a.addEventListener('click', function () {
+      try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path: 'siradaki/' + slug + '->' + hedef, title: 'Sıradaki oyun', event: true }); } catch (e) {}
+    });
+    return a;
+  }
+
+  function nextGames() {
+    var row = endDlg.querySelector('.oyun-sonu-siradaki');
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'oyun-sonu-siradaki';
+      row.innerHTML = '<p class="siradaki-baslik">Sıradaki oyun</p><div class="siradaki-liste"></div>';
+      endDlg.appendChild(row);
+    }
+    var box = row.querySelector('.siradaki-liste'), cards = [];
+    box.innerHTML = '';
+    // Bugünün günlük meydan okuması tamamlanmadıysa ilk kart ona gider
+    if (slug && !load(DAILY_KEY, {})[day(new Date())]) cards.push(nextCard('../../gunluk.html', '📅', 'Günlük meydan okuma', 'Bugünün oyunu', 'gunluk'));
+    pickNext(2 - cards.length).forEach(function (g) {
+      cards.push(nextCard('../' + g.slug + '/', g.ikon, g.ad, g.kategori, g.slug, g.metin, g.renk));
+    });
+    if (cards.length < 2) cards = [];
+    cards.forEach(function (c) { box.appendChild(c); });
+    row.hidden = !cards.length;
   }
 
   function rememberPlay() {

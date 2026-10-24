@@ -127,6 +127,46 @@ function chromePath() {
     await ctx.close();
   }
 
+  // Oyun sonu "Sıradaki oyun" kartları: seçim sırası, günlük kartı, bağlantılar, 360 px
+  if (!only) {
+    const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); } catch (e) {} window.MO_SUNUCU_KAPALI = true; });
+    await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+    await ctx.route('https://*.supabase.co/**', r => r.abort());
+    const page = await ctx.newPage();
+    page.on('pageerror', e => errors.push(`[sıradaki] JS hatası: ${e.message}`));
+    const bitir = async () => {
+      await page.evaluate(() => MiniOyun.bitti({ baslik: 'Test', metin: 'Bitti', kaybetti: true }));
+      await page.waitForSelector('.oyun-sonu[open]', { timeout: 3000 });
+      return page.$$eval('.oyun-sonu .siradaki-kart', as => as.map(a => ({ href: a.getAttribute('href'), ad: a.getAttribute('aria-label') })));
+    };
+    try {
+      const bugun = await (async () => { await page.goto(origin + 'games/2048/'); return page.evaluate(() => MiniOyun.gunluk.bugun()); })();
+      let k = await bitir();
+      const cat = s => games.find(g => g.slug === s.replace('../', '').replace('/', '')) || {};
+      if (k.length !== 2 || k[0].href !== '../../gunluk.html' || cat(k[1].href).category !== 'Bulmaca') errors.push(`[sıradaki] ilk oyunda günlük kartı ve aynı kategoriden oyun bekleniyordu: ${JSON.stringify(k)}`);
+      // Günlük tamam, bulmaca oyunları oynanmış: hiç oynanmamış başka kategoriden iki farklı oyun gelmeli
+      await page.evaluate(d => { localStorage.setItem('mo_gunluk', JSON.stringify({ [d]: { oyun: '2048', sonuc: 'x', kazandi: true } })); localStorage.setItem('mo_son_oynanan', JSON.stringify(['sudoku', 'mayin-tarlasi'])); }, bugun);
+      await page.goto(origin + 'games/2048/');
+      k = await bitir();
+      const slugs = k.map(x => x.href.replace('../', '').replace('/', ''));
+      if (k.length !== 2 || slugs[0] === slugs[1] || slugs.some(x => ['2048', 'sudoku', 'mayin-tarlasi'].includes(x) || !cat(x + '/').slug)) errors.push(`[sıradaki] hiç oynanmamış iki farklı oyun bekleniyordu: ${JSON.stringify(k)}`);
+      if (k.some(x => x.href.startsWith('/') || !x.ad.startsWith('Sıradaki oyun: '))) errors.push('[sıradaki] kart bağlantısı göreceli olmalı ve anlamlı etiket taşımalı');
+      const olcu = await page.evaluate(() => { const d = document.querySelector('.oyun-sonu').getBoundingClientRect(), b = [...document.querySelectorAll('.oyun-sonu .btn, .siradaki-kart')].map(e => e.getBoundingClientRect()); return { sw: document.documentElement.scrollWidth, ok: b.every(r => r.left >= d.left && r.right <= d.right), kart: [...document.querySelectorAll('.siradaki-kart')].every(e => e.getBoundingClientRect().height >= 44) }; });
+      if (olcu.sw > 360 || !olcu.ok || !olcu.kart) errors.push(`[sıradaki] 360 px'te oyun sonu penceresi taşıyor: ${JSON.stringify(olcu)}`);
+      await page.focus('.oyun-sonu .siradaki-kart >> nth=0');
+      await Promise.all([page.waitForURL(origin + 'games/' + slugs[0] + '/'), page.keyboard.press('Enter')]);
+      // Oyun listesi yoksa satır hatasız gizlenmeli
+      await page.goto(origin + 'games/2048/');
+      await page.evaluate(() => document.getElementById('oyun-listesi').remove());
+      await bitir();
+      if (await page.isVisible('.oyun-sonu-siradaki')) errors.push('[sıradaki] oyun listesi yokken satır gizlenmeli');
+    } catch (e) {
+      errors.push(`[sıradaki] ${e.message.split('\n')[0]}`);
+    }
+    await ctx.close();
+  }
+
   // Sunucu arayüzü (sahte istemciyle): liderlik tablosu, skor gönderme, hesap
   if (!only) {
     const sv = require(path.join(__dirname, 'tests', '_sunucu.js'));

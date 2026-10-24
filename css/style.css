@@ -266,6 +266,16 @@ a { color: var(--accent); }
 .gunluk-gun-sonuc { font-size: .72rem; font-weight: 700; color: var(--muted); }
 .gunluk-bant { margin: -4px 0 14px; padding: 8px 14px; border-radius: 12px; background: rgba(255, 194, 61, .14); border: 1px solid rgba(255, 194, 61, .35); font-size: .88rem; font-weight: 700; text-align: center; }
 .oyun-sonu-gunluk { margin: 10px 0 0; font-weight: 800; color: var(--accent-2); }
+.oyun-sonu-siradaki { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
+.siradaki-baslik { margin: 0 0 8px; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.siradaki-liste { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.siradaki-kart { display: flex; align-items: center; gap: 8px; min-height: 52px; min-width: 0; padding: 6px 10px 6px 6px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); color: var(--text); text-align: left; text-decoration: none; transition: transform .15s, border-color .15s; }
+.siradaki-kart:hover, .siradaki-kart:focus-visible { transform: translateY(-2px); border-color: var(--accent); }
+.siradaki-ikon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--c1, #ffc23d), var(--c2, #ff7a59)); font-size: 1.35rem; line-height: 1; }
+.siradaki-ikon.text { font-size: .72rem; font-weight: 900; color: #fff; }
+.siradaki-yazi { display: flex; flex-direction: column; min-width: 0; }
+.siradaki-yazi b { font-size: .9rem; line-height: 1.2; overflow-wrap: anywhere; }
+.siradaki-yazi small { font-size: .74rem; font-weight: 700; color: var(--muted); }
 
 /* Liderlik tablosu ve hesap */
 .oyun-sonu-sira { margin: 10px 0 0; font-weight: 800; color: var(--violet); }

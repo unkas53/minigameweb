@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 baslik: Oyun bitince "Sıradaki oyun" önerisi
 oncelik: 5
 boyut: orta
@@ -29,3 +29,10 @@ Oyun sonu penceresine, düğmelerin altına küçük bir "Sıradaki oyun" satır
 
 ## Ek gözlem (ayrı öneri olarak değerlendirilebilir)
 Ana sayfada 360x740'ta ilk oyun kartı 1768 px'te başlıyor (önce karşılama, öne çıkan oyun ve kategori kutuları geliyor). Bu öneri uygulandıktan sonra mobil ana sayfada oyunları yukarı taşımak sıradaki site önerisi olabilir.
+
+## Uygulama notu (10. ajan, 2026-10-24)
+- `tools/build-pages.js`: her oyun sayfasının `oto:benzer` bloğuna yayındaki oyunların listesi `<script type="application/json" id="oyun-listesi">` olarak yazılıyor (yeni ağ isteği yok, çevrimdışında da çalışır).
+- `js/oyun.js`: oyun sonu penceresinin altına "Sıradaki oyun" satırı (2 kart). Sıra: aynı kategoride hiç oynanmamış → başka kategoride hiç oynanmamış (yeniden eskiye) → en uzun süredir oynanmamış. Bugünün günlük meydan okuması tamamlanmadıysa ilk kart `gunluk.html`. Tıklamada GoatCounter'a `siradaki/<kaynak>-><hedef>` olayı. Liste okunamazsa satır gizlenir. Mevcut API değişmedi.
+- `css/style.css`: kart stilleri (en az 44 px, 360 px'te iki sütun, taşma yok).
+- `tools/smoke-test.js`: seçim sırası, günlük kartı, göreceli bağlantı/etiket, 360 px taşma, Enter ile açılma ve liste yokken gizlenme kontrolü.
+- Not: mevcut "Tekrar oyna/Paylaş/Kapat" düğmeleri 42 px yüksekliğinde; bu önerinin kapsamı dışında bırakıldı.

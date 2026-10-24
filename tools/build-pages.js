@@ -212,7 +212,10 @@ for (const g of sorted) {
         </div>
         <p class="see-all"><a href="../../kategori/${c.slug}/">Tüm ${esc(c.name.toLocaleLowerCase('tr'))} oyunları →</a></p>
       </section>` : '';
-  html = replaceBlock(html, 'benzer', sim, f);
+  // Oyun sonu penceresindeki "Sıradaki oyun" önerisi için oyun listesi (js/oyun.js okur)
+  const list = sorted.map(x => ({ slug: x.slug, ad: x.title, kategori: x.category, ikon: x.icon, metin: x.icon.length > 3 && !/\p{Extended_Pictographic}/u.test(x.icon), renk: x.colors }));
+  const json = `<script type="application/json" id="oyun-listesi">${JSON.stringify(list).replace(/</g, '\\u003c')}</script>`;
+  html = replaceBlock(html, 'benzer', sim + '\n      ' + json, f);
   put(f, html);
 }
 
