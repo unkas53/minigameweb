@@ -1,4 +1,4 @@
-durum: gelistiriliyor
+durum: yayinda
 slug: penalti-ligi
 baslik: Penaltı Ligi
 kategori: Spor

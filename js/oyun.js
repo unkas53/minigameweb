@@ -448,7 +448,8 @@
     { id: 'gunluk-seri', ikon: '🏅', ad: 'Günlük seri', aciklama: 'Günlük meydan okumayı 5 gün üst üste tamamla.', kosul: function () { return dailyStreak(load(DAILY_KEY, {})) >= 5; } },
     { id: 'mayin-avcisi', ikon: '🚩', ad: 'Mayın avcısı', aciklama: 'Mayın Tarlası\'nda bir oyun kazan.', kosul: function (s) { return (s.kazanma['mayin-tarlasi'] || 0) >= 1; } },
     { id: 'kale-komutani', ikon: '🏰', ad: 'Kale komutanı', aciklama: 'Kule Savunması\'nda 15 yıldız topla.', kosul: function () { var y = load('mo_kule', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 15; } },
-    { id: 'renk-ustasi', ikon: '🎨', ad: 'Renk ustası', aciklama: 'Renk Tuzağı bölümlerinde 24 yıldız topla.', kosul: function () { var y = load('mo_renk', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 24; } }
+    { id: 'renk-ustasi', ikon: '🎨', ad: 'Renk ustası', aciklama: 'Renk Tuzağı bölümlerinde 24 yıldız topla.', kosul: function () { var y = load('mo_renk', {}).yildiz || {}, n = 0; for (var k in y) n += y[k]; return n >= 24; } },
+    { id: 'kupa-sahibi', ikon: '🏆', ad: 'Kupa sahibi', aciklama: 'Penaltı Ligi\'nde Kupa Finali\'ni kazan.', kosul: function () { var m = load('mo_penalti', {}).maclar || {}; return (m.final || 0) > 0; } }
   ];
 
   function checkBadges() {

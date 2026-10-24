@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Penaltı Ligi - Online Penaltı Atma Oyunu | MiniOyun</title>
+  <meta name="description" content="Penaltı at, kaleyi koru, ligleri tek tek geç! Ücretsiz penaltı oyunu: 24 maçlık kariyer, yıldızlar, yükseltmeler ve günlük görevler.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/penalti-ligi/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .pl-alan { width: min(100%, 480px); margin: 0 auto; }
+    .pl-menu { padding: 12px; border-radius: 16px; background: var(--surface); text-align: center; }
+    .pl-menu h2 { margin: 8px 0 6px; font-size: 1.1rem; }
+    .pl-menu p { margin: 0 0 8px; color: var(--muted); font-size: .9rem; }
+    .pl-ozet { display: flex; gap: 8px; justify-content: center; margin-bottom: 6px; }
+    .pl-ozet .stat { padding: 4px 12px; }
+    .pl-hizli { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 6px; }
+    .pl-hizli .btn { padding: 10px 4px; min-width: 0; }
+    .pl-hizli small { display: block; font-size: .7rem; font-weight: 600; opacity: .85; }
+    .pl-lig { margin-bottom: 10px; text-align: left; }
+    .pl-lig h3 { margin: 0 0 4px; font-size: .95rem; }
+    .pl-lig h3 small { color: var(--muted); font-weight: 600; }
+    .pl-lig.kilitli h3 { color: var(--muted); }
+    .pl-maclar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+    .pl-mac { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 5px 2px; border-radius: 10px; border: 0; background: linear-gradient(135deg, #16a34a, #ca8a04); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .pl-mac b { font-size: 1rem; line-height: 1.1; }
+    .pl-takim { font-size: .58rem; font-weight: 700; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pl-y { font-size: .72rem; color: #fff3b0; letter-spacing: .03em; }
+    .pl-mac.kilitli, .pl-final:disabled { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .pl-final { width: 100%; padding: 10px; margin-bottom: 8px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #facc15, #b45309); color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+    .pl-yukler { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px; text-align: left; }
+    .pl-yuk { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; text-align: left; }
+    .pl-yuk:disabled { opacity: .55; cursor: default; }
+    .pl-yuk small { display: block; color: var(--muted); font-size: .72rem; }
+    .pl-y-ikon { font-size: 1.3rem; }
+    .pl-y-bedel { margin-left: auto; font-weight: 800; white-space: nowrap; }
+    .pl-gorevler { list-style: none; margin: 0 0 6px; padding: 0; text-align: left; font-size: .9rem; }
+    .pl-gorevler li { padding: 5px 8px; border-radius: 10px; background: var(--surface-2); margin-bottom: 4px; }
+    .pl-gorevler li.tamam { opacity: .7; }
+    .pl-gorevler small { color: var(--muted); }
+    .pl-renkler { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 6px; }
+    .pl-renk { width: 38px; height: 38px; border-radius: 50%; border: 3px solid transparent; background: var(--r); color: #fff; font-size: .9rem; cursor: pointer; padding: 0; }
+    .pl-top { background: var(--surface-2); box-shadow: inset 0 0 0 4px var(--r); }
+    .pl-renk.secili { border-color: #fff; }
+    .pl-renk:disabled { opacity: .45; cursor: not-allowed; }
+    .pl-ust { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; font-size: .85rem; color: var(--muted); }
+    .pl-tablo { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px 8px; align-items: center; padding: 8px 10px; border-radius: 12px; background: var(--surface-2); margin-bottom: 8px; font-size: .9rem; }
+    .pl-tablo .ad { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pl-tablo .dizi { display: flex; gap: 2px; font-size: .8rem; }
+    .pl-tablo .skor { font-weight: 900; font-size: 1.1rem; min-width: 1.2em; text-align: right; }
+    #alan { display: block; width: 100%; aspect-ratio: 480 / 560; border-radius: 14px; touch-action: none; cursor: pointer; outline: none; user-select: none; -webkit-user-select: none; }
+    .pl-alt { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    .pl-alt .btn { flex: none; padding: 12px 22px; font-size: 1.05rem; touch-action: manipulation; }
+    .pl-bilgi { flex: 1; margin: 0; font-size: .85rem; color: var(--muted); }
+    @media (max-width: 420px) { .pl-maclar { grid-template-columns: repeat(3, 1fr); } .pl-tablo .dizi { font-size: .7rem; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Penaltı Ligi","url":"https://unkas53.github.io/minigameweb/games/penalti-ligi/","genre":"Spor","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip" href="../../kategori/arcade/" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip active" href="../../kategori/spor/" aria-current="page" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/spor/">Spor Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Penaltı Ligi</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Spor Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/spor/"},{"@type":"ListItem","position":3,"name":"Penaltı Ligi","item":"https://unkas53.github.io/minigameweb/games/penalti-ligi/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Penaltı Ligi</h1>
+        <div class="pl-alan">
+          <div class="pl-menu" id="menu">
+            <div class="pl-ozet">
+              <div class="stat"><small>Para</small><span id="para">🪙 0</span></div>
+              <div class="stat"><small>Yıldız</small><span id="yildiz-ozet">⭐ 0</span></div>
+            </div>
+            <h2>⚡ Hızlı maç</h2>
+            <div class="pl-hizli" id="hizli">
+              <button class="btn" type="button" data-seviye="kolay">Kolay<small>rahat</small></button>
+              <button class="btn" type="button" data-seviye="normal">Normal<small>orta</small></button>
+              <button class="btn" type="button" data-seviye="zor">Zor<small>usta kaleci</small></button>
+            </div>
+            <div id="kariyer-alan">
+              <h2>🏟️ Kariyer</h2>
+              <p>Her ligde 6 maç var. Ligi bitir, sonrakini aç ve Kupa Finali'ne ulaş.</p>
+              <div id="ligler"></div>
+              <h2>⬆️ Yükseltmeler</h2>
+              <div class="pl-yukler" id="yukseltmeler"></div>
+              <h2>📋 Günlük görevler</h2>
+              <ul class="pl-gorevler" id="gorevler"></ul>
+              <h2>👕 Forma ve top</h2>
+              <div class="pl-renkler" id="formalar" aria-label="Forma rengi"></div>
+              <div class="pl-renkler" id="toplar" aria-label="Top deseni"></div>
+            </div>
+          </div>
+          <div id="oyun" hidden>
+            <div class="pl-ust"><span id="mac-ad"></span><span>Puan: <b id="mac-puan">0</b></span></div>
+            <div class="pl-tablo" aria-live="polite">
+              <span class="ad">SEN</span><span class="dizi" id="biz-dizi"></span><span class="skor" id="biz-skor">0</span>
+              <span class="ad" id="rakip-ad"></span><span class="dizi" id="onlar-dizi"></span><span class="skor" id="onlar-skor">0</span>
+            </div>
+            <canvas id="alan" width="480" height="560" tabindex="0" aria-label="Penaltı sahası. Atışta ok tuşlarıyla hedef seç, Boşluk ile vur. Kalecilikte ok tuşlarıyla atla."></canvas>
+            <div class="pl-alt">
+              <button class="btn" id="vur" type="button">⚽ VUR</button>
+              <p class="pl-bilgi" id="bilgi" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Penaltı Ligi nasıl oynanır?</h2>
+      <p>Penaltı Ligi'nde hem penaltı atan oyuncuyu hem de kaleciyi sen yönetirsin. Her maçta sırayla beşer penaltı atılır: önce sen vurursun, sonra rakip vurur. Atış sırası sendeyken önce kalede topu göndermek istediğin yere dokun, sonra ikinci bir dokunuşla ya da "VUR" düğmesiyle alttaki güç çubuğunu durdur. Çubuk yeşil bölgede durursa top tam hedefe gider, sarıda durursa hedeften sapar, kırmızıda durursa auta ya da üst direğin üstüne gider. Kaleci sırası sendeyken rakip atıcının koşusunu izle; başının üstündeki ok gideceği yönü belli eder. Top vurulmadan hemen önce kalenin sol, orta ya da sağ tarafına dokunarak atla. Daha çok gol atan maçı kazanır; beş atıştan sonra eşitlik varsa ani ölüm başlar.</p>
+      <p>Bilgisayarda atış sırasında ok tuşları hedefi kalenin altı bölgesi arasında gezdirir, Boşluk veya Enter vuruşu yapar. Kalecilikte Sol ve Sağ ok tuşları o yöne, Yukarı ok ise ortada kalmak için kullanılır. P tuşu maçı duraklatır.</p>
+      <h2>Kariyer, yıldızlar ve yükseltmeler</h2>
+      <p>Mahalle Ligi'nden başlayıp Amatör Lig, Bölge Ligi ve Elit Lig'i geçerek Kupa Finali'ne ulaşmaya çalış. Her ligde 6 rakip var ve lig ilerledikçe rakip kaleci daha iyi okur, güç çubuğu hızlanır, atıcılar yönlerini daha geç ve bazen yanıltıcı biçimde belli eder. Maçı kazanmak 1 yıldız, en fazla bir gol yiyerek kazanmak 2 yıldız, ayrıca ani ölüme kalmadan en az dört gol atmak 3 yıldız verir. Kazandığın paralarla Şut İsabeti, Şut Gücü, Kaleci Refleksi ve Kaleci Okuma yükseltmelerini beşer seviyeye kadar geliştir. Her lig bitince yeni bir forma rengi ve top deseni açılır. Her gün değişen üç günlük görev de ek para kazandırır.</p>
+      <h2>İpuçları</h2>
+      <p>Köşeler kalecinin en zor uzandığı yerlerdir ama güç çubuğunu tam yeşilde durduramazsan top dışarı gider; emin değilsen biraz daha içeriyi hedefle. Rakip kaleci erken atlıyorsa ortaya vuruş (panenka) onu ters köşeye yatırır, ama yerinde kalırsa topu rahatça tutar. Kurtarışta acele etme: üst liglerde atıcı önce yanlış yöne bakıp son anda gerçek yönünü gösterebilir, ok belirmeden atlarsan atıcı topu boş köşeye gönderir. İlk paralarını Şut İsabeti'ne yatırmak erken liglerde en hızlı ilerlemeyi sağlar.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>İlerlemem kaybolur mu?</strong> İlerleme tarayıcında saklanır; aynı cihazda kaldığın yerden devam edersin. <strong>Kaç maç var?</strong> 4 ligde 24 maç ve 7 atışlık bir Kupa Finali. <strong>Günlük modda ne değişir?</strong> O gün herkes aynı rakip davranışlarıyla Normal zorlukta tek bir maç oynar ve skorlar karşılaştırılır; adil olsun diye yükseltmeler günlük maçta uygulanmaz. <strong>Gerçek takımlar var mı?</strong> Hayır, tüm takım adları uydurmadır.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/renk-tuzagi/" data-title="renk tuzağı" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🎨</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Renk Tuzağı</h3>
+          <p>Kelimeyi değil yazının rengini seç; 60 saniyede refleksini ve dikkatini sına.</p>
+          <span class="tag" style="--c1:#fde047">⚡ Refleks</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kule-savunmasi/" data-title="kule savunması" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f59f00;--c2:#e8590c"><span class="thumb-icon" aria-hidden="true">🏰</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kule Savunması</h3>
+          <p>Kuleleri kur ve yükselt, 10 bölümde kaleni düşman dalgalarına karşı koru.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/kelime-tahmin/" data-title="kelime tahmin" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#34d399;--c2:#0e7490"><span class="thumb-icon" aria-hidden="true">🔤</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Kelime Tahmin</h3>
+          <p>Gizli 5 harfli Türkçe kelimeyi 6 denemede renkli ipuçlarıyla bul.</p>
+          <span class="tag" style="--c1:#60a5fa">🔤 Kelime</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/dort-baglanti/" data-title="dört bağlantı" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#f472b6;--c2:#be185d"><span class="thumb-icon" aria-hidden="true">🔴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Dört Bağlantı</h3>
+          <p>Dört taşı yan yana getir; bilgisayara veya arkadaşına karşı oyna.</p>
+          <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/spor/">Tüm spor oyunları →</a></p>
+      </section>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>
