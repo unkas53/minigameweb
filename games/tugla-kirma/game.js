@@ -214,6 +214,8 @@
     paused = false;
     canvas.dataset.dizilim = L.tuglalar.map(function (k) { return k.c + ',' + k.r + k.tip.charAt(0) + k.hp + (k.kapsul || ''); }).join(';');
     hud();
+    // Raket ve top görünür alanda kalsın
+    if (canvas.scrollIntoView) canvas.scrollIntoView({ block: 'nearest' });
     setTimeout(function () { try { canvas.focus({ preventScroll: true }); } catch (e) {} }, 0);
   }
   function startCampaign(n) {
