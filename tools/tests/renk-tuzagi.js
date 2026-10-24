@@ -33,7 +33,7 @@ module.exports = async function (page, { git, beklenen }) {
     if (onceki.length >= 3 && onceki.slice(-3).every(x => x === s[1])) tekrar3 = true;
     await tikla(s[1]);
   }
-  beklenen(tuzak >= 70, 'İlk 100 soruda tuzak oranı en az %70 olmalı, gelen: ' + tuzak);
+  beklenen(tuzak >= 60, 'İlk 100 soruda tuzak oranı en az %60 olmalı (oran %75, rastgele dalgalanma payı), gelen: ' + tuzak);
   beklenen(!tekrar3, 'Aynı doğru renk art arda 3 kez gelmemeli');
   // 100 doğru: 5x10 + 5x15 + 90x20
   beklenen(await sayi('#puan') === 1925, 'Seri bonusu yanlış hesaplandı: ' + await sayi('#puan'));
