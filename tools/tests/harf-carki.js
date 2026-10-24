@@ -151,9 +151,10 @@ module.exports = async function (page, { git, beklenen }) {
 
   // Süre ve duraklatma
   await ileri(3000);
-  const s1 = Number(await page.getAttribute('#sure', 'data-sn'));
-  beklenen(s1 >= 3, 'Süre işlemeli');
+  beklenen(Number(await page.getAttribute('#sure', 'data-sn')) >= 3, 'Süre işlemeli');
+  // Saat gerçek zamanla da aktığı için süre, okuma ile tıklama arasında bir tik ilerleyebilir; duraklattıktan sonra okunur
   await page.click('.oyun-btn[aria-label="Duraklat"]');
+  const s1 = Number(await page.getAttribute('#sure', 'data-sn'));
   await ileri(5000);
   beklenen(Number(await page.getAttribute('#sure', 'data-sn')) === s1, 'Duraklatınca süre durmalı');
   await page.click('.oyun-duraklat .btn');
