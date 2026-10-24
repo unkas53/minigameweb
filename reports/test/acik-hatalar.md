@@ -43,3 +43,21 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Maç başlayınca atışın temel parçaları (kale, güç çubuğu, VUR düğmesi) ekranda görünür; gerekirse oyun alanı görünür alana kaydırılır.
 - gerceklesen: Menü kayboluyor, sayfa kaymıyor; tuval sayfada 413-973 px arasında kalıyor. Güç çubuğu tuvalin 518-538. satırında olduğu için ekranda 931-951 px'e düşüyor (görünür alan 900 px), VUR düğmesi 981-1025 px. Maç sırasında Boşluk ve ok tuşlarında `preventDefault` çağrıldığı için klavyeyle de sayfa kaydırılamıyor; oyuncu çubuğu görmeden vurmak zorunda kalıyor veya fareyle kaydırması gerekiyor. 360x740'ta sorun yok (maç düğmesine tıklarken sayfa zaten kayıyor, tuval 169-512, VUR 586 px'te bitiyor).
 - bulunma: 2026-10-24 02:15
+
+## H-5 | Tuğla Kırma: 1280x900 ve 1366x768 ekranda bölüm başlayınca raket ve top görünmüyor
+- durum: acik
+- onem: orta
+- sayfa: games/tugla-kirma/
+- adimlar: 1280x900 (veya 1366x768) pencerede sayfayı aç (kaydırma yapmadan), haritada 1. bölüme tıkla.
+- beklenen: Bölüm başlayınca raket ve rakette bekleyen top ekranda görünür; gerekirse oyun alanı görünür alana kaydırılır (H-4 ile aynı tür sorun).
+- gerceklesen: Harita gizleniyor, sayfa kaymıyor (scrollY 0); tuval sayfada 362-949 px arasında. Raket tuvalin 596. satırında (640 üzerinden) olduğu için ekranda ~908 px'e düşüyor: 900 px yüksekliğinde tam alt kenarın dışında, 768 px'te 140 px aşağıda. Oyuncu raketi ve topu görmeden oynamaya başlıyor; oyun sırasında Boşluk/ok tuşlarında `preventDefault` olduğu için klavyeyle kaydırılamıyor, fare tekerleğiyle kaydırmak gerekiyor. 360x740'ta sorun yok (bölüme dokunurken sayfa kayıyor, tuval 326-718 px).
+- bulunma: 2026-10-24 03:47
+
+## H-6 | Renk Tuzağı oynanış testi rastgele başarısız oluyor (tuzak oranı eşiği)
+- durum: acik
+- onem: orta
+- sayfa: tools/tests/renk-tuzagi.js
+- adimlar: `node tools/smoke-test.js --oyun renk-tuzagi` komutunu birkaç kez çalıştır.
+- beklenen: Test her çalışmada aynı sonucu verir (oyun doğruysa her zaman geçer).
+- gerceklesen: 7 çalışmanın 2'sinde "İlk 100 soruda tuzak oranı en az %70 olmalı, gelen: 67" hatası. Oyun (game.js 111. satır) her soruda tuzağı `rnd() < 0.75` ile bağımsız seçiyor; 100 soruda 70'in altına düşme olasılığı yaklaşık %10-15, yani oyun doğru çalışırken test kırmızı yanıyor ve tüm `npm test` başarısız sayılıyor (diğer ajanların push'unu engelleyebilir). Test ya rastgeleliği sabit tohumla (ör. günlük mod) çalıştırmalı ya da eşiği istatistiksel olarak güvenli bir değere (ör. %60) çekmeli.
+- bulunma: 2026-10-24 03:47
