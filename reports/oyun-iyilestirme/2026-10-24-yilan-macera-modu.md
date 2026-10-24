@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 oyun: yilan
 baslik: Yılan Macerası: 24 bölümlük harita, engelli tahtalar, yıldızlar ve açılan yılan desenleri
 oncelik: 4
