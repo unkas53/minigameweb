@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: tugla-kirma
 baslik: Tuğla Kırma
 kategori: Arcade
