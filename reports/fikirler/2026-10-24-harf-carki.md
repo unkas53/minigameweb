@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: gelistiriliyor
 slug: harf-carki
 baslik: Harf Çarkı
 kategori: Kelime
