@@ -263,6 +263,8 @@
       secim.mod === 'final' ? 'Kupa Finali · 7 atış' : secim.mod === 'gunluk' ? 'Günlük maç · ' + MiniOyun.gunluk.tarih : 'Hızlı maç · ' + ayar.seviye;
     tabloCiz();
     atisBaslat();
+    // Maç alanı (güç çubuğu ve VUR dahil) görünür alanda kalsın
+    if (oyunEl.scrollIntoView) oyunEl.scrollIntoView({ block: 'nearest' });
   }
 
   function gol(dizi) { return dizi.filter(function (x) { return x; }).length; }
