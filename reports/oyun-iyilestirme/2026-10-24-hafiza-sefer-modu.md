@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 oyun: hafiza
 baslik: Hafıza Seferi: 12 bölümlük kampanya, yıldızlar ve açılan kart temaları
 oncelik: 4
