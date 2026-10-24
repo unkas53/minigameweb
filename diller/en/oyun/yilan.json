@@ -1,0 +1,20 @@
+{
+  "Klasik yılan (snake) oyununu ücretsiz ve online oyna. Yemleri topla, uzadıkça kendine ve duvarlara çarpma": "Play the classic Snake game free online. Eat the food, grow longer and don't crash into yourself or the walls",
+  "Başla": "Start",
+  "Yılan oyun alanı": "Snake game area",
+  "Yukarı": "Up",
+  "Sol": "Left",
+  "Aşağı": "Down",
+  "Sağ": "Right",
+  "Başlamak için \"Başla\"ya bas veya bir ok tuşuna dokun": "Press \"Start\" or tap an arrow key to begin",
+  "Yılan nasıl oynanır": "How to play Snake",
+  "Yılanı ok tuşları veya W, A, S, D ile yönetin; telefonda ekrandaki yön tuşlarını kullanın ya da oyun alanında parmağınızı kaydırın. Kırmızı yemleri yedikçe yılan uzar ve 10 puan kazanırsınız. Duvara veya yılanın kendi gövdesine çarparsanız oyun biter. Skor yükseldikçe yılan hızlanır": "Steer the snake with the arrow keys or W, A, S, D; on a phone, use the on-screen arrows or swipe across the game area. Every red food you eat makes the snake longer and earns 10 points. Hit a wall or the snake's own body and the game is over. The snake speeds up as your score rises",
+  "Oyun alanı 21x21 karelik bir ızgaradır. Yılan üç kare uzunluğunda başlar ve her yemde bir kare büyür. Her 50 puanda biraz daha hızlanır, bu yüzden oyunun ilerleyen bölümleri hem hız hem de alan yönetimi ister. En yüksek skorunuz tarayıcınızda saklanır": "The game area is a 21x21 grid. The snake starts three squares long and grows by one square with each food. It gets a little faster every 50 points, so later in the game you need both speed and smart use of space. Your high score is saved in your browser",
+  "Oyun alanının kenarlarında dolaşarak ortayı boş tutun. Yılan uzadıkça ani dönüşlerden kaçının ve kendinize çıkış yolu bırakın": "Travel along the edges to keep the middle open. As the snake grows, avoid sudden turns and always leave yourself a way out",
+  "Uzun yılanla oynarken alanı sıra sıra taramak işe yarar: bir kenardan diğerine gidip bir kare kayarak geri dönün. Yem gövdenizin arkasında kaldıysa ona kestirmeden ulaşmaya çalışmayın, kuyruğunuzun açtığı yolu takip edin. Hızlanınca bir sonraki iki hamleyi önceden düşünün": "With a long snake, sweeping the board row by row works well: go from one edge to the other, shift one square and come back. If the food is behind your body, don't take a shortcut to it; follow the path your tail opens up. Once it speeds up, plan your next two moves ahead",
+  "<strong>Yılan oyunu telefonda oynanır mı?</strong> Evet. Ekrandaki yön tuşlarını kullanabilir ya da oyun alanında parmağınızı kaydırabilirsiniz. İndirme veya üyelik gerekmez.": "<strong>Can I play Snake on my phone?</strong> Yes. Use the on-screen arrows or swipe across the game area. No download or sign-up needed.",
+  "<strong>Günlük meydan okuma nedir?</strong> Günlük modda yemler o gün herkes için aynı yerlerde çıkar, böylece skorunuzu aynı koşullarda oynayan diğer oyuncularla karşılaştırabilirsiniz.": "<strong>What is the daily challenge?</strong> In daily mode the food appears in the same spots for everyone that day, so you can compare your score with players under the same conditions.",
+  "<strong>Duvardan geçilebilir mi?</strong> Hayır. Bu klasik Yılan sürümünde duvara çarpmak oyunu bitirir.": "<strong>Can I go through walls?</strong> No. In this classic version of Snake, hitting a wall ends the game.",
+  "Yeniden başla": "Restart",
+  "Yılan Oyunu Oyna - Ücretsiz Online Snake | MiniOyun": "Play Snake Online Free - Classic Snake Game | MiniOyun"
+}
