@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 baslik: Oyun bitince "Sıradaki oyun" önerisi
 oncelik: 5
 boyut: orta
