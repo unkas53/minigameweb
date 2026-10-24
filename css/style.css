@@ -329,9 +329,26 @@ a { color: var(--accent); }
   .kisisel-sira { grid-auto-columns: 150px; gap: 10px; }
   .rozet-izgara { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .gunluk-takvim { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .gunluk-afis { flex-wrap: wrap; gap: 10px; }
-  .gunluk-afis-metin { flex-basis: calc(100% - 60px); }
   .profil-kart { padding: 18px; }
+}
+
+/* Ana sayfa mobil: oyun ızgarası ilk ekrana yakın başlasın */
+@media (max-width: 640px) {
+  .hero { gap: 16px; padding-top: 16px; }
+  .hero p { font-size: .95rem; }
+  .search { margin-top: 14px; }
+  .hero-stats { display: none; }
+  .featured { min-height: 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "icon label play" "icon title play"; align-items: center; gap: 2px 12px; padding: 12px 14px; border-radius: 18px; }
+  .featured-icon { position: static; grid-area: icon; font-size: 3rem; transform: rotate(-8deg); }
+  .featured-label { grid-area: label; justify-self: start; font-size: .65rem; padding: 3px 8px; }
+  .featured-title { grid-area: title; margin: 0; font-size: 1.2rem; line-height: 1.2; }
+  .featured-desc, .featured-meta { display: none; }
+  .featured .btn-play { grid-area: play; margin: 0; min-height: 44px; padding: 10px 14px; font-size: .9rem; white-space: nowrap; }
+  .gunluk-afis { flex-wrap: nowrap; gap: 10px; margin-top: 16px; padding: 10px 12px; }
+  .gunluk-afis-ikon { font-size: 1.8rem; }
+  .gunluk-afis-metin { flex: 1 1 auto; font-size: 0; }
+  .gunluk-afis-metin b { font-size: 1rem; }
+  .gunluk-afis .btn { min-height: 44px; padding: 10px 14px; }
 }
 
 @media (pointer: coarse) {

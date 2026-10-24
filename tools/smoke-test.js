@@ -81,6 +81,16 @@ function chromePath() {
         const r = await page.request.get(clean);
         if (r.status() >= 400) errors.push(`kırık bağlantı ${clean} (${p || '/'} sayfasında)`);
       }
+      if (p === '') {
+        // Ana sayfa: oyun ızgarası ilk ekrana yakın, kategorilerden önce; reklam alanları korunur
+        const a = await page.evaluate(() => {
+          const kart = document.querySelector('#oyun-izgarasi .game-card'), kat = document.querySelector('.cat-grid');
+          return { ust: Math.round(kart.getBoundingClientRect().top + scrollY), sira: !!(kart.compareDocumentPosition(kat) & Node.DOCUMENT_POSITION_FOLLOWING), reklam: document.querySelectorAll('.ad-slot').length };
+        });
+        if (a.ust > 900) errors.push(`[${vp.name}] ana sayfada ilk oyun kartı çok aşağıda: ${a.ust}px (en fazla 900)`);
+        if (!a.sira) errors.push(`[${vp.name}] ana sayfada "Tüm Oyunlar" ızgarası kategorilerden önce gelmeli`);
+        if (a.reklam < 2) errors.push(`[${vp.name}] ana sayfada reklam alanı azalmış: ${a.reklam}`);
+      }
       if (p.startsWith('games/')) {
         const tools = await page.$$eval('.oyun-arac .oyun-btn', els => els.length);
         if (tools < 3) errors.push(`[${vp.name}] ${p} sayfasında ortak oyun araç çubuğu yok (js/oyun.js yüklenmemiş olabilir)`);

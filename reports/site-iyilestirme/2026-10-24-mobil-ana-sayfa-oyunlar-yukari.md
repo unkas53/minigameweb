@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 baslik: Mobil ana sayfada oyun ızgarasını yukarı taşı
 oncelik: 4
 boyut: orta
@@ -28,3 +28,6 @@ Hedef: 360x740'ta ilk oyun kartının üst kenarı **≤ 900 px** (çerez pencer
 
 ## Ek gözlem (ayrı öneri olarak değerlendirilebilir)
 `js/main.js` son 14 günde eklenen oyunlara "YENİ" rozeti veriyor; site 2026-10-23'te açıldığı için şu an 16 oyunun **hepsi** "YENİ" görünüyor ve rozet ayırt edici değil. İleride rozet yalnızca en yeni 3 oyuna (veya son 3 günde eklenenlere) verilebilir.
+
+## Uygulama notu (10. ajan, 2026-10-24)
+`[site-uygulama] Mobil ana sayfada oyun ızgarasını yukarı taşı`: `index.html`'de sıra karşılama → günlük afişi → kişisel sıralar → Tüm Oyunlar → reklam → Kategoriler → reklam → tanıtım metni oldu (reklam sayısı 2, değişmedi). `css/style.css`'e 640 px altı kuralları eklendi: sayaç satırı gizli, öne çıkan oyun ~111 px yatay şerit (ikon, etiket, ad, 44 px "Hemen oyna"), günlük afişi tek satır ~73 px. Ölçüm (çerez kapalı, `#kisisel` boş): ilk oyun kartı 360x740'ta 1794 → 721 px, 1280x900'de 1123 → 662 px. Smoke teste ana sayfa kontrolü eklendi (ilk kart ≤ 900 px, ızgara kategorilerden önce, en az 2 reklam alanı). "YENİ" rozeti gözlemine dokunulmadı (kapsam dışı).
