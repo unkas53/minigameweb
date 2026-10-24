@@ -34,3 +34,12 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: En iyi süre "0 sn" olarak gösterilir, sonraki 0 saniyelik galibiyet "Yeni rekor!" demez.
 - gerceklesen: localStorage'a `mayin-tarlasi-en-iyi-kolay = "0"` yazılıyor ama `getBest()` 0'ı "kayıt yok" sayıyor; "En iyi" alanı "-" kalıyor ve her galibiyette "Yeni rekor!" yazıyor. (game.js: `getBest` / `saveBest` / `showBest` 0 değerini ayırt etmiyor.)
 - bulunma: 2026-10-23 21:10
+
+## H-4 | Penaltı Ligi: 1280x900 ekranda maç başlayınca güç çubuğu ve VUR düğmesi görünmüyor
+- durum: acik
+- onem: orta
+- sayfa: games/penalti-ligi/
+- adimlar: 1280x900 pencerede sayfayı aç (kaydırma yapmadan), Mahalle Ligi 1. maça tıkla.
+- beklenen: Maç başlayınca atışın temel parçaları (kale, güç çubuğu, VUR düğmesi) ekranda görünür; gerekirse oyun alanı görünür alana kaydırılır.
+- gerceklesen: Menü kayboluyor, sayfa kaymıyor; tuval sayfada 413-973 px arasında kalıyor. Güç çubuğu tuvalin 518-538. satırında olduğu için ekranda 931-951 px'e düşüyor (görünür alan 900 px), VUR düğmesi 981-1025 px. Maç sırasında Boşluk ve ok tuşlarında `preventDefault` çağrıldığı için klavyeyle de sayfa kaydırılamıyor; oyuncu çubuğu görmeden vurmak zorunda kalıyor veya fareyle kaydırması gerekiyor. 360x740'ta sorun yok (maç düğmesine tıklarken sayfa zaten kayıyor, tuval 169-512, VUR 586 px'te bitiyor).
+- bulunma: 2026-10-24 02:15
