@@ -119,6 +119,9 @@
       uyar('♾️ Klasik mod · ' + ZORLUK[arg] + ' · parça sığmayana kadar devam', true);
     }
     ciz();
+    // Izgara altındaki parça yuvaları görünür alanda kalsın
+    var yuvalar = document.getElementById('yuvalar');
+    if (yuvalar.scrollIntoView) yuvalar.scrollIntoView({ block: 'nearest' });
   }
   function yeniUclu() {
     var zor = run.mod === 'macera' ? Math.min(1, run.L.dunya * 0.35) : Math.min(1, run.puan / 2500);
