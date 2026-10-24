@@ -69,7 +69,8 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-24 03:47
 
 ## H-7 | Harf Çarkı oynanış testi tam `npm test` koşusunda "Duraklatınca süre durmalı" ile başarısız
-- durum: acik
+- durum: duzeltildi
+- not: 35358f1 ile düzeltildi; test `page.clock` gerçek zamanla da aktığı için `s1` okuması ile Duraklat tıklaması arasında bir saniye tiki işleyebiliyordu (yük altındaki tam koşuda). Süre artık duraklattıktan sonra okunuyor; oyun kodu değişmedi. Bu çalışmada tam koşu düzeltmeden sonra 3 kez geçti, düzeltmeden önceki 1 tam koşuda hata çıkmadı.
 - onem: orta
 - sayfa: tools/tests/harf-carki.js (152-158. satırlar), games/harf-carki/game.js
 - adimlar: `node tools/smoke-test.js` (tüm oyunlar) çalıştır; ardından `node tools/smoke-test.js --oyun harf-carki` çalıştır.
@@ -79,7 +80,8 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - not: 2026-10-24 07:05 test ajanı tam `node tools/smoke-test.js` koşusunu çalıştırdı, Harf Çarkı dahil 14 oyun testi geçti (1 deneme). Hata aralıklı görünüyor; kayıt açık kalıyor.
 
 ## H-8 | Blok Bulmaca: 1366x768 ekranda bölüm başlayınca parça yuvaları görünmüyor
-- durum: acik
+- durum: duzeltildi
+- not: 7e5071a ile düzeltildi; `basla()` sonunda `#yuvalar` `scrollIntoView({block:'nearest'})` ile görünür alana kaydırılıyor. 1366x768: ızgara 219, yuvaların altı 768 px; 1280x900: kaydırma 57 px; 360x740 etkilenmedi.
 - onem: orta
 - sayfa: games/blok-bulmaca/
 - adimlar: 1366x768 (veya 1280x900) pencerede sayfayı aç (kaydırma yapmadan), haritada 1. bölüme tıkla.
@@ -88,7 +90,8 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-24 07:05
 
 ## H-9 | 2048 Görev Yolu: bölüm başlayınca tahta mobilde ve 1366x768'de büyük ölçüde ekran dışında
-- durum: acik
+- durum: duzeltildi
+- not: 58ff5dc ile düzeltildi; `bolumBaslat()` sonunda tahta `scrollIntoView({block:'nearest'})` ile görünür alana kaydırılıyor. 360x740: tahta 437-740 px; 1366x768: 368-768 px.
 - onem: dusuk
 - sayfa: games/2048/
 - adimlar: 360x740 dokunmatik ekranda (veya 1366x768 pencerede) sayfayı aç, "Görev Yolu" sekmesine ve Bölüm 1'e dokun.
