@@ -13,11 +13,30 @@
   <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
   <link rel="stylesheet" href="../../css/style.css">
   <style>
-    .cards { --size: min(84vw, 420px); width: var(--size); display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .card { aspect-ratio: 1; border: 0; border-radius: 10px; font-size: calc(var(--size) / 8); cursor: pointer; background: #5b4bdb; color: transparent; transition: transform .2s, background .2s; }
+    .cards { --size: min(84vw, 420px); --cols: 4; width: var(--size); display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 8px; }
+    .cards[hidden], .hf-harita[hidden], .hf-modlar[hidden], .hf-temalar[hidden] { display: none; }
+    .card { aspect-ratio: 1; border: 0; border-radius: 10px; font-size: calc(var(--size) / var(--cols) / 2); cursor: pointer; padding: 0; min-width: 0; background: #5b4bdb; color: transparent; transition: transform .2s, background .2s; }
     .card:hover { transform: scale(1.03); }
     .card.open, .card.done { background: #eef0ff; color: inherit; }
     .card.done { opacity: .55; cursor: default; }
+    .hf-modlar { display: flex; gap: 6px; margin-bottom: 12px; }
+    .hf-modlar .btn[aria-pressed="false"], .hf-tema[aria-pressed="false"] { background: var(--surface-2); color: var(--text); }
+    .hf-harita { width: min(84vw, 420px); text-align: center; }
+    .hf-harita h2 { margin: 0 0 4px; font-size: 1.15rem; }
+    .hf-harita p { margin: 0 0 10px; color: var(--muted); font-size: .9rem; }
+    .hf-bolumler { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .hf-bolum { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 8px 2px; min-width: 0; border: 0; border-radius: 12px; background: linear-gradient(135deg, #a78bfa, #6d28d9); color: #fff; font: inherit; cursor: pointer; }
+    .hf-bolum b { font-size: 1.15rem; line-height: 1.1; }
+    .hf-bolum small { font-size: .75rem; opacity: .85; }
+    .hf-bolum span { color: #ffd43b; letter-spacing: 1px; }
+    .hf-bolum.sirada { outline: 2px solid #ffd43b; outline-offset: 1px; }
+    .hf-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .hf-temalar { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 14px; max-width: min(84vw, 420px); }
+    .hf-tema { display: flex; flex-direction: column; align-items: center; padding: 6px 12px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #a78bfa, #6d28d9); color: #fff; font: inherit; font-weight: 700; font-size: .9rem; cursor: pointer; }
+    .hf-tema small { font-size: .7rem; font-weight: 600; }
+    .hf-tema.kilitli { opacity: .5; cursor: not-allowed; border-radius: 12px; }
+    #sonraki { margin-top: 10px; }
+    @media (max-width: 420px) { .hf-bolumler { grid-template-columns: repeat(3, 1fr); } }
   </style>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Hafıza Kartları","url":"https://unkas53.github.io/minigameweb/games/hafiza/","genre":"Hafıza","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
@@ -56,23 +75,44 @@
     <div class="game-layout">
       <section class="game-box">
         <h1>Hafıza Kartları</h1>
+        <div class="hf-modlar" id="modlar" role="group" aria-label="Oyun modu">
+          <button class="btn" type="button" data-mod="klasik" aria-pressed="true">Klasik 4x4</button>
+          <button class="btn" type="button" data-mod="sefer" aria-pressed="false">🗺️ Sefer</button>
+        </div>
         <div class="game-stats">
+          <div class="stat" id="level-stat" hidden><small>Bölüm</small><span id="level">-</span></div>
           <div class="stat"><small>Hamle</small><span id="moves">0</span></div>
-          <div class="stat"><small>Süre</small><span id="time">0</span> sn</div>
-          <div class="stat"><small>En iyi</small><span id="best">-</span> hamle</div>
+          <div class="stat"><small id="time-lbl">Süre</small><span id="time">0</span> sn</div>
+          <div class="stat" id="best-stat"><small>En iyi</small><span id="best">-</span> hamle</div>
           <button class="btn" id="restart">Yeni oyun</button>
+          <button class="btn btn-ghost" id="harita-btn" type="button" hidden>🗺️ Harita</button>
         </div>
         <div class="cards" id="cards" aria-label="Hafıza kartları"></div>
+        <div class="hf-harita" id="harita" hidden>
+          <h2>🗺️ Sefer haritası</h2>
+          <p id="yildiz-sayac">Yıldız: 0/36</p>
+          <div class="hf-bolumler" id="bolumler"></div>
+        </div>
         <div class="overlay-msg" id="msg"></div>
+        <button class="btn" id="sonraki" type="button" hidden>Sonraki bölüm ▶</button>
+        <div class="hf-temalar" id="temalar" role="group" aria-label="Kart teması"></div>
       </section>
       <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
     </div>
 
     <section class="game-desc">
       <h2>Hafıza Kartları nasıl oynanır?</h2>
-      <p>Tahtada 16 kapalı kart vardır ve her resimden iki tane bulunur. Bir karta tıklayarak açın, ardından eşini bulmak için ikinci bir kart açın. İki kart aynıysa açık kalır; farklıysa kısa bir süre sonra kapanır. Tüm eşleri bulduğunuzda oyun biter. Amaç en az hamle ve en kısa sürede bitirmektir.</p>
+      <p>Tahtada kapalı kartlar vardır ve her resimden iki tane bulunur. Bir karta tıklayarak veya dokunarak açın, ardından eşini bulmak için ikinci bir kart açın. İki kart aynıysa açık kalır; farklıysa kısa bir süre sonra kapanır. İki kart açmak bir hamle sayılır. Tüm eşleri bulduğunuzda oyun biter. Amaç en az hamle ve en kısa sürede bitirmektir.</p>
+      <h2>Klasik ve Sefer modu</h2>
+      <p><strong>Klasik 4x4</strong> modunda 16 kartlık tek bir tahta oynanır ve en az hamleniz "En iyi" rekoru olarak kaydedilir. Günlük meydan okuma her zaman bu modda açılır, aynı gün oynayan herkes aynı tahtayı görür.</p>
+      <p><strong>Sefer</strong> modu 12 bölümlük bir kampanyadır. Tahta bölüm bölüm büyür: 4x4 ile başlar, 5x4, 6x4 ve 6x5 tahtalardan geçip 36 kartlık 6x6 tahtaya ulaşır. Her bölümü bitirmek 1 yıldız verir; az hamlede bitirirseniz 2 veya 3 yıldız kazanırsınız. Haritadaki her kutuda bölümün tahta ölçüsü ve topladığınız yıldızlar görünür. Bir bölüm, önceki bölümden en az 1 yıldız alınca açılır. Son iki bölüm süreli: süre biterse bölüm kaybedilir, tekrar denersiniz. Daha önce kazandığınız yıldızlar hiçbir zaman silinmez, bölümü tekrar oynayıp yıldızınızı artırabilirsiniz.</p>
+      <h2>Kart temaları</h2>
+      <p>Topladığınız yıldızlar yeni kart destelerini açar: 10 yıldızda Meyve, 20 yıldızda Uzay, 30 yıldızda Hayvan teması. Açtığınız temayı tahtanın altındaki şeritten seçebilirsiniz; seçtiğiniz tema klasik modda da kullanılır. İlerlemeniz bu cihazda otomatik kaydedilir.</p>
       <h2>İpuçları</h2>
-      <p>Açılan kartların yerlerini satır satır ezberlemeye çalışın. İlk hamlelerde tahtayı keşfetmek, sonraki hamlelerde eşleri hızlıca bulmanızı sağlar.</p>
+      <p>Açılan kartların yerlerini satır satır ezberlemeye çalışın. İlk hamlelerde tahtayı keşfetmek, sonraki hamlelerde eşleri hızlıca bulmanızı sağlar. Büyük tahtalarda kartları köşelerden başlayarak açmak ve konumlarını "üst sıra, sağdan ikinci" gibi kısa adlarla akılda tutmak işe yarar. Süreli bölümlerde aceleyle rastgele kart açmayın; bilmediğiniz bir kartı açtıktan sonra eşini hatırladığınız yerde arayın.</p>
+      <h2>Sıkça sorulan sorular</h2>
+      <p><strong>Sefer modu rekorumu etkiler mi?</strong> Hayır. "En iyi" hamle rekoru yalnızca Klasik 4x4 modunda yazılır; Sefer bölümlerinin her biri liderlik tablosunda ayrı sıralanır.</p>
+      <p><strong>Kilitli bölümü nasıl açarım?</strong> Bir önceki bölümü bitirmeniz yeterlidir; tek yıldız bile sonraki bölümü açar.</p>
     </section>
 
     <!-- oto:benzer -->

@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 oyun: hafiza
 baslik: Hafıza Seferi: 12 bölümlük kampanya, yıldızlar ve açılan kart temaları
 oncelik: 4
@@ -65,3 +65,6 @@ Her destede en az 18 emoji bulunur, böylece 6x6 tahta da tek desteyle dolar. A�
 - [ ] Oyun sayfası açıklama metni (nasıl oynanır / ipuçları) Sefer modunu, yıldızları ve temaları anlatacak şekilde genişletilir.
 - [ ] `tools/tests/hafiza.js` oynanış testine eklenir: (1) klasik mod baştan sona oynanıp `mo_best_hafiza` yazıldığı doğrulanır; (2) Sefer 1. bölüm oynanıp yıldız ve `mo_hafiza.bolum` kaydı doğrulanır; (3) 2. bölümün açıldığı, 3. bölümün kilitli kaldığı doğrulanır; (4) 30 yıldızlık kayıt elle yazılıp Hayvan temasının seçilebildiği doğrulanır; (5) bozuk `mo_hafiza` kaydıyla sayfanın hatasız açıldığı doğrulanır.
 - [ ] `npm run build` ve `node tools/smoke-test.js` hatasız geçer.
+
+## Uygulama notu
+2026-10-24 (8. ajan): Mod seçimi (Klasik 4x4 / Sefer), 12 bölümlük harita (4x4 → 6x6, 11-12. bölümler süreli), 1-3 yıldız, 10/20/30 yıldızda açılan Meyve/Uzay/Hayvan temaları ve `mo_hafiza` kaydı eklendi. Klasik mod, `mo_best_hafiza` ve günlük mod değişmedi; Sefer bölümleri liderlik tablosuna `bolum-N` seviyesiyle gidiyor. `tools/tests/hafiza.js` tüm kabul kriterlerini (kilitli bölüm, süre dolması, tema, 360 px, bozuk kayıt) kapsıyor. Not: 🫐 ve 🧑‍🚀 eski cihazlarda görünmeyebileceği için 🍅 ve 🌙 ile değiştirildi; 3-4. bölümler 4x5 yerine 5x4 (aynı 20 kart) dizildi.
