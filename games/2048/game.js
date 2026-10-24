@@ -300,6 +300,8 @@
     ipucuEl.textContent = (B.ipucu ? B.ipucu + ' ' : '') + '3★: en fazla ' + esikHamle(B.hamle, 0.5) + ' hamle · 2★: en fazla ' + esikHamle(B.hamle, 0.75) + ' hamle';
     gorunum();
     render();
+    // Tahta görünür alanda kalsın (ipucu satırı onu aşağı itiyor)
+    if (boardEl.scrollIntoView) boardEl.scrollIntoView({ block: 'nearest' });
   }
 
   function sonrakiDugmeleri(kazandi) {
