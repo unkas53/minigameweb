@@ -36,7 +36,8 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-23 21:10
 
 ## H-4 | Penaltı Ligi: 1280x900 ekranda maç başlayınca güç çubuğu ve VUR düğmesi görünmüyor
-- durum: acik
+- durum: duzeltildi
+- not: 266873c ile düzeltildi; maç başlarken oyun alanı scrollIntoView({block:'nearest'}) ile görünür alana kaydırılıyor (1280x900'de VUR düğmesinin alt kenarı 900 px'e geliyor).
 - onem: orta
 - sayfa: games/penalti-ligi/
 - adimlar: 1280x900 pencerede sayfayı aç (kaydırma yapmadan), Mahalle Ligi 1. maça tıkla.
