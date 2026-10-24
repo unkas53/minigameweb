@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 oyun: yilan
 baslik: Yılan Macerası: 24 bölümlük harita, engelli tahtalar, yıldızlar ve açılan yılan desenleri
 oncelik: 4
@@ -65,3 +65,6 @@ Sayfa metnine ("Nasıl oynanır" / SSS) Macera modunu anlatan kısa bir paragraf
 - Macera bölüm sonunda liderlik tablosuna skor gönderilmez.
 - 360 px genişlikte sekmeler, harita (24 düğme taşmadan sarılır) ve desen seçici yatay kaydırma olmadan sığar; dokunmatik yön düğmeleri ve kaydırma Macera'da da çalışır.
 - Oynanış testine (`tools/tests/yilan.js`) eklenecek kontroller: Macera sekmesine geç, 1. bölümü `page.clock` ve yem yönünde dönen basit bir botla bitir, yıldızın ve 2. bölümün açıldığını kontrol et; 2. bölümde bir engele bilerek çarpıp bölümün kaybedildiğini doğrula; `mo_yilan` içine 12 yıldız yazıp sayfayı yenile ve Gökkuşağı deseninin seçilebilir olduğunu kontrol et; bozuk `mo_yilan` ile sayfanın hatasız açıldığını kontrol et.
+
+## Uygulama notu (8. ajan, 2026-10-24)
+Klasik / Macera sekmeleri, 3 dünyada 24 bölüm (Bahçe, Mağara, Yanardağ), yem hedefi ve süreye göre 1-3 yıldız, 13-16. bölümlerde kenardan geçiş, Mağara'dan itibaren altın (+2, 6 sn) ve buz (5 sn %30 yavaşlatır) yemleri, Yanardağ'da her 5 yemde bir 3 hücrelik lav (tahtayı bölmeyecek yere) ve 12/30/50/72 yıldızda açılan Gökkuşağı/Mercan/Gece/Altın desenleri eklendi; kayıt `mo_yilan`. Oyun mantığı yeni `games/yilan/motor.js` dosyasına taşındı; klasik mod, hızı, puanı, `getBest('yilan')` rekoru, günlük mod ve liderlik tablosu aynen kaldı, Macera bölümleri skor göndermiyor. Bölüm düzenleri dizgi haritası yerine dikdörtgen duvar listesiyle tanımlandı; yıldız süreleri her düzende yol bulan bir botun 30 oyunluk ortanca süresinden (3★ = 1,5 kat, 2★ = 2,4 kat) hesaplandı, 18. bölüm bot çok sık sıkıştığı için seyreltildi. Özel yem ve lav süreleri oyun zamanıyla işlediği için duraklatmada durur. Bölümler önceki bölümden 1 yıldızla açılır. **Yapılmadı:** "Yılan Terbiyecisi" rozeti `js/oyun.js` (ortak dosya) gerektirdiği için eklenmedi; site önerisi konusu olabilir. `tools/tests/yilan.js` tüm kabul kriterlerini kapsayacak şekilde genişletildi.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yılan Oyunu Oyna - Ücretsiz Online Snake | MiniOyun</title>
-  <meta name="description" content="Klasik yılan (snake) oyununu ücretsiz ve online oyna. Yemleri topla, uzadıkça kendine ve duvarlara çarpma.">
+  <meta name="description" content="Klasik yılan (snake) oyununu ücretsiz ve online oyna. Yemleri topla, uzadıkça kendine ve duvarlara çarpma; 24 bölümlük Macera modunda yıldız topla, yeni desenler aç.">
   <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/yilan/">
   <link rel="alternate" hreflang="tr" href="https://unkas53.github.io/minigameweb/games/yilan/">
   <link rel="alternate" hreflang="en" href="https://unkas53.github.io/minigameweb/games/yilan/?lang=en">
@@ -18,6 +18,28 @@
   <link rel="stylesheet" href="../../css/style.css">
   <style>
     #canvas { width: min(84vw, 420px); height: min(84vw, 420px); background: #11152b; border-radius: 12px; border: 2px solid #3a3f63; touch-action: none; }
+    .game-box [hidden] { display: none !important; }
+    .mod-sekme { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
+    .mod-sekme button { border: 0; border-radius: 999px; padding: 7px 16px; font: inherit; font-weight: 800; background: var(--surface-2); color: var(--muted); cursor: pointer; }
+    .mod-sekme button.secili { background: linear-gradient(135deg, #5ee0b8, #2a9d8f); color: #04221c; }
+    .ym-ipucu { margin: 0 auto 10px; max-width: 420px; text-align: center; color: var(--muted); font-size: .85rem; }
+    .ym-harita { width: min(100%, 520px); margin: 0 auto; text-align: center; }
+    .ym-harita h2 { margin: 14px 0 6px; font-size: 1.05rem; }
+    .ym-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .ym-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .ym-bolumler { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .ym-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #5ee0b8, #2a9d8f); color: #04221c; font: inherit; cursor: pointer; min-width: 0; }
+    .ym-bolum b { font-size: 1rem; line-height: 1.2; }
+    .ym-bolum small { font-size: .66rem; font-weight: 700; white-space: nowrap; }
+    .ym-bolum span { font-size: .72rem; color: #7c2d12; white-space: nowrap; }
+    .ym-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .ym-bolum.kilitli span { color: var(--muted); }
+    .ym-desenler { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+    .ym-desen { display: inline-flex; align-items: center; gap: 6px; border: 2px solid transparent; border-radius: 999px; padding: 5px 12px; font: inherit; font-size: .85rem; font-weight: 700; background: var(--surface-2); color: inherit; cursor: pointer; }
+    .ym-desen i { width: 14px; height: 14px; border-radius: 4px; }
+    .ym-desen.secili { border-color: #5ee0b8; }
+    .ym-desen:disabled { color: var(--muted); cursor: not-allowed; }
+    .overlay-msg .btn { margin: 4px; }
   </style>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"VideoGame","name":"Yılan","url":"https://unkas53.github.io/minigameweb/games/yilan/","genre":"Arcade","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
@@ -61,11 +83,24 @@
     <div class="game-layout">
       <section class="game-box">
         <h1>Yılan</h1>
-        <div class="game-stats">
+        <div class="mod-sekme" id="mod-sekme" role="tablist" aria-label="Oyun modu">
+          <button type="button" role="tab" data-mod="klasik">Klasik</button>
+          <button type="button" role="tab" data-mod="macera">🗺️ Macera</button>
+        </div>
+        <div class="game-stats" id="klasik-stats">
           <div class="stat"><small>Skor</small><span id="score">0</span></div>
           <div class="stat"><small>En iyi</small><span id="best">0</span></div>
           <button class="btn" id="restart">Başla</button>
         </div>
+        <div class="game-stats" id="macera-stats" hidden>
+          <div class="stat"><small>Bölüm</small><span id="ym-bolum">1</span></div>
+          <div class="stat"><small>Yem</small><span id="ym-yem">0/8</span></div>
+          <div class="stat"><small>Süre</small><span id="ym-sure">0 sn</span></div>
+          <button class="btn btn-ghost" id="ym-harita" type="button">🗺️ Harita</button>
+          <button class="btn" id="ym-yeniden" type="button">Yeniden başla</button>
+        </div>
+        <p class="ym-ipucu" id="ym-ipucu" hidden></p>
+        <div class="ym-harita" id="harita" hidden></div>
         <canvas id="canvas" width="420" height="420" aria-label="Yılan oyun alanı"></canvas>
         <div class="touch-controls">
           <span class="blank"></span><button data-dir="up" aria-label="Yukarı">▲</button><span class="blank"></span>
@@ -80,13 +115,17 @@
       <h2>Yılan nasıl oynanır?</h2>
       <p>Yılanı ok tuşları veya W, A, S, D ile yönetin; telefonda ekrandaki yön tuşlarını kullanın ya da oyun alanında parmağınızı kaydırın. Kırmızı yemleri yedikçe yılan uzar ve 10 puan kazanırsınız. Duvara veya yılanın kendi gövdesine çarparsanız oyun biter. Skor yükseldikçe yılan hızlanır.</p>
       <p>Oyun alanı 21x21 karelik bir ızgaradır. Yılan üç kare uzunluğunda başlar ve her yemde bir kare büyür. Her 50 puanda biraz daha hızlanır, bu yüzden oyunun ilerleyen bölümleri hem hız hem de alan yönetimi ister. En yüksek skorunuz tarayıcınızda saklanır.</p>
+      <h2>Macera modu</h2>
+      <p>Oyun kutusunun üstündeki "Macera" sekmesi üç dünyaya yayılmış 24 bölümlük bir harita açar. Her bölümün tek bir hedefi vardır: belirli sayıda yem yemek. Hedefe ulaştığınız anda bölüm biter; duvara, engele, lava ya da kendinize çarparsanız bölümü baştan denersiniz. Bitirmek 1 yıldız kazandırır, bölümü ekranda yazan sürelerin altında bitirirseniz 2 veya 3 yıldız alırsınız. Bir bölümden en az 1 yıldız almak sıradaki bölümü açar.</p>
+      <p>Bahçe dünyasında çitler ve bloklar alanı daraltır. Mağara dünyasında labirent duvarları ve dar koridorlar vardır; 13-16. bölümlerde kenarlar açıktır ve bir kenardan çıkan yılan karşı kenardan girer. Mağara'dan itibaren ara sıra özel yemler çıkar: altın yem birkaç saniye sonra kaybolur ama hedef sayacını 2 ilerletir, buz yemi ise yılanı 5 saniyeliğine yavaşlatır. Yanardağ dünyasında her 5 yemde bir tahtaya 3 karelik yeni bir lav engeli eklenir. Topladığınız yıldızlar Gökkuşağı, Mercan, Gece ve Altın yılan desenlerini açar; desen yalnızca görünüştür ve Klasik modda da kullanılabilir. Macera klasik rekorunuzu, günlük meydan okumayı ve liderlik tablosunu etkilemez.</p>
       <h2>İpuçları</h2>
       <p>Oyun alanının kenarlarında dolaşarak ortayı boş tutun. Yılan uzadıkça ani dönüşlerden kaçının ve kendinize çıkış yolu bırakın.</p>
       <p>Uzun yılanla oynarken alanı sıra sıra taramak işe yarar: bir kenardan diğerine gidip bir kare kayarak geri dönün. Yem gövdenizin arkasında kaldıysa ona kestirmeden ulaşmaya çalışmayın, kuyruğunuzun açtığı yolu takip edin. Hızlanınca bir sonraki iki hamleyi önceden düşünün.</p>
       <h2>Sık sorulan sorular</h2>
       <p><strong>Yılan oyunu telefonda oynanır mı?</strong> Evet. Ekrandaki yön tuşlarını kullanabilir ya da oyun alanında parmağınızı kaydırabilirsiniz. İndirme veya üyelik gerekmez.</p>
       <p><strong>Günlük meydan okuma nedir?</strong> Günlük modda yemler o gün herkes için aynı yerlerde çıkar, böylece skorunuzu aynı koşullarda oynayan diğer oyuncularla karşılaştırabilirsiniz.</p>
-      <p><strong>Duvardan geçilebilir mi?</strong> Hayır. Bu klasik Yılan sürümünde duvara çarpmak oyunu bitirir.</p>
+      <p><strong>Duvardan geçilebilir mi?</strong> Klasik modda hayır, duvara çarpmak oyunu bitirir. Macera'nın 13-16. bölümlerinde ise kenarlar açıktır ve yılan karşı kenardan çıkar.</p>
+      <p><strong>Macera ilerlemem kaybolur mu?</strong> Hayır. Yıldızlarınız, açtığınız bölümler ve seçtiğiniz desen tarayıcınızda saklanır; sayfayı kapatıp açtığınızda kaldığınız yerden devam edersiniz.</p>
     </section>
 
     <!-- oto:benzer -->
@@ -171,6 +210,7 @@
   </div>
 
   <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
   <script src="../../js/sunucu.js"></script>
   <script src="../../js/oyun.js" data-rekor="puan"></script>
   <script src="game.js"></script>
