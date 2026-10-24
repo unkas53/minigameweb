@@ -121,4 +121,4 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Tahta ile birlikte altındaki güçlendirici satırı (`#guclar`: çekiç, karıştır, +5 hamle) da ekranda görünür.
 - gerceklesen: Sayfa kaymıyor (scrollY 0); tahta 430-870 px'te tamamen görünüyor, ama `#guclar` 870-964 px'te, ekranın (900 px) altında kalıyor. `scrollIntoView({block:'nearest'})` yalnızca `#tahta` için çağrıldığından tahta sığınca kaydırma yapılmıyor. 1366x768 (tahta 12-452, güçler ≤546) ve 360x740'ta (0-322, ≤414) sorun yok. Oyun oynanabiliyor; güçlendiriciyi kullanmak için elle kaydırmak gerekiyor.
 - bulunma: 2026-10-24 10:15
-- not: 2026-10-24 düzeltildi (087ee02). Bölüm başında önce #guclar, sonra #tahta için scrollIntoView({block:'nearest'}) çağrılıyor; 1280x900'de tahta 366-806, güçler 867-900 px. 1366x768 ve 360x740 değişmedi.
+- not: 2026-10-24 düzeltildi (3d8a9f2). Bölüm başında önce #guclar, sonra #tahta için scrollIntoView({block:'nearest'}) çağrılıyor; 1280x900'de tahta 366-806, güçler 867-900 px. 1366x768 ve 360x740 değişmedi.
