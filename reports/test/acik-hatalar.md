@@ -123,3 +123,12 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-24 10:15
 - not: 2026-10-24 düzeltildi (3d8a9f2). Bölüm başında önce #guclar, sonra #tahta için scrollIntoView({block:'nearest'}) çağrılıyor; 1280x900'de tahta 366-806, güçler 867-900 px. 1366x768 ve 360x740 değişmedi.
 - dogrulama: 2026-10-24 11:20 test ajanı. 1. bölüm başlayınca 1280x900: tahta 366-806, güçler 867-900 px; 1366x768: 12-452 / 513-546; 360x740: 0-322 / 384-414. Hepsi görünür.
+
+## H-12 | Mahjong: bölüm başlayınca tahta mobilde ve 1366x768'de büyük ölçüde ekran dışında
+- durum: acik
+- onem: dusuk
+- sayfa: games/mahjong/
+- adimlar: 360x740 dokunmatik ekranda (veya 1366x768 pencerede) sayfayı aç (çerez onaylı), haritada Bölüm 1'e dokun.
+- beklenen: Bölüm başlayınca tahta (ve mümkünse altındaki uyarı/eğitim satırı ile araç düğmeleri) görünür alana kaydırılır (H-4, H-5, H-8, H-9, H-10, H-11 ile aynı tür sorun; onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
+- gerceklesen: `basla()` haritayı gizleyip oyunu gösteriyor ama sayfayı kaydırmıyor (scrollY 0). 360x740'ta tahta 537-962 px (425 px'in yalnızca üst 203 px'i görünür), 1. bölümün eğitim mesajı (`#uyari`, 974-1042) ve araçlar (İpucu/Karıştır/Geri al, 1050-1083) ekran dışında. 1366x768'de tahta 376-801 px (alt 33 px dışarıda), uyarı 813-858 ve araçlar 866-899 px ekran dışında. 1280x900'de hepsi görünür (araçlar 866-899). Sıra tabanlı olduğu için oyuncu kaydırarak oynayabiliyor ama süre işlerken ilk saniyeler kayboluyor.
+- bulunma: 2026-10-24 14:15
