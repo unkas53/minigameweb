@@ -76,3 +76,22 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Test iki koşuda da aynı sonucu verir.
 - gerceklesen: 2026-10-24'te tam koşu 3 denemenin 3'ünde (Blok Bulmaca eklenmeden önceki main'de de) "Duraklatınca süre durmalı" ile kırmızı; tek oyun koşusu her seferinde geçiyor. `s1` okunduktan sonra Duraklat tıklanana kadar bir saniye tiki daha işliyor olabilir (sayaç `page.clock` dışında bir zamanlayıcıya ya da tıklama anındaki gecikmeye bağlı). Tüm `npm test` başarısız sayıldığı için diğer ajanların push'unu engelliyor.
 - bulunma: 2026-10-24 (4. ajan, Blok Bulmaca çalışması)
+- not: 2026-10-24 07:05 test ajanı tam `node tools/smoke-test.js` koşusunu çalıştırdı, Harf Çarkı dahil 14 oyun testi geçti (1 deneme). Hata aralıklı görünüyor; kayıt açık kalıyor.
+
+## H-8 | Blok Bulmaca: 1366x768 ekranda bölüm başlayınca parça yuvaları görünmüyor
+- durum: acik
+- onem: orta
+- sayfa: games/blok-bulmaca/
+- adimlar: 1366x768 (veya 1280x900) pencerede sayfayı aç (kaydırma yapmadan), haritada 1. bölüme tıkla.
+- beklenen: Bölüm başlayınca ızgara ve altındaki üç parça yuvası ekranda görünür; gerekirse oyun alanı görünür alana kaydırılır (H-4 ve H-5 ile aynı tür sorun, onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
+- gerceklesen: Harita gizleniyor, sayfa kaymıyor (scrollY 0). Izgara 408-828 px, parça yuvaları 838-957 px, Yenile/Sil düğmeleri 1022-1055 px. 1366x768'de yuvaların tamamı ve ızgaranın alt 60 px'i görünür alanın dışında; oyuncu yerleştireceği parçaları görmek için fareyle kaydırmak zorunda. 1280x900'de yuvaların yalnızca üst 62 px'i görünüyor. 360x740'ta sorun yok (dokunurken sayfa kayıyor, ızgara 45-367, yuvalar 377-467 px). `games/blok-bulmaca/game.js` içinde `scrollIntoView` yok.
+- bulunma: 2026-10-24 07:05
+
+## H-9 | 2048 Görev Yolu: bölüm başlayınca tahta mobilde ve 1366x768'de büyük ölçüde ekran dışında
+- durum: acik
+- onem: dusuk
+- sayfa: games/2048/
+- adimlar: 360x740 dokunmatik ekranda (veya 1366x768 pencerede) sayfayı aç, "Görev Yolu" sekmesine ve Bölüm 1'e dokun.
+- beklenen: Bölüm başlayınca tahta ekranda görünür; gerekirse görünür alana kaydırılır.
+- gerceklesen: Sayfa kaymıyor (scrollY 0). Görev Yolu'nda ipucu satırı (600-643 px) ve iki satıra kayan istatistik çubuğu tahtayı aşağı itiyor: 360x740'ta tahta 653-956 px (yalnızca üst 87 px görünür), 1366x768'de 475-875 px. Klasik modda da tahta kısmen aşağıda (360x740'ta 546-848, 1366x768'de 422-822), ama Görev Yolu ~107 px daha kötü. Sıra tabanlı oyun olduğu için oyuncu kaydırarak oynayabiliyor; kaydırma hareketleri tahtada yakalandığı için mobilde kaydırmak tahtanın dışından yapılmalı.
+- bulunma: 2026-10-24 07:05
