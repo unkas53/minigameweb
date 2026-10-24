@@ -141,3 +141,4 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Olta Ustası testi her çalışmada geçer.
 - gerceklesen: 2026-10-24'te bir tam çalışmada "Turda altın kazanılmalı" ile başarısız oldu; hemen ardından tek başına (`--oyun olta-ustasi`) ve ikinci tam çalışmada geçti. Zamanlamaya bağlı kararsız test (H-7 Harf Çarkı ile benzer). Geliştirici ajan (Drift Ustası eklenirken) fark etti, Olta koduna dokunulmadı.
 - bulunma: 2026-10-24
+- not: 2026-10-24 18:50 test ajanı. Tam `npm test` çalışmasında yine "Turda altın kazanılmalı" ile başarısız oldu (tek başına `--oyun olta-ustasi` geçti). Kararsızlık sürüyor.
