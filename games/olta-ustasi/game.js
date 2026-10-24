@@ -238,6 +238,7 @@
     state = 'inis';
     panel.hidden = true;
     MiniOyun.ses('tik');
+    if (canvas.scrollIntoView) canvas.scrollIntoView({ block: 'nearest' });
     try { canvas.focus({ preventScroll: true }); } catch (e) {}
     hud();
   }
