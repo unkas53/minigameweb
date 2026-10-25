@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 baslik: Mobilde tek satırlık kompakt üst menü
 oncelik: 4
 boyut: orta
@@ -29,3 +29,6 @@ Yalnızca **640 px altında** üst menü tek satıra iner; masaüstü görünüm
 - 360 px ve 1280 px'te yatay taşma yok, konsolda pageerror yok; `npm run build` sonrası tüm üretilen sayfalar güncel (smoke test build kontrolü geçer).
 - Ana sayfa ölçümü (ilk `.game-card` ≤ 900 px) hâlâ geçer (değer küçülmeli).
 - Klavyeyle (Tab/Enter) menü açılıp bağlantılar seçilebiliyor.
+
+## Uygulama notu (2026-10-25)
+640 px altında üst menü tek satır: logo, 👤 profil simgesi, 🌐 dil, ☰ `<details class="mobil-menu">` (Oyunlar, Kategoriler, Profilim, Günlük meydan okuma, Hakkında, İletişim; dışarı dokunma/Esc ile kapanır). 360 px'te başlık 234 → 115 px, 2048/Meyve Patlat oyun alanı 172 px'te başlıyor; masaüstü 113 px, değişmedi. Smoke teste mobil başlık ≤ 120 px, oyun alanı ≤ 180 px (2048, Meyve Patlat) ve ☰ menü/Esc kontrolü eklendi. Not: Kule Savunması'nda oyun alanı 201 px'te başlıyor (oyuna özgü üst içerik).

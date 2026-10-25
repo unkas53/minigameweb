@@ -106,7 +106,19 @@ function header(p, current) {
         <a href="${p}hakkinda.html">Hakkında</a>
         <a href="${p}iletisim.html">İletişim</a>
         <a class="nav-profil" href="${p}profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
-      </nav>${dilMenu(p)}
+      </nav>
+      <a class="mobil-profil" href="${p}profil.html" aria-label="Profilim"><span class="nav-avatar" aria-hidden="true">👤</span></a>${dilMenu(p)}
+      <details class="mobil-menu">
+        <summary aria-label="Menü"><span aria-hidden="true">☰</span></summary>
+        <nav class="mobil-liste" aria-label="Mobil menü">
+          <a href="${p}">Oyunlar</a>
+          <a href="${p}kategori/">Kategoriler</a>
+          <a href="${p}profil.html">Profilim</a>
+          <a href="${p}gunluk.html">Günlük meydan okuma</a>
+          <a href="${p}hakkinda.html">Hakkında</a>
+          <a href="${p}iletisim.html">İletişim</a>
+        </nav>
+      </details>
     </div>
     <nav class="cat-bar" aria-label="Kategoriler">
       <div class="container cat-bar-inner">

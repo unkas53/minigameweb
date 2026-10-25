@@ -134,6 +134,21 @@
     try { if ((JSON.parse(localStorage.getItem('mo_gunluk')) || {})[key]) btn.textContent = '✅ Sonucun'; } catch (e) {}
   }
 
+  // Mobil ☰ menüsü: dışarı dokununca veya Esc ile kapanır
+  function initMobileMenu() {
+    var menu = document.querySelector('.mobil-menu');
+    if (!menu) return;
+    document.addEventListener('click', function (e) {
+      if (menu.open && !menu.contains(e.target)) menu.open = false;
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary').focus();
+      }
+    });
+  }
+
   // PWA: çevrimdışı önbellek (sw.js) ve "Uygulamayı yükle" düğmesi
   var installPrompt = null;
   function initPwa() {
@@ -188,6 +203,7 @@
     drawHeaderAvatar();
     markDailyDone();
     initPwa();
+    initMobileMenu();
     initSearch();
   });
 })();

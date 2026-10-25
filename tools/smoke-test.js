@@ -69,6 +69,22 @@ const serve = () => serveAt(PORT);
         const toplam = games.length, yeniBeklenen = Math.min(4, toplam);
         if (f.tumu !== 'true' || f.ilk !== toplam || f.son !== toplam || f.yeni !== yeniBeklenen || f.basildi !== 'true' || !f.gizli || f.boy < 44) errors.push(`[${vp.name}] ana sayfa filtre çipleri hatalı: ${JSON.stringify(f)}`);
       }
+      if (vp.name === 'mobil') {
+        // Mobil üst menü tek satır: başlık ≤ 120 px; 2048 ve Meyve Patlat'ta oyun alanı ≤ 180 px'te başlar
+        const m = await page.evaluate(() => ({
+          ust: Math.round(document.querySelector('.site-header').getBoundingClientRect().height),
+          oyun: document.querySelector('.game-layout') ? Math.round(document.querySelector('.game-layout').getBoundingClientRect().top + scrollY) : 0
+        }));
+        if (m.ust > 120) errors.push(`[mobil] ${p || '/'} üst menü çok yüksek: ${m.ust}px (en fazla 120)`);
+        if (['games/2048/', 'games/meyve-patlat/'].includes(p) && m.oyun > 180) errors.push(`[mobil] ${p} oyun alanı çok aşağıda: ${m.oyun}px (en fazla 180)`);
+        if (p === 'games/2048/') {
+          await page.click('.mobil-menu summary');
+          const linkler = await page.$$eval('.mobil-liste a:not([hidden])', as => as.filter(a => a.offsetParent).map(a => a.getAttribute('href')));
+          if (linkler.length !== 6 || linkler.some(h => h.startsWith('/'))) errors.push(`[mobil] ☰ menüsü 6 göreceli bağlantı göstermeli: ${linkler.join()}`);
+          await page.keyboard.press('Escape');
+          if (await page.$eval('.mobil-menu', d => d.open)) errors.push('[mobil] ☰ menüsü Esc ile kapanmadı');
+        }
+      }
       if (p.startsWith('games/')) {
         const tools = await page.$$eval('.oyun-arac .oyun-btn', els => els.length);
         if (tools < 3) errors.push(`[${vp.name}] ${p} sayfasında ortak oyun araç çubuğu yok (js/oyun.js yüklenmemiş olabilir)`);
