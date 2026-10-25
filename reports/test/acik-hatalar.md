@@ -125,7 +125,7 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - dogrulama: 2026-10-24 11:20 test ajanı. 1. bölüm başlayınca 1280x900: tahta 366-806, güçler 867-900 px; 1366x768: 12-452 / 513-546; 360x740: 0-322 / 384-414. Hepsi görünür.
 
 ## H-12 | Mahjong: bölüm başlayınca tahta mobilde ve 1366x768'de büyük ölçüde ekran dışında
-- durum: duzeltildi
+- durum: dogrulandi
 - onem: dusuk
 - sayfa: games/mahjong/
 - adimlar: 360x740 dokunmatik ekranda (veya 1366x768 pencerede) sayfayı aç (çerez onaylı), haritada Bölüm 1'e dokun.
@@ -133,9 +133,10 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - gerceklesen: `basla()` haritayı gizleyip oyunu gösteriyor ama sayfayı kaydırmıyor (scrollY 0). 360x740'ta tahta 537-962 px (425 px'in yalnızca üst 203 px'i görünür), 1. bölümün eğitim mesajı (`#uyari`, 974-1042) ve araçlar (İpucu/Karıştır/Geri al, 1050-1083) ekran dışında. 1366x768'de tahta 376-801 px (alt 33 px dışarıda), uyarı 813-858 ve araçlar 866-899 px ekran dışında. 1280x900'de hepsi görünür (araçlar 866-899). Sıra tabanlı olduğu için oyuncu kaydırarak oynayabiliyor ama süre işlerken ilk saniyeler kayboluyor.
 - bulunma: 2026-10-24 14:15
 - not: 2026-10-25 düzeltildi (886ac13). `basla()` sonunda önce `.mj-araclar`, sonra `#sahne` için scrollIntoView({block:'nearest'}) çağrılıyor. 1. bölüm: 360x740 tahta 116-541, uyarı 553-621, araçlar 629-740; 1366x768 tahta 245-670, uyarı 682-727, araçlar 735-768; 1280x900 değişmedi (scrollY 0).
+- dogrulama: 2026-10-25 19:50 test ajanı. Bölüm 1 başlayınca 360x740 dokunmatik: tahta 112-545, uyarı 553-621, araçlar 629-740 (scrollY 418); 1366x768: 241-674 / 682-727 / 735-768; 1280x900: 372-805 / 813-858 / 866-899 (scrollY 0). Hepsi görünür, JS hatası yok.
 
 ## H-13 | Olta Ustası: oynanış testi tam `npm test` çalışmasında ara sıra başarısız
-- durum: duzeltildi
+- durum: dogrulandi
 - onem: dusuk
 - sayfa: tools/tests/olta-ustasi.js
 - adimlar: `npm test` (tüm oyunlar) çalıştır.
@@ -144,3 +145,13 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - bulunma: 2026-10-24
 - not: 2026-10-24 18:50 test ajanı. Tam `npm test` çalışmasında yine "Turda altın kazanılmalı" ile başarısız oldu (tek başına `--oyun olta-ustasi` geçti). Kararsızlık sürüyor.
 - not: 2026-10-25 düzeltildi (d03b2a1). Kök neden: deniz dizilimi Math.random ile üretiliyor; bazı rastgele denizlerde kanca 30 m inip çıkarken hiç balığa değmiyor, tur 0 altınla bitiyordu (tanı çıktısı: "Tur bitti: 0 altın", akvaryum boş). Oyun hatası değil, testin şansa bağlı olması. Test artık addInitScript ile Math.random'ı sabit tohumla değiştiriyor (Kızma Birader testindeki gibi). Önce 6 tekli koşudan 1'i başarısızdı, sonra 10/10 tekli ve 2/2 tam koşu geçti.
+- dogrulama: 2026-10-25 19:50 test ajanı. Düzeltmeden sonraki iki tam `npm test` çalışmasında (09 UTC ve bu çalışma) Olta Ustası testi geçti.
+
+## H-14 | Yılan Macera: mobilde bölüm başlayınca dokunmatik yön tuşları ve mesaj satırı ekran dışında
+- durum: acik
+- onem: dusuk
+- sayfa: games/yilan/
+- adimlar: 360x740 dokunmatik ekranda sayfayı aç (çerez onaylı), "Macera" sekmesine, sonra Bölüm 1'e dokun.
+- beklenen: Bölüm başlayınca oyun alanıyla birlikte altındaki dokunmatik yön tuşları (`.touch-controls`) ve "Başlamak için bir yön tuşuna bas" mesajı (`#msg`) da görünür (H-11 ve H-12 ile aynı tür sorun).
+- gerceklesen: `bolumBaslat()` yalnızca canvas için `scrollIntoView({block:'nearest'})` çağırıyor. scrollY 237 olur; canvas 438-740 px'te tam görünür ama yön tuşları 752-870, mesaj 882-933 px'te, ekranın (740 px) altında kalıyor. Kanvasta kaydırma (swipe) ile oynanabildiği ve tuşlar çalıştığı için oyun oynanabiliyor; tuşlarla oynamak isteyen oyuncu elle kaydırmak zorunda. 1366x768 ve 1280x900'de tuşlar gizli, sorun yok.
+- bulunma: 2026-10-25 19:50
