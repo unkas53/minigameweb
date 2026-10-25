@@ -43,6 +43,8 @@ const sorted = games.map((g, i) => ({ g, i }))
   .sort((a, b) => (b.g.added.localeCompare(a.g.added)) || (b.i - a.i))
   .map(x => x.g);
 const gamesOf = c => sorted.filter(g => g.category === c.name);
+// "YENİ" rozeti ve ana sayfadaki "Yeni" filtresi: en yeni 4 oyun
+const newest = new Set(sorted.slice(0, 4).map(g => g.slug));
 
 // ---------- Çoklu dil ----------
 // Bir dil, diller/diller.json'da listelendiğinde ve diller/<kod>/ortak.json bulunduğunda sitede sunulur.
@@ -143,7 +145,7 @@ function footer(p) {
 function card(g, p) {
   const c = catByName[g.category];
   const big = g.icon.length > 3 && !/\p{Extended_Pictographic}/u.test(g.icon) ? ' text' : '';
-  return `<a class="game-card" href="${p}games/${g.slug}/" data-title="${esc(g.title.toLocaleLowerCase('tr'))}" data-added="${g.added}">
+  return `<a class="game-card" href="${p}games/${g.slug}/" data-title="${esc(g.title.toLocaleLowerCase('tr'))}" data-added="${g.added}"${newest.has(g.slug) ? ' data-yeni="1"' : ''}>
         <div class="game-thumb" style="--c1:${g.colors[0]};--c2:${g.colors[1]}"><span class="thumb-icon${big}" aria-hidden="true">${esc(g.icon)}</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
           <h3>${esc(g.title)}</h3>

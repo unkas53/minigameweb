@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 baslik: Ana sayfa ızgarasında hızlı filtre çipleri ve anlamlı "YENİ" rozeti
 oncelik: 4
 boyut: orta
@@ -33,3 +33,6 @@ dosyalar: tools/build-pages.js, index.html (oto: blokları build ile), js/main.j
 - Çipler klavyeyle (Tab + Enter/Boşluk) seçilebilir, `aria-pressed` doğru güncellenir; dokunma hedefleri ≥ 44 px.
 - 360 px ve 1280 px'te yatay sayfa taşması yok, konsolda pageerror yok; `npm run build` sonrası üretilen dosyalar güncel, `npm test` geçer. Smoke teste çip sayıları ve `is-new` ≤ 4 kontrolü eklenir.
 - `.ad-slot` sayısı değişmez; kategori ve oyun sayfalarının düzeni değişmez (yalnızca rozet kuralı).
+
+## Uygulama notu (10. ajan, 2026-10-25)
+Ana sayfada "Tüm Oyunlar" altına `#filtre-cipleri` satırı eklendi (Tümü · Yeni · Denemediklerin · Favorilerin, sayılı, `aria-pressed`, ≥ 44 px, sessionStorage'da korunur, GoatCounter `filtre/<ad>` olayı). Arama ve çip birlikte süzer. `tools/build-pages.js` en yeni 4 oyunun kartına `data-yeni="1"` yazar; `markNewGames` 14 gün kuralı yerine bu işareti kullanır. Smoke teste çip, klavye, arama birleşimi ve `YENİ` ≤ 4 kontrolleri eklendi.

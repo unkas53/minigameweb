@@ -57,6 +57,17 @@ const serve = () => serveAt(PORT);
         if (a.ust > 900) errors.push(`[${vp.name}] ana sayfada ilk oyun kartı çok aşağıda: ${a.ust}px (en fazla 900)`);
         if (!a.sira) errors.push(`[${vp.name}] ana sayfada "Tüm Oyunlar" ızgarası kategorilerden önce gelmeli`);
         if (a.reklam < 2) errors.push(`[${vp.name}] ana sayfada reklam alanı azalmış: ${a.reklam}`);
+        // Filtre çipleri: ilk yüklemede Tümü, Yeni tam 4 kart; kişisel çipler boş profilde gizli; çipler ≥ 44 px
+        const f = await page.evaluate(() => {
+          const cip = s => document.querySelector(`.filtre-cip[data-filtre="${s}"]`);
+          const gorunen = () => [...document.querySelectorAll('#oyun-izgarasi .game-card')].filter(c => !c.hidden).length;
+          const r = { tumu: cip('tumu').getAttribute('aria-pressed'), ilk: gorunen(), gizli: cip('denemediklerin').hidden && cip('favoriler').hidden, boy: Math.min(...[...document.querySelectorAll('.filtre-cip:not([hidden])')].map(e => e.getBoundingClientRect().height)) };
+          cip('yeni').click(); r.yeni = gorunen(); r.basildi = cip('yeni').getAttribute('aria-pressed');
+          cip('tumu').click(); r.son = gorunen();
+          return r;
+        });
+        const toplam = games.length, yeniBeklenen = Math.min(4, toplam);
+        if (f.tumu !== 'true' || f.ilk !== toplam || f.son !== toplam || f.yeni !== yeniBeklenen || f.basildi !== 'true' || !f.gizli || f.boy < 44) errors.push(`[${vp.name}] ana sayfa filtre çipleri hatalı: ${JSON.stringify(f)}`);
       }
       if (p.startsWith('games/')) {
         const tools = await page.$$eval('.oyun-arac .oyun-btn', els => els.length);
@@ -77,6 +88,43 @@ const serve = () => serveAt(PORT);
   }
   for (const c of cats) {
     if (!sitemap.includes(`kategori/${c}/`)) errors.push(`kategori/${c}/ sitemap.xml içinde yok`);
+  }
+  // "YENİ" rozeti en fazla 4 oyunda
+  const yeniler = new Set([...index.matchAll(/href="games\/([^/"]+)\/"[^>]*data-yeni="1"/g)].map(m => m[1]));
+  if (yeniler.size > 4) errors.push(`ana sayfada ${yeniler.size} oyun YENİ işaretli (en fazla 4)`);
+
+  // Filtre çipleri kişisel veriyle: 2048 oynanmışsa Denemediklerin 2048'siz, favori çipi favorileri gösterir; arama ile birlikte çalışır
+  if (!process.argv.includes('--oyun')) {
+    const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, serviceWorkers: 'block', locale: 'tr-TR' });
+    await ctx.addInitScript(() => { try { localStorage.setItem('mo_cookie_consent', 'rejected'); localStorage.setItem('mo_son_oynanan', '["2048"]'); localStorage.setItem('mo_favoriler', '["sudoku","yilan"]'); } catch (e) {} window.MO_SUNUCU_KAPALI = true; });
+    await ctx.route('https://gc.zgo.at/**', r => r.fulfill({ body: '', contentType: 'text/javascript' }));
+    await ctx.route('https://*.supabase.co/**', r => r.abort());
+    const page = await ctx.newPage();
+    page.on('pageerror', e => errors.push(`[filtre] JS hatası: ${e.message}`));
+    try {
+      await page.goto(origin);
+      const gorunen = () => page.$$eval('#oyun-izgarasi .game-card', cs => cs.filter(c => !c.hidden).map(c => c.getAttribute('href')));
+      await page.focus('.filtre-cip[data-filtre="denemediklerin"]');
+      await page.keyboard.press('Enter');
+      let g = await gorunen();
+      if (g.length !== games.length - 1 || g.includes('games/2048/')) errors.push(`[filtre] Denemediklerin ${games.length - 1} kart göstermeli, 2048 olmadan: ${g.length}`);
+      await page.focus('.filtre-cip[data-filtre="favoriler"]');
+      await page.keyboard.press('Space');
+      g = await gorunen();
+      if (g.length !== 2 || await page.getAttribute('.filtre-cip[data-filtre="favoriler"]', 'aria-pressed') !== 'true') errors.push(`[filtre] Favorilerin 2 kart göstermeli: ${g.length}`);
+      await page.click('.filtre-cip[data-filtre="yeni"]');
+      await page.fill('#oyun-ara', 'zzqx');
+      if (!(await page.isVisible('#sonuc-yok'))) errors.push('[filtre] Yeni + eşleşmeyen arama "sonuç yok" göstermeli');
+      await page.fill('#oyun-ara', 'sudoku');
+      await page.click('.filtre-cip[data-filtre="tumu"]');
+      g = await gorunen();
+      if (g.length !== 1 || g[0] !== 'games/sudoku/') errors.push(`[filtre] Tümü'ne dönünce arama korunmalı: ${JSON.stringify(g)}`);
+      const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+      if (sw > 360) errors.push(`[filtre] 360 px'te yatay taşma: ${sw}px`);
+    } catch (e) {
+      errors.push(`[filtre] ${e.message.split('\n')[0]}`);
+    }
+    await ctx.close();
   }
 
   // Oynanış testleri: her oyun temiz bir tarayıcı profilinde oynanır

@@ -94,10 +94,16 @@
     <section id="kisisel" hidden></section>
 
     <h2 class="section-title" id="tum-oyunlar">Tüm Oyunlar</h2>
+    <div class="filtre-cipleri" id="filtre-cipleri" role="group" aria-label="Oyunları filtrele" hidden>
+      <button type="button" class="filtre-cip" data-filtre="tumu" aria-pressed="true">Tümü <span class="cip-sayi"></span></button>
+      <button type="button" class="filtre-cip" data-filtre="yeni" aria-pressed="false">✨ Yeni <span class="cip-sayi"></span></button>
+      <button type="button" class="filtre-cip" data-filtre="denemediklerin" aria-pressed="false" hidden>🎯 Denemediklerin <span class="cip-sayi"></span></button>
+      <button type="button" class="filtre-cip" data-filtre="favoriler" aria-pressed="false" hidden>❤️ Favorilerin <span class="cip-sayi"></span></button>
+    </div>
     <!-- Kartlar games.json'dan üretilir: oyunu games.json'a ekleyip "npm run build" çalıştırın -->
     <div class="game-grid" id="oyun-izgarasi">
       <!-- oto:oyunlar -->
-      <a class="game-card" href="games/drift-ustasi/" data-title="drift ustası" data-added="2026-10-24">
+      <a class="game-card" href="games/drift-ustasi/" data-title="drift ustası" data-added="2026-10-24" data-yeni="1">
         <div class="game-thumb" style="--c1:#f97316;--c2:#b91c1c"><span class="thumb-icon" aria-hidden="true">🏎️</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
           <h3>Drift Ustası</h3>
@@ -105,7 +111,7 @@
           <span class="tag" style="--c1:#4ade80">⚽ Spor</span>
         </div>
       </a>
-      <a class="game-card" href="games/mahjong/" data-title="mahjong" data-added="2026-10-24">
+      <a class="game-card" href="games/mahjong/" data-title="mahjong" data-added="2026-10-24" data-yeni="1">
         <div class="game-thumb" style="--c1:#14b8a6;--c2:#0f766e"><span class="thumb-icon" aria-hidden="true">🎴</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
           <h3>Mahjong</h3>
@@ -113,7 +119,7 @@
           <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
         </div>
       </a>
-      <a class="game-card" href="games/kizma-birader/" data-title="kızma birader" data-added="2026-10-24">
+      <a class="game-card" href="games/kizma-birader/" data-title="kızma birader" data-added="2026-10-24" data-yeni="1">
         <div class="game-thumb" style="--c1:#ef4444;--c2:#3b82f6"><span class="thumb-icon" aria-hidden="true">🎲</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
           <h3>Kızma Birader</h3>
@@ -121,7 +127,7 @@
           <span class="tag" style="--c1:#f472b6">♟️ Strateji</span>
         </div>
       </a>
-      <a class="game-card" href="games/meyve-patlat/" data-title="meyve patlat" data-added="2026-10-24">
+      <a class="game-card" href="games/meyve-patlat/" data-title="meyve patlat" data-added="2026-10-24" data-yeni="1">
         <div class="game-thumb" style="--c1:#fb7185;--c2:#f59e0b"><span class="thumb-icon" aria-hidden="true">🍓</span><span class="play-badge" aria-hidden="true">▶</span></div>
         <div class="info">
           <h3>Meyve Patlat</h3>

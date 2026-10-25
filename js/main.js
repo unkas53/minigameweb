@@ -1,4 +1,4 @@
-// Ortak site betiği: çerez onayı, oyun arama, YENİ rozeti, favori/son oynanan sıraları ve en yüksek skor yardımcıları.
+// Ortak site betiği: çerez onayı, oyun arama ve filtre çipleri, YENİ rozeti, favori/son oynanan sıraları ve en yüksek skor yardımcıları.
 (function () {
   var CONSENT_KEY = 'mo_cookie_consent';
 
@@ -24,33 +24,74 @@
     });
   }
 
-  // Son 14 günde eklenen oyunlara "YENİ" rozeti
+  // En yeni 4 oyuna "YENİ" rozeti (build, kartlara data-yeni yazar)
   function markNewGames() {
-    var now = Date.now();
-    var cards = document.querySelectorAll('.game-card[data-added]');
-    for (var i = 0; i < cards.length; i++) {
-      var t = Date.parse(cards[i].getAttribute('data-added'));
-      if (t && now - t < 14 * 864e5) cards[i].classList.add('is-new');
-    }
+    var cards = document.querySelectorAll('.game-card[data-yeni]');
+    for (var i = 0; i < cards.length; i++) cards[i].classList.add('is-new');
   }
 
-  // Ana sayfadaki oyun arama kutusu
+  function readList(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; }
+  }
+
+  // Ana sayfadaki oyun arama kutusu ve filtre çipleri: görünen kart = seçili çip ∩ arama sonucu
   function initSearch() {
     var input = document.getElementById('oyun-ara');
     var grid = document.getElementById('oyun-izgarasi');
-    if (!input || !grid) return;
+    if (!grid) return;
     var empty = document.getElementById('sonuc-yok');
-    input.addEventListener('input', function () {
-      var q = input.value.trim().toLocaleLowerCase('tr');
-      var cards = grid.querySelectorAll('.game-card');
+    var row = document.getElementById('filtre-cipleri');
+    var cards = grid.querySelectorAll('.game-card');
+    var slugOf = function (c) { return (c.getAttribute('href') || '').replace(/^games\/|\/$/g, ''); };
+    var played = readList('mo_son_oynanan'), favs = readList('mo_favoriler');
+    var tests = {
+      tumu: function () { return true; },
+      yeni: function (c) { return c.hasAttribute('data-yeni'); },
+      denemediklerin: function (c) { return played.indexOf(slugOf(c)) === -1; },
+      favoriler: function (c) { return favs.indexOf(slugOf(c)) !== -1; }
+    };
+    var current = 'tumu';
+    try { if (tests[sessionStorage.getItem('mo_filtre')]) current = sessionStorage.getItem('mo_filtre'); } catch (e) {}
+
+    function apply() {
+      var q = input ? input.value.trim().toLocaleLowerCase('tr') : '';
       var shown = 0;
       for (var i = 0; i < cards.length; i++) {
-        var hit = !q || cards[i].textContent.toLocaleLowerCase('tr').indexOf(q) !== -1;
+        var hit = tests[current](cards[i]) && (!q || cards[i].textContent.toLocaleLowerCase('tr').indexOf(q) !== -1);
         cards[i].hidden = !hit;
         if (hit) shown++;
       }
       if (empty) empty.hidden = shown > 0;
-    });
+    }
+
+    if (row) {
+      var chips = row.querySelectorAll('.filtre-cip');
+      for (var i = 0; i < chips.length; i++) {
+        var f = chips[i].getAttribute('data-filtre'), n = 0;
+        for (var j = 0; j < cards.length; j++) if (tests[f](cards[j])) n++;
+        chips[i].querySelector('.cip-sayi').textContent = n;
+        // Boş veya "Tümü" ile aynı sonucu veren kişisel çip gösterilmez
+        if (f === 'denemediklerin') chips[i].hidden = !played.length || !n;
+        if (f === 'favoriler') chips[i].hidden = !n;
+        if (f === current && chips[i].hidden) current = 'tumu';
+      }
+      var mark = function () {
+        for (var k = 0; k < chips.length; k++) chips[k].setAttribute('aria-pressed', chips[k].getAttribute('data-filtre') === current ? 'true' : 'false');
+      };
+      row.addEventListener('click', function (e) {
+        var chip = e.target.closest('.filtre-cip');
+        if (!chip) return;
+        current = chip.getAttribute('data-filtre');
+        try { sessionStorage.setItem('mo_filtre', current); } catch (err) {}
+        try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path: 'filtre/' + (current === 'favoriler' ? 'favoriler' : current), title: 'Oyun filtresi', event: true }); } catch (err) {}
+        mark();
+        apply();
+      });
+      mark();
+      row.hidden = false;
+    }
+    if (input) input.addEventListener('input', apply);
+    apply();
   }
 
   // Ana sayfada "Favorilerin" ve "Son oynadıkların" sıraları (veri js/oyun.js tarafından yazılır)
@@ -58,9 +99,7 @@
     var grid = document.getElementById('oyun-izgarasi');
     var holder = document.getElementById('kisisel');
     if (!grid || !holder) return;
-    function list(key) {
-      try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; }
-    }
+    var list = readList;
     var rows = [['mo_favoriler', '❤️ Favorilerin'], ['mo_son_oynanan', '🕹️ Son oynadıkların']];
     rows.forEach(function (r) {
       var cards = list(r[0]).map(function (slug) {
