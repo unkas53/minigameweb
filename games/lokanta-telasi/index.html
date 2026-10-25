@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lokanta Telaşı - Ücretsiz Restoran ve Yemek Oyunu | MiniOyun</title>
+  <meta name="description" content="Ücretsiz restoran oyunu: dürüm, şiş ve çorba hazırla, müşterileri bekletmeden servis et, 40 günde lokantanı büyüt. İndirmeden hemen oyna.">
+  <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/lokanta-telasi/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#0d0b1f">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script data-goatcounter="https://mami53.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <script src="../../js/dil.js" data-diller="en" data-sayfa="oyun/lokanta-telasi" data-var=""></script>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .lt-ust { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-bottom: 10px; }
+    .lt-ust .stat { padding: 4px 12px; }
+    .lt-alan { width: min(100%, 480px); margin: 0 auto; --tezgah1: #b45309; --tezgah2: #78350f; --ortu: rgba(255,255,255,.08); }
+    .lt-alan[data-tema="nane"] { --tezgah1: #059669; --tezgah2: #065f46; }
+    .lt-alan[data-tema="deniz"] { --tezgah1: #0284c7; --tezgah2: #1e3a8a; }
+    .lt-alan[data-tema="bordo"] { --tezgah1: #9f1239; --tezgah2: #4c0519; --ortu: rgba(255,255,255,.16); }
+    .lt-alan[data-tema="altin"] { --tezgah1: #ca8a04; --tezgah2: #713f12; --ortu: rgba(254,240,138,.25); }
+    .lt-alan[data-tema="cadi"] { --tezgah1: #ea580c; --tezgah2: #1c1917; --ortu: rgba(0,0,0,.25); }
+    .lt-ekran { border-radius: 14px; overflow: hidden; background: #fef3c7; color: #1f2937; user-select: none; -webkit-user-select: none; }
+    .lt-ekran[hidden] { display: none; }
+    .lt-sokak { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 6px 10px; background: var(--semt, #fcd34d); font-weight: 800; font-size: .9rem; }
+    .lt-tabela { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lt-bilgi { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: center; font-size: .85rem; }
+    .lt-ipucu { margin: 6px 8px 0; padding: 6px 10px; border-radius: 10px; background: #1e293b; color: #fef3c7; font-size: .82rem; text-align: center; }
+    .lt-ipucu[hidden] { display: none; }
+    .lt-tezgah { position: relative; display: grid; gap: 6px; padding: 8px 8px 0; min-height: 150px; }
+    .lt-yer { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; padding: 4px 2px 6px; border-radius: 12px; cursor: pointer; touch-action: manipulation; min-width: 0; }
+    .lt-yer.bos { cursor: default; opacity: .5; }
+    .lt-yer.red { animation: lt-salla .3s; }
+    .lt-balon { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; padding: 3px 6px; border-radius: 12px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.15); font-size: 1.35rem; line-height: 1.2; max-width: 100%; }
+    .lt-kalem { position: relative; }
+    .lt-kalem small { position: absolute; right: -4px; bottom: -2px; font-size: .7rem; }
+    .lt-kalem.verildi { opacity: .25; }
+    .lt-kisi { font-size: 2.4rem; line-height: 1; }
+    .lt-sabir { width: 80%; height: 6px; border-radius: 3px; background: rgba(0,0,0,.15); overflow: hidden; }
+    .lt-sabir i { display: block; height: 100%; width: 100%; background: #22c55e; }
+    .lt-mesaj { position: absolute; top: 34%; left: 50%; transform: translateX(-50%); padding: 2px 6px; border-radius: 8px; background: #111827; color: #fff; font-size: .75rem; font-weight: 800; white-space: nowrap; }
+    .lt-ucan { position: absolute; top: 40%; transform: translateX(-50%); font-size: 1.4rem; font-weight: 800; pointer-events: none; animation: lt-uc .9s ease-out forwards; }
+    .lt-tus { position: absolute; top: 2px; left: 4px; font-size: .62rem; font-weight: 700; opacity: .55; }
+    .lt-tezgah-alt { height: 16px; background: repeating-linear-gradient(90deg, var(--tezgah1) 0 18px, var(--tezgah2) 18px 36px); box-shadow: inset 0 3px 0 var(--ortu); }
+    .lt-hazirlik { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: stretch; padding: 8px; background: linear-gradient(var(--tezgah1), var(--tezgah2)); }
+    .lt-izgara-sira { display: flex; gap: 4px; padding: 4px; border-radius: 10px; background: #374151; }
+    .lt-izgara { position: relative; width: 48px; height: 48px; border: 0; border-radius: 8px; background: #1f2937; font-size: 1.5rem; cursor: pointer; touch-action: manipulation; color: #fff; }
+    .lt-izgara.cig { filter: hue-rotate(-20deg) saturate(1.6); }
+    .lt-izgara.pismis { box-shadow: inset 0 0 0 3px #22c55e; animation: lt-zipla .6s infinite alternate; }
+    .lt-izgara.yanik { filter: grayscale(1) brightness(.6); box-shadow: inset 0 0 0 3px #f97316; }
+    .lt-izgara b { position: absolute; top: -6px; right: -2px; font-size: .9rem; }
+    .lt-halka { position: absolute; inset: 3px; border-radius: 50%; background: conic-gradient(#f97316 var(--p, 0%), transparent 0); opacity: .45; }
+    .lt-istasyonlar { display: flex; gap: 4px; }
+    .lt-istasyonlar[hidden] { display: none; }
+    .lt-istasyon { display: flex; flex-direction: column; justify-content: center; min-width: 64px; padding: 4px 6px; border-radius: 10px; background: #fde68a; font-size: .85rem; font-weight: 700; text-align: center; cursor: pointer; touch-action: manipulation; }
+    .lt-istasyon small { font-weight: 400; font-size: .7rem; }
+    .lt-istasyon[data-cay="hazir"] { background: #bbf7d0; box-shadow: inset 0 0 0 2px #16a34a; }
+    .lt-tabaklar { display: flex; gap: 4px; }
+    .lt-tabak { min-width: 96px; min-height: 48px; padding: 4px 8px; border-radius: 24px; border: 2px solid #e5e7eb; background: #fff; font-size: 1.25rem; cursor: pointer; touch-action: manipulation; color: #1f2937; }
+    .lt-tabak.aktif { border-color: #f97316; box-shadow: 0 0 0 2px #f97316; }
+    .lt-tabak small { font-size: .7rem; color: #6b7280; }
+    .lt-cop { position: relative; width: 48px; min-height: 48px; border: 0; border-radius: 10px; background: #e5e7eb; font-size: 1.3rem; cursor: pointer; touch-action: manipulation; }
+    .lt-raf { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 8px; background: #fde68a; }
+    .lt-malz { position: relative; min-height: 52px; padding: 4px 2px; border: 0; border-radius: 10px; background: #fff7ed; box-shadow: 0 2px 0 #d97706; font-size: 1.5rem; line-height: 1.1; cursor: pointer; touch-action: manipulation; color: #1f2937; }
+    .lt-malz small { display: block; font-size: .62rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lt-malz:active, .lt-tabak:active, .lt-izgara:active { transform: translateY(1px); }
+    .lt-panel { padding: 12px; border-radius: 14px; background: rgba(13, 11, 31, .93); text-align: center; }
+    .lt-panel[hidden] { display: none; }
+    .lt-panel h2 { margin: 6px 0; font-size: 1.1rem; }
+    .lt-panel h3 { margin: 4px 0 6px; font-size: .95rem; }
+    .lt-panel p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .lt-bildirim { padding: 8px 10px; border-radius: 10px; background: #14532d; color: #dcfce7 !important; font-weight: 700; }
+    .lt-sekmeler { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 10px; }
+    .lt-sekme { padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+    .lt-sekme.secili { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .lt-semt { margin-bottom: 8px; padding: 6px; border-radius: 12px; border-left: 4px solid var(--semt); background: var(--surface-2); }
+    .lt-gunler { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+    .lt-gun { min-height: 44px; padding: 3px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; font-weight: 800; cursor: pointer; }
+    .lt-gun small { display: block; font-size: .65rem; color: #facc15; letter-spacing: -1px; }
+    .lt-gun.kilitli { opacity: .45; cursor: default; }
+    .lt-serbest { margin-top: 8px; }
+    .lt-liste { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; text-align: left; }
+    .lt-satir { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; text-align: left; min-width: 0; }
+    .lt-satir:disabled { opacity: .55; cursor: default; }
+    .lt-satir.secili { border-color: var(--accent); }
+    .lt-satir small { display: block; color: var(--muted); font-size: .72rem; }
+    .lt-ikon { font-size: 1.4rem; }
+    .lt-bedel { margin-left: auto; font-weight: 800; white-space: nowrap; }
+    .lt-tabela-form { display: inline-flex; gap: 6px; align-items: center; margin: 4px; }
+    .lt-tabela-form input { width: 150px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; }
+    .lt-gorev { padding: 6px 10px; border-radius: 10px; background: var(--surface-2); font-size: .9rem; text-align: left; margin-bottom: 4px; }
+    .lt-gorev.tamam { opacity: .65; }
+    .lt-basla { font-size: 1.1rem; padding: 12px 26px; margin: 8px 0; }
+    @keyframes lt-uc { to { transform: translate(-50%, -50px); opacity: 0; } }
+    @keyframes lt-zipla { to { transform: translateY(-2px); } }
+    @keyframes lt-salla { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+    @media (prefers-reduced-motion: reduce) { .lt-izgara.pismis, .lt-yer.red, .lt-ucan { animation: none; } }
+    @media (max-width: 480px) { .lt-ust .stat { padding: 3px 8px; font-size: .9rem; } .lt-kisi { font-size: 2rem; } .lt-balon { font-size: 1.1rem; padding: 2px 4px; } .lt-tabak { min-width: 80px; } .lt-izgara { width: 44px; height: 44px; } .lt-istasyon { min-width: 54px; } }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"VideoGame","name":"Lokanta Telaşı","url":"https://unkas53.github.io/minigameweb/games/lokanta-telasi/","genre":"Arcade","gamePlatform":"Web tarayıcı","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text" translate="no">Mini<b>Oyun</b></span></a>
+      <nav class="nav" aria-label="Ana menü">
+        <a href="../../">Oyunlar</a>
+        <a href="../../kategori/">Kategoriler</a>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a class="nav-profil" href="../../profil.html"><span class="nav-avatar" aria-hidden="true">👤</span>Profilim</a>
+      </nav>
+      <details class="dil-menu" translate="no">
+        <summary aria-label="Dil / Language"><span aria-hidden="true">🌐</span> <span class="dil-kod">TR</span></summary>
+        <div class="dil-liste"><a href="?lang=tr" hreflang="tr" lang="tr">Türkçe</a><a href="?lang=en" hreflang="en" lang="en">English</a></div>
+      </details>
+    </div>
+    <nav class="cat-bar" aria-label="Kategoriler">
+      <div class="container cat-bar-inner">
+        <a class="cat-chip" href="../../" style="--c1:#8b7bff;--c2:#5b4bdb"><span aria-hidden="true">🎮</span>Tümü</a>
+        <a class="cat-chip" href="../../kategori/bulmaca/" style="--c1:#ffb547;--c2:#ff7a59"><span aria-hidden="true">🧩</span>Bulmaca</a>
+        <a class="cat-chip active" href="../../kategori/arcade/" aria-current="page" style="--c1:#5ee0b8;--c2:#2a9d8f"><span aria-hidden="true">👾</span>Arcade</a>
+        <a class="cat-chip" href="../../kategori/hafiza/" style="--c1:#a78bfa;--c2:#6d28d9"><span aria-hidden="true">🧠</span>Hafıza</a>
+        <a class="cat-chip" href="../../kategori/kelime/" style="--c1:#60a5fa;--c2:#2563eb"><span aria-hidden="true">🔤</span>Kelime</a>
+        <a class="cat-chip" href="../../kategori/refleks/" style="--c1:#fde047;--c2:#f59e0b"><span aria-hidden="true">⚡</span>Refleks</a>
+        <a class="cat-chip" href="../../kategori/strateji/" style="--c1:#f472b6;--c2:#be185d"><span aria-hidden="true">♟️</span>Strateji</a>
+        <a class="cat-chip" href="../../kategori/spor/" style="--c1:#4ade80;--c2:#15803d"><span aria-hidden="true">⚽</span>Spor</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- oto:yol -->
+      <nav class="breadcrumb" aria-label="Konum"><a href="../../">Ana sayfa</a><span aria-hidden="true">›</span><a href="../../kategori/arcade/">Arcade Oyunları</a><span aria-hidden="true">›</span><span aria-current="page">Lokanta Telaşı</span></nav>
+      <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ana sayfa","item":"https://unkas53.github.io/minigameweb/"},{"@type":"ListItem","position":2,"name":"Arcade Oyunları","item":"https://unkas53.github.io/minigameweb/kategori/arcade/"},{"@type":"ListItem","position":3,"name":"Lokanta Telaşı","item":"https://unkas53.github.io/minigameweb/games/lokanta-telasi/"}]}</script>
+      <!-- /oto:yol -->
+    <div class="game-layout">
+      <section class="game-box">
+        <h1>Lokanta Telaşı</h1>
+        <div class="lt-ust">
+          <div class="stat"><small>Gün</small><span id="gun">1</span></div>
+          <div class="stat"><small>Kasa</small><span id="para">0</span></div>
+          <div class="stat"><small>Yıldız</small><span id="yildiz">0/120</span></div>
+          <div class="stat"><small>Rekor</small><span id="rekor">0</span></div>
+        </div>
+        <div class="lt-alan" id="alan" data-durum="menu">
+          <div class="lt-ekran" id="oyun-ekrani" hidden>
+            <div class="lt-sokak"><span class="lt-tabela" id="tabela" translate="no"></span><div class="lt-bilgi" id="bilgi"></div></div>
+            <div class="lt-ipucu" id="ipucu" role="status" hidden></div>
+            <div class="lt-tezgah" id="tezgah" aria-label="Müşteriler"></div>
+            <div class="lt-tezgah-alt" aria-hidden="true"></div>
+            <div class="lt-hazirlik">
+              <div class="lt-izgara-sira" id="izgara" aria-label="Izgara"></div>
+              <div class="lt-istasyonlar" id="istasyon"></div>
+              <div class="lt-tabaklar" id="tabaklar"></div>
+            </div>
+            <div class="lt-raf" id="raf" aria-label="Malzeme rafı"></div>
+          </div>
+          <div class="lt-panel" id="panel"></div>
+        </div>
+      </section>
+      <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
+    </div>
+
+    <section class="game-desc">
+      <h2>Lokanta Telaşı nasıl oynanır?</h2>
+      <p>Lokanta Telaşı'nda müşteriler tezgâha gelir ve ne istediklerini balonda gösterir. Raftaki malzemelere dokunarak tabağı hazırla: dürüm için lavaş, ızgarada pişmiş et, domates ve soğan gerekir. Eti ızgaraya koy, kahverengiye dönüp yeşil halka çıkınca tabağa al; fazla bekletirsen yanar ve çöpe atman gerekir. Tabak hazır olunca müşteriye dokunarak servis et. Her müşterinin bir sabır çubuğu vardır; çubuk bitmeden servis edersen ödemeyi ve bahşişi alırsın, biterse müşteri kızgın gider ve bir kalp kaybedersin. Günü kalp bitmeden tamamla, kazanç hedeflerine göre yıldız topla ve kazandığın parayla ızgarayı, tezgâhı ve dekoru yükselt.</p>
+      <h2>Menü ve tarifler</h2>
+      <p>Malzemelerin sırası önemli değil, ama tabakta eksik ya da fazla malzeme olmamalı. Dürüm: lavaş, pişmiş et, domates, soğan. Şiş: ızgarada pişmiş şiş; acılı şiş için yanına biber. Mercimek çorbası: kazana dokun, kâse dolunca tabağa gelir, üstüne limon ekle. Çoban salatası: domates, salatalık, soğan. Ayran tek dokunuşla hazırdır; çay ocakta demlenir, hazır olunca ocağa dokun. Sütlaç dolaptan gelir, üstüne tarçın serp. Mahalle Büfesi'nde dürüm, ayran ve şişle başlarsın; Sahil Lokantası'nda çorba ve çay, Çarşı Lokantası'nda salata ve sütlaç açılır, Meydan Restoranı'nda tüm menü ve akşam yoğunluğu seni bekler. Teyzeler sabırlıdır ama az bahşiş bırakır, aceleci müşteriler çabuk gider ama cömerttir, eleştirmeni hızlı ve hatasız servisle mutlu edersen itibar yıldızı kazanırsın.</p>
+      <h2>Kontroller</h2>
+      <p>Telefonda her şey dokunmayla yapılır: malzemeye dokun, ızgaradaki pişmiş ete dokun, müşteriye dokun. Tabağa uzun basmak veya 🗑️ düğmesi tabağı boşaltır. Klavyede 1-9, 0, Z, C ve V raftaki malzemeler, Q W E R ızgara yerleri, A S D F müşteri yerleri, Tab ikinci tabağa geçer, X tabağı boşaltır, P oyunu duraklatır.</p>
+      <h2>İpuçları</h2>
+      <p>Sipariş gelmeden ızgaraya bir et koymak zaman kazandırır, ama yanmasın diye gözünü ızgaradan ayırma. Önce sabrı en az kalan müşteriye bak; aceleci müşteriler büyük bahşiş bırakır ama çabuk gider. Peş peşe hatasız servisler kombo verir, yanlış tabak kombo'yu sıfırlar. İlk paranı ızgaraya ve dekora harcamak sonraki günleri çok kolaylaştırır. Eleştirmeni mutlu gönderirsen gün sonunda ek yıldız kazanırsın.</p>
+      <h2>Sık sorulan sorular</h2>
+      <p><strong>İlerlemem kaydediliyor mu?</strong> Evet, günler, para, yükseltmeler, süslemeler ve tabela adın bu tarayıcıda otomatik kaydedilir. <strong>Para nasıl kazanılır?</strong> Her servis yemeğin fiyatını ve kalan sabra göre bahşiş kazandırır; günlük görevler ek para verir. <strong>Günlük Lokanta nedir?</strong> Her gün herkese aynı müşteri sırası gelir, yükseltmeler kullanılmaz; kazancını liderlik tablosunda karşılaştırırsın. <strong>Serbest vardiya ne zaman açılır?</strong> 5. günü bitirince; müşteriler hiç bitmez, üç kalbin bitene kadar en yüksek kazancı ararsın.</p>
+    </section>
+
+    <!-- oto:benzer -->
+      <section class="similar">
+        <h2 class="section-title">Benzer oyunlar</h2>
+        <div class="game-grid">
+      <a class="game-card" href="../../games/tugla-kirma/" data-title="tuğla kırma" data-added="2026-10-24">
+        <div class="game-thumb" style="--c1:#fb923c;--c2:#dc2626"><span class="thumb-icon" aria-hidden="true">🧱</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Tuğla Kırma</h3>
+          <p>Raketle topu sektir, tuğlaları kır; 30 bölüm, patronlar, güçlendirmeler ve sonsuz mod.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/yilan/" data-title="yılan" data-added="2026-10-23">
+        <div class="game-thumb" style="--c1:#5ee0b8;--c2:#2a9d8f"><span class="thumb-icon" aria-hidden="true">🐍</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Yılan</h3>
+          <p>Yemleri topla, uzadıkça kendine çarpma; 24 bölümlük macera ve açılan desenler.</p>
+          <span class="tag" style="--c1:#5ee0b8">👾 Arcade</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/drift-ustasi/" data-title="drift ustası" data-added="2026-10-24" data-yeni="1">
+        <div class="game-thumb" style="--c1:#f97316;--c2:#b91c1c"><span class="thumb-icon" aria-hidden="true">🏎️</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Drift Ustası</h3>
+          <p>Tek tuşla virajlarda drift et, yoldan çıkma; 40 bölüm, açılan arabalar, garajda yükseltmeler ve günlük pist.</p>
+          <span class="tag" style="--c1:#4ade80">⚽ Spor</span>
+        </div>
+      </a>
+      <a class="game-card" href="../../games/mahjong/" data-title="mahjong" data-added="2026-10-24" data-yeni="1">
+        <div class="game-thumb" style="--c1:#14b8a6;--c2:#0f766e"><span class="thumb-icon" aria-hidden="true">🎴</span><span class="play-badge" aria-hidden="true">▶</span></div>
+        <div class="info">
+          <h3>Mahjong</h3>
+          <p>Serbest ve aynı desenli taşları eşleştir; 48 bölüm, 16 dizilim, kilitli taşlar ve açılan taş setleri.</p>
+          <span class="tag" style="--c1:#a78bfa">🧠 Hafıza</span>
+        </div>
+      </a>
+        </div>
+        <p class="see-all"><a href="../../kategori/arcade/">Tüm arcade oyunları →</a></p>
+      </section>
+      <script type="application/json" id="oyun-listesi">[{"slug":"lokanta-telasi","ad":"Lokanta Telaşı","kategori":"Arcade","ikon":"🥙","metin":false,"renk":["#f97316","#b45309"]},{"slug":"drift-ustasi","ad":"Drift Ustası","kategori":"Spor","ikon":"🏎️","metin":false,"renk":["#f97316","#b91c1c"]},{"slug":"mahjong","ad":"Mahjong","kategori":"Hafıza","ikon":"🎴","metin":false,"renk":["#14b8a6","#0f766e"]},{"slug":"kizma-birader","ad":"Kızma Birader","kategori":"Strateji","ikon":"🎲","metin":false,"renk":["#ef4444","#3b82f6"]},{"slug":"meyve-patlat","ad":"Meyve Patlat","kategori":"Bulmaca","ikon":"🍓","metin":false,"renk":["#fb7185","#f59e0b"]},{"slug":"olta-ustasi","ad":"Olta Ustası","kategori":"Refleks","ikon":"🎣","metin":false,"renk":["#0ea5e9","#1e3a8a"]},{"slug":"blok-bulmaca","ad":"Blok Bulmaca","kategori":"Bulmaca","ikon":"🟦","metin":false,"renk":["#3b82f6","#6366f1"]},{"slug":"top-siralama","ad":"Top Sıralama","kategori":"Bulmaca","ikon":"🧪","metin":false,"renk":["#34d399","#7c3aed"]},{"slug":"harf-carki","ad":"Harf Çarkı","kategori":"Kelime","ikon":"🔠","metin":false,"renk":["#fbbf24","#db2777"]},{"slug":"tugla-kirma","ad":"Tuğla Kırma","kategori":"Arcade","ikon":"🧱","metin":false,"renk":["#fb923c","#dc2626"]},{"slug":"penalti-ligi","ad":"Penaltı Ligi","kategori":"Spor","ikon":"⚽","metin":false,"renk":["#16a34a","#facc15"]},{"slug":"renk-tuzagi","ad":"Renk Tuzağı","kategori":"Refleks","ikon":"🎨","metin":false,"renk":["#f472b6","#f59e0b"]},{"slug":"kule-savunmasi","ad":"Kule Savunması","kategori":"Strateji","ikon":"🏰","metin":false,"renk":["#f59f00","#e8590c"]},{"slug":"kelime-tahmin","ad":"Kelime Tahmin","kategori":"Kelime","ikon":"🔤","metin":false,"renk":["#34d399","#0e7490"]},{"slug":"dort-baglanti","ad":"Dört Bağlantı","kategori":"Strateji","ikon":"🔴","metin":false,"renk":["#f472b6","#be185d"]},{"slug":"sudoku","ad":"Sudoku","kategori":"Bulmaca","ikon":"🔢","metin":false,"renk":["#5aa9ff","#3b5bdb"]},{"slug":"mayin-tarlasi","ad":"Mayın Tarlası","kategori":"Bulmaca","ikon":"💣","metin":false,"renk":["#94a3d6","#4b5480"]},{"slug":"hafiza","ad":"Hafıza Kartları","kategori":"Hafıza","ikon":"🃏","metin":false,"renk":["#a78bfa","#6d28d9"]},{"slug":"yilan","ad":"Yılan","kategori":"Arcade","ikon":"🐍","metin":false,"renk":["#5ee0b8","#2a9d8f"]},{"slug":"2048","ad":"2048","kategori":"Bulmaca","ikon":"2048","metin":true,"renk":["#ffb547","#ff7a59"]}]</script>
+      <!-- /oto:benzer -->
+
+    <div class="ad-slot" aria-label="Reklam">Reklam alanı</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="../../"><span class="logo-badge" aria-hidden="true">🎮</span><span class="logo-text" translate="no">Mini<b>Oyun</b></span></a>
+        <p>Ücretsiz online mini oyunlar. İndirme yok, kayıt yok; tarayıcıda hemen oyna.</p>
+        <button class="btn btn-ghost pwa-yukle" type="button" hidden>📲 Uygulamayı yükle</button>
+      </div>
+      <div class="footer-col">
+        <h2>Kategoriler</h2>
+        <a href="../../kategori/bulmaca/">Bulmaca Oyunları</a>
+          <a href="../../kategori/arcade/">Arcade Oyunları</a>
+          <a href="../../kategori/hafiza/">Hafıza Oyunları</a>
+          <a href="../../kategori/kelime/">Kelime Oyunları</a>
+          <a href="../../kategori/refleks/">Refleks Oyunları</a>
+          <a href="../../kategori/strateji/">Strateji Oyunları</a>
+          <a href="../../kategori/spor/">Spor Oyunları</a>
+      </div>
+      <div class="footer-col">
+        <h2>Site</h2>
+        <a href="../../hakkinda.html">Hakkında</a>
+        <a href="../../iletisim.html">İletişim</a>
+        <a href="../../gizlilik.html">Gizlilik Politikası</a>
+        <a href="../../cerezler.html">Çerez Politikası</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 MiniOyun</div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Çerez onayı">
+    <p>Sitemizde deneyiminizi iyileştirmek ve kişiselleştirilmiş reklamlar göstermek için çerezler kullanıyoruz. Ayrıntılar için <a href="../../cerezler.html">Çerez Politikası</a>.</p>
+    <div class="actions">
+      <button class="btn" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost" data-consent="reject">Reddet</button>
+    </div>
+  </div>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/sunucu.js"></script>
+  <script src="../../js/oyun.js" data-rekor="puan"></script>
+  <script src="game.js"></script>
+</body>
+</html>
