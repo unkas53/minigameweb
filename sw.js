@@ -1,6 +1,6 @@
 // Bu dosya tools/build-pages.js ile üretilir. Elle değiştirmeyin.
 // Sayfalar önce ağdan, yoksa önbellekten; diğer dosyalar önbellekten gelir ve arka planda güncellenir.
-const SURUM = 'mo-70a28593f6';
+const SURUM = 'mo-ac4e05de68';
 const DOSYALAR = [
   "./",
   "./manifest.webmanifest",
@@ -70,10 +70,12 @@ const DOSYALAR = [
   "./diller/diller.json",
   "./diller/en/ortak.json",
   "./diller/en/oyun/2048.json",
+  "./diller/en/oyun/blok-bulmaca.json",
   "./diller/en/oyun/hafiza.json",
   "./diller/en/oyun/kelime-tahmin.json",
   "./diller/en/oyun/renk-tuzagi.json",
   "./diller/en/oyun/sudoku.json",
+  "./diller/en/oyun/tugla-kirma.json",
   "./diller/en/oyun/yilan.json",
   "./diller/en/sayfa/cerezler.json",
   "./diller/en/sayfa/gizlilik.json",

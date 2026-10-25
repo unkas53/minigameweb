@@ -594,8 +594,8 @@
     for (var e in run.etki) if (run.etki[e] > 0) fx.push(CAPS[e].ikon + Math.ceil(run.etki[e]));
     ctx.fillText(fx.join(' ') + '  ⏱️' + Math.floor(run.t), W - 10, 22);
     ctx.textAlign = 'center';
-    if (run.mesaj) { ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#fff'; ctx.fillText(run.mesaj.yazi, W / 2, H * 0.62); }
-    else if (stuck() && !run.bitti) { ctx.font = 'bold 16px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillText('Fırlatmak için dokun veya Boşluk', W / 2, H * 0.72); }
+    if (run.mesaj) { ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#fff'; ctx.fillText(window.MO_DIL ? MO_DIL.t(run.mesaj.yazi) : run.mesaj.yazi, W / 2, H * 0.62); }
+    else if (stuck() && !run.bitti) { ctx.font = 'bold 16px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillText(window.MO_DIL ? MO_DIL.t('Fırlatmak için dokun veya Boşluk') : 'Fırlatmak için dokun veya Boşluk', W / 2, H * 0.72); }
     ctx.restore();
 
     var b0 = run.toplar[0];
