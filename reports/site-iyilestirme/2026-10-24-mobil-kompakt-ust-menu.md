@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 baslik: Mobilde tek satırlık kompakt üst menü
 oncelik: 4
 boyut: orta
