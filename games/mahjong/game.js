@@ -198,6 +198,9 @@
       uyar('🧩 Serbest oyun · ' + run.L.ad + ' · ipucu +' + CEZA.ipucu + ' sn, tek karıştırma +' + CEZA.karistir + ' sn', true);
     }
     ciz();
+    var araclarEl = oyunEl.querySelector('.mj-araclar');
+    if (araclarEl && araclarEl.scrollIntoView) araclarEl.scrollIntoView({ block: 'nearest' });
+    if (sahneEl.scrollIntoView) sahneEl.scrollIntoView({ block: 'nearest' });
   }
 
   var EGITIM = [
