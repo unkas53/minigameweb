@@ -125,16 +125,17 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - dogrulama: 2026-10-24 11:20 test ajanı. 1. bölüm başlayınca 1280x900: tahta 366-806, güçler 867-900 px; 1366x768: 12-452 / 513-546; 360x740: 0-322 / 384-414. Hepsi görünür.
 
 ## H-12 | Mahjong: bölüm başlayınca tahta mobilde ve 1366x768'de büyük ölçüde ekran dışında
-- durum: acik
+- durum: duzeltildi
 - onem: dusuk
 - sayfa: games/mahjong/
 - adimlar: 360x740 dokunmatik ekranda (veya 1366x768 pencerede) sayfayı aç (çerez onaylı), haritada Bölüm 1'e dokun.
 - beklenen: Bölüm başlayınca tahta (ve mümkünse altındaki uyarı/eğitim satırı ile araç düğmeleri) görünür alana kaydırılır (H-4, H-5, H-8, H-9, H-10, H-11 ile aynı tür sorun; onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
 - gerceklesen: `basla()` haritayı gizleyip oyunu gösteriyor ama sayfayı kaydırmıyor (scrollY 0). 360x740'ta tahta 537-962 px (425 px'in yalnızca üst 203 px'i görünür), 1. bölümün eğitim mesajı (`#uyari`, 974-1042) ve araçlar (İpucu/Karıştır/Geri al, 1050-1083) ekran dışında. 1366x768'de tahta 376-801 px (alt 33 px dışarıda), uyarı 813-858 ve araçlar 866-899 px ekran dışında. 1280x900'de hepsi görünür (araçlar 866-899). Sıra tabanlı olduğu için oyuncu kaydırarak oynayabiliyor ama süre işlerken ilk saniyeler kayboluyor.
 - bulunma: 2026-10-24 14:15
+- not: 2026-10-25 düzeltildi (886ac13). `basla()` sonunda önce `.mj-araclar`, sonra `#sahne` için scrollIntoView({block:'nearest'}) çağrılıyor. 1. bölüm: 360x740 tahta 116-541, uyarı 553-621, araçlar 629-740; 1366x768 tahta 245-670, uyarı 682-727, araçlar 735-768; 1280x900 değişmedi (scrollY 0).
 
 ## H-13 | Olta Ustası: oynanış testi tam `npm test` çalışmasında ara sıra başarısız
-- durum: acik
+- durum: duzeltildi
 - onem: dusuk
 - sayfa: tools/tests/olta-ustasi.js
 - adimlar: `npm test` (tüm oyunlar) çalıştır.
@@ -142,3 +143,4 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - gerceklesen: 2026-10-24'te bir tam çalışmada "Turda altın kazanılmalı" ile başarısız oldu; hemen ardından tek başına (`--oyun olta-ustasi`) ve ikinci tam çalışmada geçti. Zamanlamaya bağlı kararsız test (H-7 Harf Çarkı ile benzer). Geliştirici ajan (Drift Ustası eklenirken) fark etti, Olta koduna dokunulmadı.
 - bulunma: 2026-10-24
 - not: 2026-10-24 18:50 test ajanı. Tam `npm test` çalışmasında yine "Turda altın kazanılmalı" ile başarısız oldu (tek başına `--oyun olta-ustasi` geçti). Kararsızlık sürüyor.
+- not: 2026-10-25 düzeltildi (d03b2a1). Kök neden: deniz dizilimi Math.random ile üretiliyor; bazı rastgele denizlerde kanca 30 m inip çıkarken hiç balığa değmiyor, tur 0 altınla bitiyordu (tanı çıktısı: "Tur bitti: 0 altın", akvaryum boş). Oyun hatası değil, testin şansa bağlı olması. Test artık addInitScript ile Math.random'ı sabit tohumla değiştiriyor (Kızma Birader testindeki gibi). Önce 6 tekli koşudan 1'i başarısızdı, sonra 10/10 tekli ve 2/2 tam koşu geçti.
