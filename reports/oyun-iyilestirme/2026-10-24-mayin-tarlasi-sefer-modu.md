@@ -1,4 +1,4 @@
-durum: bekliyor
+durum: uygulaniyor
 oyun: mayin-tarlasi
 baslik: Mayın Seferi: 30 bölümlük kampanya, tahmin gerektirmeyen tahtalar, yıldızlar ve açılan temalar
 oncelik: 4
