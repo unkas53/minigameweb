@@ -3,6 +3,16 @@
 // kaydı, "Tekrar oyna", yükseltme satın alma ve etkisi, kapalıyken tekne geliri (8 saat sınırı, geri alınan saat)
 // ve günlük modda aynı dizilim. Saat sahte (page.clock), böylece oyun beklemeden ileri sarılır.
 module.exports = async function (page, { git, beklenen }) {
+  // Deniz dizilimi Math.random ile üretilir; sabit tohum olmadan bazı turlarda kanca hiç balık tutmuyordu (H-13).
+  await page.addInitScript(() => {
+    let h = 20261024;
+    Math.random = function () {
+      h = h + 0x6D2B79F5 | 0;
+      let t = Math.imul(h ^ h >>> 15, 1 | h);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  });
   await page.clock.install({ time: new Date('2026-10-24T10:00:00') });
   const ileri = ms => page.clock.runFor(ms);
   const veri = ad => page.getAttribute('#alan', 'data-' + ad);
