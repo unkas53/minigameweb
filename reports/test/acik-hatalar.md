@@ -155,3 +155,12 @@ Test ajanı ekler, düzeltici ajan durum günceller. Biçim için `agents/5-test
 - beklenen: Bölüm başlayınca oyun alanıyla birlikte altındaki dokunmatik yön tuşları (`.touch-controls`) ve "Başlamak için bir yön tuşuna bas" mesajı (`#msg`) da görünür (H-11 ve H-12 ile aynı tür sorun).
 - gerceklesen: `bolumBaslat()` yalnızca canvas için `scrollIntoView({block:'nearest'})` çağırıyor. scrollY 237 olur; canvas 438-740 px'te tam görünür ama yön tuşları 752-870, mesaj 882-933 px'te, ekranın (740 px) altında kalıyor. Kanvasta kaydırma (swipe) ile oynanabildiği ve tuşlar çalıştığı için oyun oynanabiliyor; tuşlarla oynamak isteyen oyuncu elle kaydırmak zorunda. 1366x768 ve 1280x900'de tuşlar gizli, sorun yok.
 - bulunma: 2026-10-25 19:50
+
+## H-15 | Lokanta Telaşı: mobilde gün başlayınca ızgara, raf ve tabak ekran dışında
+- durum: acik
+- onem: orta
+- sayfa: games/lokanta-telasi/
+- adimlar: 360x740 dokunmatik ekranda sayfayı aç (çerez onaylı), haritada 1. güne dokun.
+- beklenen: Gün başlayınca oyun alanı (`#alan`: müşteri yerleri, ızgara, tabak ve malzeme rafı) görünür alana kaydırılır (H-10, H-12, H-14 ile aynı tür sorun; onlarda `scrollIntoView({block:'nearest'})` ile çözüldü).
+- gerceklesen: `gunBaslat()` sayfayı kaydırmıyor (scrollY 0). `#alan` 525-967 px'te; müşteri yeri 673-815 (kısmen görünür), ızgara 843-887, tabak 839-891 ve malzeme rafı 907-959 px'te, tamamen ekranın (740 px) altında. Müşterilerin sabrı süreyle azaldığı için oyuncu elle kaydırana kadar sipariş hazırlayamıyor. 1366x768 (alan 362-763, raf 703-755) ve 1280x900'de sorun yok; yatay taşma ve JS hatası yok.
+- bulunma: 2026-10-26 01:00
