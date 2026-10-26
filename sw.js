@@ -1,6 +1,6 @@
 // Bu dosya tools/build-pages.js ile üretilir. Elle değiştirmeyin.
 // Sayfalar önce ağdan, yoksa önbellekten; diğer dosyalar önbellekten gelir ve arka planda güncellenir.
-const SURUM = 'mo-95acd87d94';
+const SURUM = 'mo-ef382115d8';
 const DOSYALAR = [
   "./",
   "./manifest.webmanifest",

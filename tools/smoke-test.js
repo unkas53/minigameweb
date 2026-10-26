@@ -40,6 +40,20 @@ const serve = () => serveAt(PORT);
       if (width > vp.width) errors.push(`[${vp.name}] yatay taşma ${p || '/'}: ${width}px`);
       const h1 = await page.$$eval('h1', els => els.length);
       if (h1 !== 1) errors.push(`[${vp.name}] ${p || '/'} sayfasında ${h1} adet h1 var`);
+      if (vp.name === 'mobil') {
+        // Mobil kompakt üst menü: başlık ≤ 120 px, oyun alanı ≤ 220 px'ten başlar; ☰ açılır, Esc ile kapanır
+        const m = await page.evaluate(() => {
+          const menu = document.querySelector('.mobil-menu'), oyun = document.querySelector('.game-layout');
+          const r = { baslik: Math.round(document.querySelector('.site-header').getBoundingClientRect().height), oyun: oyun ? Math.round(oyun.getBoundingClientRect().top + scrollY) : 0 };
+          if (!menu) return r;
+          menu.querySelector('summary').click();
+          r.acik = menu.open; r.link = [...menu.querySelectorAll('.mobil-liste a')].filter(a => !a.getAttribute('href').startsWith('/')).length;
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+          r.kapali = !menu.open;
+          return r;
+        });
+        if (m.baslik > 120 || m.oyun > 220 || !m.acik || m.link !== 6 || !m.kapali) errors.push(`[mobil] ${p || '/'} kompakt üst menü hatalı: ${JSON.stringify(m)}`);
+      }
       const links = await page.$$eval('a[href]', as => as.map(a => a.href));
       for (const l of links.filter(l => l.startsWith(origin))) {
         const clean = l.split('#')[0];

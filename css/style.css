@@ -321,6 +321,27 @@ a { color: var(--accent); }
 .hesap-form { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
 .hesap-form input { flex: 1 1 220px; min-width: 0; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--surface-2); background: var(--bg); color: var(--text); font: inherit; }
 .hesap-sil { margin-top: 12px; }
+/* Mobil kompakt üst menü: 640 px altında tek satır (logo, profil, dil, ☰) */
+.mobil-profil, .mobil-menu { display: none; }
+.mobil-menu { position: relative; }
+.mobil-menu summary { list-style: none; cursor: pointer; }
+.mobil-menu summary::-webkit-details-marker { display: none; }
+.mobil-profil, .mobil-menu summary { width: 44px; height: 44px; place-items: center; border-radius: 12px; background: var(--surface-2); color: var(--text); text-decoration: none; font-size: 1.25rem; font-weight: 800; user-select: none; }
+.mobil-liste { position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; min-width: 220px; display: flex; flex-direction: column; padding: 6px; background: var(--surface, #17142e); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); }
+.mobil-liste a { color: var(--text); text-decoration: none; font-weight: 700; padding: 12px 14px; border-radius: 10px; }
+.mobil-liste a:hover, .mobil-liste a:focus-visible { background: var(--surface-2); }
+
+@media (max-width: 640px) {
+  header.site-header { position: relative; }
+  .header-row { flex-wrap: nowrap; justify-content: flex-start; gap: 8px; padding-top: 6px; padding-bottom: 6px; }
+  .header-row .nav { display: none; }
+  .mobil-menu { display: block; }
+  .mobil-profil, .mobil-menu summary { display: grid; }
+  .mobil-profil { margin-left: auto; }
+  .logo { font-size: 1.2rem; gap: 8px; min-width: 0; }
+  .logo-badge { width: 34px; height: 34px; font-size: 1.1rem; }
+  .header-row .dil-menu summary { height: 44px; display: flex; align-items: center; padding: 0 10px; border-radius: 12px; }
+}
 
 @media (max-width: 860px) {
   .site-header { position: static; }
@@ -333,10 +354,6 @@ a { color: var(--accent); }
 }
 
 @media (max-width: 520px) {
-  .nav a { padding: 4px 8px; font-size: .9rem; }
-  .dil-menu summary { padding: 4px 8px; font-size: .9rem; }
-  .header-row .nav { margin-left: 0; }
-  .header-row { justify-content: center; }
   .game-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .game-card .info { padding: 10px 12px 12px; }
   .game-card h3 { font-size: 1rem; }

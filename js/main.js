@@ -126,6 +126,21 @@
     for (var i = 0; i < els.length; i++) els[i].textContent = avatar;
   }
 
+  // Mobil ☰ menüsü: dışarı dokununca veya Esc ile kapanır
+  function initMobileMenu() {
+    var menu = document.querySelector('.mobil-menu');
+    if (!menu) return;
+    document.addEventListener('click', function (e) {
+      if (menu.open && !menu.contains(e.target)) menu.open = false;
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary').focus();
+      }
+    });
+  }
+
   // Ana sayfadaki günlük afişinde bugünkü meydan okuma bittiyse belirt
   function markDailyDone() {
     var btn = document.getElementById('gunluk-afis-dugme');
@@ -201,6 +216,7 @@
     markNewGames();
     initPersonal();
     drawHeaderAvatar();
+    initMobileMenu();
     markDailyDone();
     initPwa();
     initMobileMenu();

@@ -30,5 +30,10 @@ Yalnızca **640 px altında** üst menü tek satıra iner; masaüstü görünüm
 - Ana sayfa ölçümü (ilk `.game-card` ≤ 900 px) hâlâ geçer (değer küçülmeli).
 - Klavyeyle (Tab/Enter) menü açılıp bağlantılar seçilebiliyor.
 
+<<<<<<< HEAD
 ## Uygulama notu (2026-10-25)
 640 px altında üst menü tek satır: logo, 👤 profil simgesi, 🌐 dil, ☰ `<details class="mobil-menu">` (Oyunlar, Kategoriler, Profilim, Günlük meydan okuma, Hakkında, İletişim; dışarı dokunma/Esc ile kapanır). 360 px'te başlık 234 → 115 px, 2048/Meyve Patlat oyun alanı 172 px'te başlıyor; masaüstü 113 px, değişmedi. Smoke teste mobil başlık ≤ 120 px, oyun alanı ≤ 180 px (2048, Meyve Patlat) ve ☰ menü/Esc kontrolü eklendi. Not: Kule Savunması'nda oyun alanı 201 px'te başlıyor (oyuna özgü üst içerik).
+=======
+## Uygulama notu (2026-10-26)
+`[site-uygulama] Mobil kompakt üst menü`: 640 px altında başlık tek satır (logo, 👤 profil, 🌐 dil, ☰ `details.mobil-menu`); menüde Oyunlar, Kategoriler, Profilim, Günlük meydan okuma, Hakkında, İletişim. Dışarı dokunma/Esc `js/main.js` ile kapatır. 360 px'te `.site-header` 234 → 111 px, 2048 ve Meyve Patlat'ta `.game-layout` 291 → 168 px; 1280 px'te başlık 113 px, değişmedi. Smoke teste mobil ölçüm eklendi (başlık ≤ 120 px; oyun alanı tüm oyunlarda ≤ 220 px, çünkü Kule Savunması sayfa içeriği nedeniyle 197 px'te başlıyor).
+>>>>>>> 9852840 ([site-uygulama] Mobil kompakt üst menü)
