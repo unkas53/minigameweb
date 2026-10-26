@@ -213,11 +213,11 @@
     var y = M.yildiz(B, s.sure), onceki = kayit.yildiz[bolum] || 0, eskiToplam = toplamYildiz();
     if (y > onceki) { kayit.yildiz[bolum] = y; kaydet(); }
     var yeniDesen = DESENLER.filter(function (d) { return d.esik > eskiToplam && d.esik <= toplamYildiz(); })[0];
-    var metin = y + ' ⭐ · ' + sure(s.sure) + '. ';
-    if (y < 3) metin += (y + 1) + ' yıldız için ' + (y === 1 ? B.t2 : B.t3) + ' sn altında bitir. ';
-    if (sonraki) metin += onceki ? 'Sonraki bölüm açık.' : 'Sonraki bölüm açıldı.';
-    else metin += 'Macera\'nın tamamını bitirdin!';
-    if (yeniDesen) metin += ' Yeni desen açıldı: ' + yeniDesen.ad + '.';
+    var metin = y + ' ⭐ · ' + (window.MO_DIL ? MO_DIL.t(sure(s.sure)) : sure(s.sure)) + '. ';
+    if (y < 3) metin += (window.MO_DIL ? MO_DIL.t('{0} yıldız için {1} sn altında bitir.', y + 1, y === 1 ? B.t2 : B.t3) : (y + 1) + ' yıldız için ' + (y === 1 ? B.t2 : B.t3) + ' sn altında bitir.') + ' ';
+    if (sonraki) metin += onceki ? (window.MO_DIL ? MO_DIL.t('Sonraki bölüm açık.') : 'Sonraki bölüm açık.') : (window.MO_DIL ? MO_DIL.t('Sonraki bölüm açıldı.') : 'Sonraki bölüm açıldı.');
+    else metin += (window.MO_DIL ? MO_DIL.t('Macera\'nın tamamını bitirdin!') : 'Macera\'nın tamamını bitirdin!');
+    if (yeniDesen) metin += ' ' + (window.MO_DIL ? MO_DIL.t('Yeni desen açıldı: {0}.', MO_DIL.t(yeniDesen.ad)) : 'Yeni desen açıldı: ' + yeniDesen.ad + '.');
     if (sonraki) dugme('ym-sonraki', 'Sonraki bölüm →', 'btn', function () { bolumBaslat(sonraki); });
     dugme('ym-harita2', '🗺️ Harita', 'btn btn-ghost', haritaGoster);
     MiniOyun.bitti({ baslik: 'Bölüm ' + bolum + ' tamam!', metin: metin, sonuc: 'Bölüm ' + bolum + ': ' + y + ' yıldız', paylas: 'Yılan Macerası Bölüm ' + bolum + '\'i ' + sure(s.sure) + 'de ' + y + ' yıldızla bitirdim!' });
