@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mayın Tarlası Oyna - Ücretsiz Online | MiniOyun</title>
-  <meta name="description" content="Klasik Mayın Tarlası oyununu ücretsiz oyna. Kolay, orta ve zor seviye, bayrak modu ile telefonda da rahat. Üyelik ve indirme gerekmez.">
+  <meta name="description" content="Klasik Mayın Tarlası oyununu ücretsiz oyna. Kolay, orta ve zor seviye; 30 bölümlük, tahmin gerektirmeyen Sefer modunda yıldız topla, yeni temalar aç. Üyelik ve indirme gerekmez.">
   <link rel="canonical" href="https://unkas53.github.io/minigameweb/games/mayin-tarlasi/">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
   <link rel="manifest" href="../../manifest.webmanifest">
@@ -22,12 +22,44 @@
     .board-wrap { width: min(100%, 480px); container-type: inline-size; }
     .board { display: grid; grid-template-columns: repeat(var(--cols), 1fr); width: 100%; outline: none; border-radius: 6px; overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; background: #8a90b4; gap: 1px; padding: 1px; }
     .board:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
-    .cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(100cqw / var(--cols) * .58); background: #e3e6f5; box-shadow: inset 2px 2px 0 #fff, inset -2px -2px 0 #a9aecb; cursor: pointer; color: #111; }
-    .cell.open { background: #c3c7de; box-shadow: none; cursor: default; }
+    .board { --k: #e3e6f5; --a: #c3c7de; --isik: #fff; --golge: #a9aecb; --yazi: #111; }
+    .board[data-tema="col"] { background: #b08850; --k: #f3d9a4; --a: #e2c28a; --isik: #fff3d6; --golge: #c9a56a; }
+    .board[data-tema="deniz"] { background: #3d7ea6; --k: #c4e6f7; --a: #9fd0e8; --isik: #ecf8ff; --golge: #7fb3cf; }
+    .board[data-tema="uzay"] { background: #120c26; --k: #4c3b78; --a: #241a40; --isik: #6d5aa3; --golge: #2e2350; --yazi: #f5f5f5; }
+    .cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(100cqw / var(--cols) * .58); background: var(--k); box-shadow: inset 2px 2px 0 var(--isik), inset -2px -2px 0 var(--golge); cursor: pointer; color: var(--yazi); }
+    .cell.open { background: var(--a); box-shadow: none; cursor: default; }
     .cell.boom { background: #f05a6e; }
+    .cell.bos { background: var(--surface); box-shadow: none; cursor: default; }
     .board:focus-visible .cell.cur, .board.kb .cell.cur { outline: 3px solid var(--accent); outline-offset: -3px; position: relative; z-index: 1; }
     .n1 { color: #1e66f5; } .n2 { color: #2f7d1f; } .n3 { color: #d20f39; } .n4 { color: #1e3a8a; }
     .n5 { color: #7f1d1d; } .n6 { color: #0e7490; } .n7 { color: #111; } .n8 { color: #4b5563; }
+    .board[data-tema="deniz"] .n6 { color: #134e4a; }
+    .board[data-tema="uzay"] .n1 { color: #7dd3fc; } .board[data-tema="uzay"] .n2 { color: #86efac; } .board[data-tema="uzay"] .n3 { color: #fca5a5; } .board[data-tema="uzay"] .n4 { color: #c4b5fd; }
+    .board[data-tema="uzay"] .n5 { color: #fdba74; } .board[data-tema="uzay"] .n6 { color: #5eead4; } .board[data-tema="uzay"] .n7 { color: #f5f5f5; } .board[data-tema="uzay"] .n8 { color: #cbd5e1; }
+    .game-box [hidden] { display: none !important; }
+    .ms-oyun { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .mod-sekme { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
+    .mod-sekme button { border: 0; border-radius: 999px; padding: 7px 16px; font: inherit; font-weight: 800; background: var(--surface-2); color: var(--muted); cursor: pointer; }
+    .mod-sekme button.secili { background: linear-gradient(135deg, #94a3d6, #4b5480); color: #fff; }
+    .mt-hedef { margin: 0 auto 10px; max-width: 480px; text-align: center; color: var(--muted); font-size: .85rem; }
+    .mt-harita { width: min(100%, 520px); margin: 0 auto; text-align: center; }
+    .mt-harita h2 { margin: 14px 0 6px; font-size: 1.05rem; }
+    .mt-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .mt-toplam { font-size: 1.05rem; }
+    .mt-toplam b { color: var(--accent); }
+    .mt-bolumler { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .mt-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #94a3d6, #4b5480); color: #fff; font: inherit; cursor: pointer; min-width: 0; }
+    .mt-bolum b { font-size: 1rem; line-height: 1.2; }
+    .mt-bolum small { font-size: .62rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .mt-bolum span { font-size: .72rem; color: #ffd166; white-space: nowrap; }
+    .mt-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .mt-bolum.kilitli span { color: var(--muted); }
+    .mt-temalar { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin-top: 14px; }
+    .mt-tema-baslik { color: var(--muted); font-size: .85rem; font-weight: 700; }
+    .mt-tema { border: 2px solid transparent; border-radius: 999px; padding: 5px 12px; font: inherit; font-size: .85rem; font-weight: 700; background: var(--surface-2); color: inherit; cursor: pointer; }
+    .mt-tema.secili { border-color: var(--accent); }
+    .mt-tema:disabled { color: var(--muted); cursor: not-allowed; }
+    .overlay-msg .btn { margin: 4px; }
     .ms-end { margin-top: 8px; display: none; }
     .ms-end.show { display: inline-block; }
     @media (max-width: 500px) {
@@ -89,7 +121,14 @@
     <div class="game-layout">
       <section class="game-box">
         <h1>Mayın Tarlası</h1>
+        <div class="mod-sekme" id="mod-sekme" role="tablist" aria-label="Oyun modu">
+          <button type="button" role="tab" data-mod="klasik">Klasik</button>
+          <button type="button" role="tab" data-mod="sefer">🗺️ Sefer</button>
+        </div>
+        <div class="mt-harita" id="harita" hidden></div>
+        <div class="ms-oyun" id="ms-oyun">
         <div class="ms-bar">
+          <div class="stat" id="ms-bolum-stat" hidden><small>Bölüm</small><span id="ms-bolum">1</span></div>
           <div class="stat"><small>Mayın</small><span id="mines">10</span></div>
           <button class="btn face" id="face" aria-label="Yeni oyun">🙂</button>
           <div class="stat"><small>Süre</small><span id="time">0</span> sn</div>
@@ -99,13 +138,17 @@
             <option value="orta">Orta 12x12</option>
             <option value="zor">Zor 16x16</option>
           </select>
+          <button class="btn btn-ghost" id="ms-harita" type="button" hidden>🗺️ Harita</button>
         </div>
+        <p class="mt-hedef" id="ms-hedef" hidden></p>
         <button class="btn mode" id="mode" aria-label="Dokunma modu">⛏️ Kaz</button>
         <div class="board-wrap">
           <div class="board" id="board" tabindex="0" role="grid" aria-label="Mayın tarlası ızgarası"></div>
         </div>
         <div class="overlay-msg" id="msg"></div>
         <button class="btn ms-end" id="again">Tekrar oyna</button>
+        </div>
+        <div class="mt-temalar" id="temalar"></div>
       </section>
       <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
     </div>
@@ -116,11 +159,16 @@
       <p>Telefonda ızgaranın üstündeki düğmeyle "Kaz" ve "Bayrak" modları arasında geçiş yapabilirsin. Klavyede ok tuşlarıyla kare seç, Boşluk veya Enter ile aç, F ile bayrak koy, N ile yeni oyun başlat. Bayrak sayısı kadar mayın çevrelenmiş bir sayıya tıklarsan kalan komşular birlikte açılır.</p>
       <h2>İpuçları</h2>
       <p>İşe köşelerden ve kenarlardan değil, büyük boş alanların açıldığı yerlerden başla. Bir sayının çevresinde sayı kadar kapalı kare kaldıysa hepsi mayındır; bayrak sayısı sayıya ulaştıysa geri kalan komşular güvenlidir. 1-2-1 ve 1-2-2-1 gibi kalıpları öğrenmek seni çok hızlandırır. Emin olmadığın yerde tahmin yapmadan önce ızgaranın başka bir köşesine bak.</p>
+      <h2>Sefer modu: 30 bölümlük kampanya</h2>
+      <p>Izgaranın üstündeki "Sefer" sekmesi seni bölüm haritasına götürür. Sefer; Çayır, Kanyon ve Volkan adlı üç bölgede toplam 30 bölümden oluşur. Bölümler ilerledikçe tahta büyür, mayınlar sıklaşır ve tahtanın biçimi değişir: artı, elmas, çerçeve, iki ada, L, merdiven, yıldız, labirent, kalp ve halka biçimli tahtalarda boş görünen kareler oyunun dışındadır, mayın içermez ve sayılara katılmaz.</p>
+      <p>Sefer tahtalarının en önemli özelliği tahmin gerektirmemesidir. Her tahta ilk tıklamandan sonra kurulur ve bir çözücüyle denetlenir; tahta yalnızca mantık yürütülerek baştan sona açılabiliyorsa oyuna verilir. Yani Sefer'de mayına basarsan bunun nedeni şans değil, gözden kaçan bir ipucudur.</p>
+      <p>Her bölümde üç yıldız kazanabilirsin: bölümü bitirmek 1 yıldız, bölümün süre hedefinin altında bitirmek 1 yıldız, hiç yanlış bayrak koymadan bitirmek 1 yıldız. Mayın olmayan bir kareye konan bayrak sonradan kaldırılsa bile yanlış sayılır. Bir bölümden en az 1 yıldız almak sonraki bölümü açar; bölümü tekrar oynayıp eksik yıldızlarını tamamlayabilirsin. 15, 35 ve 60 yıldızda Çöl, Deniz ve Uzay temaları açılır; temaları klasik modda da kullanabilirsin. İlerlemen tarayıcında saklanır.</p>
       <h2>Zorluk seviyeleri</h2>
       <p>Kolay seviyede 9x9 ızgarada 10 mayın, Orta seviyede 12x12 ızgarada 24 mayın, Zor seviyede ise 16x16 ızgarada 45 mayın vardır. Seviyeyi ızgaranın üstündeki listeden seçebilirsin. Her seviyenin en iyi süresi ayrı tutulur ve tarayıcında saklanır, bu yüzden Kolay'da rekor kırdıktan sonra Zor'da kendini ayrıca deneyebilirsin. Süre ilk kareyi açtığında başlar.</p>
       <h2>Sık sorulan sorular</h2>
       <p><strong>İlk tıklamada mayına basabilir miyim?</strong> Hayır. Mayınlar ilk tıklamandan sonra yerleştirilir; tıkladığın kare ve çevresindeki sekiz kare her zaman boş kalır. Böylece oyun her seferinde açık bir alanla başlar.</p>
       <p><strong>Mayın Tarlası telefonda oynanır mı?</strong> Evet. Telefonda ve tablette kareye dokunarak açabilir, uzun basarak ya da "Bayrak" moduna geçerek bayrak koyabilirsin. İndirme veya üyelik gerekmez.</p>
+      <p><strong>Sefer modu rekorumu ve sıralamayı etkiler mi?</strong> Hayır. Klasik moddaki en iyi süreler ve liderlik tablosu yalnızca klasik oyunlardan beslenir. Sefer'de her bölümün kendi en iyi süresi ve yıldızları tutulur.</p>
       <p><strong>Yanlış bayrak koyarsam ne olur?</strong> Bayrağı istediğin zaman kaldırabilirsin. Oyun bittiğinde yanlış yere konan bayraklar işaretlenir, böylece nerede hata yaptığını görürsün. Sayının çevresindeki bayraklar yanlışsa birlikte açma özelliği seni mayına götürebilir, bu yüzden bayrakları dikkatli koy.</p>
     </section>
 
@@ -206,6 +254,7 @@
   </div>
 
   <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
   <script src="../../js/sunucu.js"></script>
   <script src="../../js/oyun.js" data-rekor="sn"></script>
   <script src="game.js"></script>

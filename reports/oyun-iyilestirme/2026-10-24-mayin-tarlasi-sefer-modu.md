@@ -1,4 +1,4 @@
-durum: uygulaniyor
+durum: uygulandi
 oyun: mayin-tarlasi
 baslik: Mayın Seferi: 30 bölümlük kampanya, tahmin gerektirmeyen tahtalar, yıldızlar ve açılan temalar
 oncelik: 4
@@ -54,3 +54,6 @@ Temalar klasik modda da seçilebilir; sayıların renkleri her temada yeterli ko
 - 360 px genişlikte en büyük Sefer tahtası yatay kaydırma olmadan sığar ve kare en az 24 px'tir.
 - Oyun metinleri DOM'da yazılır (çevrilebilir); oyun mantığı ekrandaki metni okumaz.
 - Oynanış testi (`tools/tests/mayin-tarlasi.js`) şunları ekler: Sefer'e geçip 1. bölümü çözücüyle (veya oyun içi test kancasıyla) bitirmek, ≥1 yıldız alıp 2. bölümün açıldığını görmek, `mo_mayin` kaydını sayfa yenilemeden sonra doğrulamak, bozuk kayıtla açılışta JS hatası olmadığını görmek, klasik modun hâlâ çalıştığını doğrulamak.
+
+## Uygulama notu (8. ajan, 2026-10-26)
+Klasik / Sefer sekmeleri eklendi. `games/mayin-tarlasi/motor.js`: 12 maske biçimi, Çayır/Kanyon/Volkan'da 30 bölüm (8x8 → 13x13; 360 px'te kare ≥24 px kalsın diye Volkan en fazla 13 sütun), çözücü (tek sayı, iki kısıt ve sayaç kuralları) ve en fazla 200 denemeli tahmin gerektirmeyen üretim (yavaş biçimlerde bile < 40 ms). Dar geçitli yıldız, labirent ve iki ada biçimlerinde yoğunluk %10-20 düşürüldü; yoksa 200 denemede çözülebilir tahta bulunamıyordu. Yıldızlar: bitirme, süre hedefi, hiç yanlış bayrak koymama. 15/35/60 yıldızda Çöl/Deniz/Uzay temaları açılıyor, klasikte de geçerli. Kayıt `mo_mayin`. Klasik rekor anahtarları ve liderlik tablosu değişmedi; Sefer skor göndermiyor. Test, Bölüm 1'i görünen tahtadan çıkarım yaparak bitiriyor.
