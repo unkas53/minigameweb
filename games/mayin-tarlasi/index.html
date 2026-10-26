@@ -20,18 +20,42 @@
     .mode { margin-bottom: 10px; background: var(--surface-2); color: var(--text); }
     .mode.flag { background: #d20f39; color: #fff; }
     .board-wrap { width: min(100%, 480px); container-type: inline-size; }
-    .board { display: grid; grid-template-columns: repeat(var(--cols), 1fr); width: 100%; outline: none; border-radius: 6px; overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; background: #8a90b4; gap: 1px; padding: 1px; }
+    .board { --zemin: #8a90b4; --kapali: #e3e6f5; --isik: #fff; --golge: #a9aecb; --acik: #c3c7de; --yazi: #111; display: grid; grid-template-columns: repeat(var(--cols), 1fr); width: 100%; outline: none; border-radius: 6px; overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; background: var(--zemin); gap: 1px; padding: 1px; }
+    .board[data-tema="col"] { --zemin: #a77f45; --kapali: #f3e2bf; --isik: #fff8e8; --golge: #c9a86d; --acik: #e4cc9e; }
+    .board[data-tema="deniz"] { --zemin: #2f6595; --kapali: #cfe6f7; --isik: #f2faff; --golge: #8fb8d8; --acik: #a7cbe6; }
+    .board[data-tema="uzay"] { --zemin: #1c1538; --kapali: #4b3a7d; --isik: #7563b3; --golge: #2c2150; --acik: #3a2f6b; --yazi: #f1edff; }
     .board:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
-    .cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(100cqw / var(--cols) * .58); background: #e3e6f5; box-shadow: inset 2px 2px 0 #fff, inset -2px -2px 0 #a9aecb; cursor: pointer; color: #111; }
-    .cell.open { background: #c3c7de; box-shadow: none; cursor: default; }
+    .cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(100cqw / var(--cols) * .58); background: var(--kapali); box-shadow: inset 2px 2px 0 var(--isik), inset -2px -2px 0 var(--golge); cursor: pointer; color: var(--yazi); }
+    .cell.open { background: var(--acik); box-shadow: none; cursor: default; }
     .cell.boom { background: #f05a6e; }
+    .cell.bos { background: var(--surface, #1a1730); box-shadow: none; cursor: default; pointer-events: none; }
     .board:focus-visible .cell.cur, .board.kb .cell.cur { outline: 3px solid var(--accent); outline-offset: -3px; position: relative; z-index: 1; }
     .n1 { color: #1e66f5; } .n2 { color: #2f7d1f; } .n3 { color: #d20f39; } .n4 { color: #1e3a8a; }
     .n5 { color: #7f1d1d; } .n6 { color: #0e7490; } .n7 { color: #111; } .n8 { color: #4b5563; }
+    .board[data-tema="uzay"] .n1 { color: #7dd3fc; } .board[data-tema="uzay"] .n2 { color: #86efac; } .board[data-tema="uzay"] .n3 { color: #fca5a5; } .board[data-tema="uzay"] .n4 { color: #c4b5fd; }
+    .board[data-tema="uzay"] .n5 { color: #fdba74; } .board[data-tema="uzay"] .n6 { color: #5eead4; } .board[data-tema="uzay"] .n7 { color: #fff; } .board[data-tema="uzay"] .n8 { color: #d1d5db; }
+    .game-box [hidden] { display: none !important; }
+    #ms-oyun { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .mod-sekme { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
+    .mod-sekme button { border: 0; border-radius: 999px; padding: 7px 16px; font: inherit; font-weight: 800; background: var(--surface-2); color: var(--muted); cursor: pointer; }
+    .mod-sekme button.secili { background: linear-gradient(135deg, #94a3d6, #4b5480); color: #fff; }
+    .ms-ipucu { margin: 0 auto 8px; max-width: 480px; text-align: center; color: var(--muted); font-size: .85rem; }
+    .ms-harita { width: min(100%, 520px); margin: 0 auto; text-align: center; }
+    .ms-harita h2 { margin: 14px 0 6px; font-size: 1.05rem; }
+    .ms-harita h2 small { color: var(--muted); font-weight: 600; font-size: .78rem; }
+    .ms-harita p { margin: 6px 0; color: var(--muted); font-size: .9rem; }
+    .ms-bolumler { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .ms-bolum { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #b4c0ee, #6b76b0); color: #111633; font: inherit; cursor: pointer; min-width: 0; }
+    .ms-bolum b { font-size: 1rem; line-height: 1.2; }
+    .ms-bolum small { font-size: .62rem; font-weight: 700; white-space: nowrap; }
+    .ms-bolum span { font-size: .7rem; color: #7c2d12; white-space: nowrap; }
+    .ms-bolum.kilitli { background: var(--surface-2); color: var(--muted); cursor: not-allowed; }
+    .ms-bolum.kilitli span { color: var(--muted); }
+    .overlay-msg .btn { margin: 4px; }
     .ms-end { margin-top: 8px; display: none; }
     .ms-end.show { display: inline-block; }
     @media (max-width: 500px) {
-      main.container { padding: 0 8px; }
+      main.container { padding: 0 4px; }
       .game-box { padding: 12px 2px; }
     }
   </style>
@@ -77,23 +101,36 @@
     <div class="game-layout">
       <section class="game-box">
         <h1>Mayın Tarlası</h1>
+        <div class="mod-sekme" id="mod-sekme" role="tablist" aria-label="Oyun modu">
+          <button type="button" role="tab" data-mod="klasik">Klasik</button>
+          <button type="button" role="tab" data-mod="sefer">🗺️ Sefer</button>
+        </div>
         <div class="ms-bar">
-          <div class="stat"><small>Mayın</small><span id="mines">10</span></div>
-          <button class="btn face" id="face" aria-label="Yeni oyun">🙂</button>
-          <div class="stat"><small>Süre</small><span id="time">0</span> sn</div>
-          <div class="stat"><small>En iyi</small><span id="best">-</span></div>
+          <select id="tema" aria-label="Tema"></select>
           <select id="level" aria-label="Zorluk">
             <option value="kolay">Kolay 9x9</option>
             <option value="orta">Orta 12x12</option>
             <option value="zor">Zor 16x16</option>
           </select>
+          <button class="btn btn-ghost" id="ms-harita" type="button" hidden>🗺️ Harita</button>
         </div>
-        <button class="btn mode" id="mode" aria-label="Dokunma modu">⛏️ Kaz</button>
-        <div class="board-wrap">
-          <div class="board" id="board" tabindex="0" role="grid" aria-label="Mayın tarlası ızgarası"></div>
+        <div class="ms-harita" id="harita" hidden></div>
+        <div id="ms-oyun">
+          <div class="ms-bar">
+            <div class="stat" id="bolum-stat" hidden><small>Bölüm</small><span id="ms-bolum">1</span></div>
+            <div class="stat"><small>Mayın</small><span id="mines">10</span></div>
+            <button class="btn face" id="face" aria-label="Yeni oyun">🙂</button>
+            <div class="stat"><small>Süre</small><span id="time">0</span> sn</div>
+            <div class="stat" id="best-stat"><small>En iyi</small><span id="best">-</span></div>
+          </div>
+          <p class="ms-ipucu" id="ms-ipucu" hidden></p>
+          <button class="btn mode" id="mode" aria-label="Dokunma modu">⛏️ Kaz</button>
+          <div class="board-wrap">
+            <div class="board" id="board" tabindex="0" role="grid" aria-label="Mayın tarlası ızgarası"></div>
+          </div>
+          <div class="overlay-msg" id="msg"></div>
+          <button class="btn ms-end" id="again">Tekrar oyna</button>
         </div>
-        <div class="overlay-msg" id="msg"></div>
-        <button class="btn ms-end" id="again">Tekrar oyna</button>
       </section>
       <aside><div class="ad-slot ad-side" aria-label="Reklam">Reklam alanı</div></aside>
     </div>
@@ -104,6 +141,10 @@
       <p>Telefonda ızgaranın üstündeki düğmeyle "Kaz" ve "Bayrak" modları arasında geçiş yapabilirsin. Klavyede ok tuşlarıyla kare seç, Boşluk veya Enter ile aç, F ile bayrak koy, N ile yeni oyun başlat. Bayrak sayısı kadar mayın çevrelenmiş bir sayıya tıklarsan kalan komşular birlikte açılır.</p>
       <h2>İpuçları</h2>
       <p>İşe köşelerden ve kenarlardan değil, büyük boş alanların açıldığı yerlerden başla. Bir sayının çevresinde sayı kadar kapalı kare kaldıysa hepsi mayındır; bayrak sayısı sayıya ulaştıysa geri kalan komşular güvenlidir. 1-2-1 ve 1-2-2-1 gibi kalıpları öğrenmek seni çok hızlandırır. Emin olmadığın yerde tahmin yapmadan önce ızgaranın başka bir köşesine bak.</p>
+      <h2>Sefer modu: 30 bölümlük kampanya</h2>
+      <p>Oyun kutusunun üstündeki "Sefer" sekmesi Çayır, Kanyon ve Volkan adlı üç bölgeye yayılmış 30 bölümlük bir harita açar. Her bölgede tahtanın biçimi değişir: artı, elmas, ortası delik, iki ada, merdiven, yıldız, labirent koridorları, kalp ve halka gibi şekillerde oynarsın. Tahtadaki boş görünen kareler oyunun parçası değildir; mayın içermez ve sayılara katılmaz. Bölgeler ilerledikçe tahta büyür ve mayın yoğunluğu artar.</p>
+      <p>Sefer tahtaları tahmin gerektirmez. Mayınlar ilk tıklamandan sonra yerleştirilir ve tahta, yalnızca mantıkla sonuna kadar çözülebildiği denetlendikten sonra önüne gelir. Yani Sefer'de mayına basarsan bu şanssızlık değil, gözden kaçan bir ipucudur.</p>
+      <p>Her bölüm en fazla 3 yıldız verir: bölümü temizlemek 1 yıldız, ekranda yazan süre hedefinin altında bitirmek +1 yıldız, hiç yanlış bayrak koymadan bitirmek +1 yıldız. Yanlış bayrağı sonradan kaldırsan bile o yıldız kaybolur, bu yüzden emin olmadığın kareye bayrak koyma. Bir bölümden en az 1 yıldız almak sıradakini açar; bölümü tekrar oynayınca en iyi yıldız sayın korunur. 15, 35 ve 60 yıldızda Çöl, Deniz ve Uzay temaları açılır; temayı hem Sefer'de hem Klasik modda üstteki listeden seçebilirsin. Klasik moddaki süre rekorların ve liderlik tablosu Sefer'den etkilenmez.</p>
       <h2>Zorluk seviyeleri</h2>
       <p>Kolay seviyede 9x9 ızgarada 10 mayın, Orta seviyede 12x12 ızgarada 24 mayın, Zor seviyede ise 16x16 ızgarada 45 mayın vardır. Seviyeyi ızgaranın üstündeki listeden seçebilirsin. Her seviyenin en iyi süresi ayrı tutulur ve tarayıcında saklanır, bu yüzden Kolay'da rekor kırdıktan sonra Zor'da kendini ayrıca deneyebilirsin. Süre ilk kareyi açtığında başlar.</p>
       <h2>Sık sorulan sorular</h2>
@@ -194,6 +235,7 @@
   </div>
 
   <script src="../../js/main.js"></script>
+  <script src="motor.js"></script>
   <script src="../../js/sunucu.js"></script>
   <script src="../../js/oyun.js" data-rekor="sn"></script>
   <script src="game.js"></script>
