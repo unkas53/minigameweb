@@ -692,12 +692,12 @@
     });
     if (state === 'yuzey') {
       ctx.fillStyle = '#fff'; ctx.font = 'bold 15px sans-serif';
-      ctx.fillText('Balıklara dokun! (Boşluk)', W / 2, 26);
+      ctx.fillText(window.MO_DIL ? MO_DIL.t('Balıklara dokun! (Boşluk)') : 'Balıklara dokun! (Boşluk)', W / 2, 26);
     } else if (state === 'menu' || state === 'bitti') {
       ctx.fillStyle = '#fff'; ctx.font = 'bold 16px sans-serif';
-      ctx.fillText(daily ? '📅 Günlük tur' : sea.ikon + ' ' + sea.ad, W / 2, 26);
+      ctx.fillText(daily ? (window.MO_DIL ? MO_DIL.t('📅 Günlük tur') : '📅 Günlük tur') : sea.ikon + ' ' + (window.MO_DIL ? MO_DIL.t(sea.ad) : sea.ad), W / 2, 26);
       ctx.font = '13px sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.8)';
-      ctx.fillText('Dokun veya Boşluk: oltayı at', W / 2, H - 24);
+      ctx.fillText(window.MO_DIL ? MO_DIL.t('Dokun veya Boşluk: oltayı at') : 'Dokun veya Boşluk: oltayı at', W / 2, H - 24);
     }
   }
   function resize() {

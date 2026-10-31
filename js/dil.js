@@ -117,6 +117,7 @@
     var n = norm(s);
     if (metin[n]) return doldur(metin[n]);
     var dolu = doldur(s);
+    if (!hazir) return dolu; // sözlükler henüz yüklenmedi (ilk kareler): eksik sayılmaz
     var c = bul(dolu);
     if (c === null && args.length) topla(n);
     return c || dolu;
